@@ -176,8 +176,8 @@ classDiagram
         string ProfileImageUrl
         bool IsActive
         bool IsVerified
-        int TenantVerificationCode
-        int VerificationCode
+        int TeneantVerificationCode
+        int verificationCode
         ICollection~Property~ PropertiesOwned
         ICollection~UserSubscription~ Subscriptions
         ICollection~Rating~ Ratings
@@ -257,27 +257,27 @@ classDiagram
     class Shop {
         int Area
         BusinessType BusinessType
-        decimal RentPrice
+        decimal? RentPrice
         string RentPriceUnit
-        decimal SalePrice
+        decimal? SalePrice
         string SalePriceUnit
-        decimal LeasePrice
+        decimal? LeasePrice
         string LeasePriceUnit
     }
 
     class Land {
-        int LandArea
+        double LandArea
         string ZoningInformation
         LandType LandType
     }
 
     class PG {
-        string RoomTypes
-        string Occupancy
-        string Facilities
-        decimal RentPrice
+        int RoomTypes
+        int Occupancy
+        ICollection~Facility~ Facilities
+        decimal? RentPrice
         string RentPriceUnit
-        decimal LeasePrice
+        decimal? LeasePrice
         string LeasePriceUnit
     }
 
@@ -296,7 +296,7 @@ classDiagram
         int SenderUserId
         int ReceiverId
         string Message
-        DateTime Timestamp
+        DateTime TimeStamp
         bool IsRead
     }
 
@@ -308,61 +308,102 @@ classDiagram
         int UserId
     }
 
-    enum PropertyStatus {
+    class PropertyStatus {
+        <<enumeration>>
         Active
         Inactive
         Sold
         Rented
     }
 
-    enum PropertyCategory {
+    class PropertyCategory {
+        <<enumeration>>
         Home
         Shop
         Land
         PG
     }
 
-    enum PropertyType {
+    class PropertyType {
+        <<enumeration>>
         Rent
         Sale
         Lease
     }
 
-    enum FurnishingStatus {
+    class FurnishingStatus {
+        <<enumeration>>
         Furnished
         SemiFurnished
         Unfurnished
     }
 
-    enum HomeStatus {
+    class ConstructionStatus {
+        <<enumeration>>
         ReadyToMove
         UnderConstruction
     }
 
-    enum BusinessType {
+    class Direction {
+        <<enumeration>>
+        North
+        South
+        East
+        West
+    }
+
+    class OwnershipType {
+        <<enumeration>>
+        Freehold
+        Leasehold
+    }
+
+    class BusinessType {
+        <<enumeration>>
         Retail
         Restaurant
         Other
     }
 
-    enum MediaType {
+    class MediaType {
+        <<enumeration>>
         Image
         Video
     }
 
-    enum LandType {
+    class LandType {
+        <<enumeration>>
         Residential
         Commercial
         Agricultural
     }
 
-    User "1" --> "1" UserAuth
-    User "1" --> "*" UserSubscription
-    UserSubscription "*" --> "1" Subscription
-    User "1" --> "*" Property
-    Property "*" --> "1" User : Owner
-    Property "*" --> "*" Amenity
-    Property "*" --> "*" MediaFile
-    Property "*" --> "*" Rating
-    Property "*" --> "*" Chat
+    Property <|-- Home
+    Property <|-- Shop
+    Property <|-- Land
+    Property <|-- PG
+
+    PropertyStatus -- Property
+    PropertyCategory -- Property
+    PropertyType -- Property
+    FurnishingStatus -- Home
+    ConstructionStatus -- Home
+    BusinessType -- Shop
+    LandType -- Land
+    MediaType -- MediaFile
+
+    User --> UserSubscription : "1..* owns"
+    UserSubscription --> Subscription : "many to 1"
+    Property --> Amenity : "1 has many"
+    Property --> MediaFile : "1 has many"
+    Property --> Rating : "1 has many"
+    Property --> Chat : "1 has many"
+    Amenity --> Property : "many to 1"
+    MediaFile --> Property : "many to 1"
+    Chat --> Property : "many to 1"
+    Rating --> Property : "many to 1"
+    User --> Property : "1 owns many"
+    User --> Rating : "1 gives many"
+    User --> Chat : "1 participates in many"
+    User --> UserAuth : "1 has"
 ```
