@@ -1,35 +1,165 @@
+using log4net.Config;
+using log4net;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
+using System.Text;
+using api.Utility;
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+using api.Contexts;
+using api.Repositories.Interfaces;
+using api.Repositories;
+using api.Services.Interfaces;
+using api.Services;
+using api.Models;
+
 namespace api
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            #region Log4NetConfig
+
+
+            var logRepository = LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("log4net.config"));
+            
+
+            
+            #endregion
+
+            #region Builder Configuration
+
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            Env.Load();
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            #region Base Configuration
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
+
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+            builder.Services.AddLogging(l => l.AddLog4Net());
+
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+
+            #endregion
+
+            #region Swagger
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "web server api", Version = "v1" });
+                c.SchemaFilter<EnumSchemaFilter>();
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+            });
+            #endregion
+
+            #region JWT Auth/Authorization
+
+            var userSecret = Environment.GetEnvironmentVariable("JWT_USER_SECRET") ?? "temp";
+            
+            builder.Services.AddAuthentication()
+                .AddJwtBearer("CustomerScheme", options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(userSecret))
+                    };
+                });
+
+            builder.Services.AddAuthorization(options =>
+            {
+
+            });
+
+            #endregion
+
+            #region DBContext
+            var connectionString = Environment.GetEnvironmentVariable("SQL_SERVER_CONNECTION_STRING");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new Exception("SQL_SERVER_CONNECTION_STRIN environment variable not set.");
+            }
+            builder.Services.AddDbContext<DbSql>(options => options.UseSqlServer(connectionString));
+            #endregion
+
+            #region Repositories
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
+            #endregion
+
+            #region Services
+            builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
+            builder.Services.AddScoped<IUserAuthService, UserAuthService>();
+            builder.Services.AddScoped<ITokenService<User>, UserTokenService>();
+            #endregion
+
+            #region CORS
+            builder.Services.AddCors(opts =>
+            {
+                opts.AddDefaultPolicy(option =>
+                {
+                    option.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+            #endregion
+
+            #endregion
+
+            #region App Configuration
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
             app.Run();
+            #endregion
         }
     }
 }
