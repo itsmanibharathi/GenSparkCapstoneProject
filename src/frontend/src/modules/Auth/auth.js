@@ -1,10 +1,9 @@
 import $ from 'jquery';
-import AuthPage from './auth.html';
+import authPage from './auth.html';
 import { signInPage, signUpPage } from '../../Services/authLayoutService.js';
 import showAlert from '../../Services/alertService.js';
-import { basePath } from '../../Services/routerService.js';
+import loadRoutes from '../../Services/routerService.js';
 const loadAuthCallback = (api, token) => {
-    console.log('basepath  :', basePath)
     console.log('Loading Auth Callback');
     $('#signUpPage').on('click', signUpPage);
     $('#signInPage').on('click', signInPage);
@@ -66,14 +65,14 @@ const loadAuthCallback = (api, token) => {
             .then((res) => {
                 token.set(res.data.token);
                 showAlert(res.message, 'success');
-                window.location.href = basePath + '/';
+                loadRoutes('/');
             })
             .catch((err) => {
-                console.log("err------------");
                 console.log(err);
                 showAlert(err.message, 'error');
             });
     });
+
 
     $('#signUp').on('submit', function (e) {
         e.preventDefault();
@@ -90,13 +89,13 @@ const loadAuthCallback = (api, token) => {
             })
             .catch((err) => {
                 console.log(err);
-                showAlert(err.message, 'error');
+                showAlert(res.message, 'error');
             });
     });
 }
 
 
 module.exports = {
-    AuthPage,
+    authPage,
     loadAuthCallback
 }

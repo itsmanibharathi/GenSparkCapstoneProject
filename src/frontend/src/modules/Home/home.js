@@ -1,11 +1,11 @@
 import $ from 'jquery';
-import HomePage from './home.html';
+import homePage from './home.html';
 
 const loadHomeCallback = (api, token) => {
     console.log('Home Callback');
 }
 
 module.exports = {
-    HomePage,
+    homePage,
     loadHomeCallback
 }
