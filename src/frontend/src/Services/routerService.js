@@ -12,6 +12,7 @@ import showAlert from './alertService.js';
 import loadComponent from './loadComponent.js';
 
 import { HomePage, loadHomeCallback } from '../modules/Home/home.js';
+import { AuthPage, loadAuthCallback } from '../modules/Auth/auth.js';
 
 const token = new jwtService('User');
 const localStorage = new localStorageService('User');
@@ -19,18 +20,28 @@ const api = new apiService(process.env.API_URL, token.get());
 
 const routes = [
     { path: '/', component: HomePage, callback: loadHomeCallback },
+    { path: '/auth', component: AuthPage, callback: loadAuthCallback },
+    { path: '/logout' }
 ]
 
 const loadRoutes = () => {
     let path = window.location.pathname.toLowerCase();
     path = path === '/' ? '/' : path.replace(/\/$/, '');
+    log.info('path:', path);
     const route = routes.find(r => r.path === path);
-    console.log("path", path, "router", route);
-    if (route) {
+    if (path === '/logout') {
+        token.remove();
+        localStorage.remove();
+        showAlert('Logged out successfully', 'success');
+        window.location.href = '/';
+        loadRoutes();
+        return;
+    }
+    else if (route) {
         $('#404').html("");
         $('#header-placeholder').html(headerTemplate(token));
         loadComponent('#footer-placeholder', Footer);
-        loadComponent('#body-placeholder', route.component, route.callback);
+        loadComponent('#body-placeholder', route.component, route.callback, api, token);
     }
     else {
         loadComponent("#404", Page404);
