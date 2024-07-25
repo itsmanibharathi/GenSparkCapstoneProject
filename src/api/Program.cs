@@ -123,8 +123,11 @@ namespace api
 
             #region Services
             builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
-            builder.Services.AddScoped<IUserAuthService, UserAuthService>();
+            builder.Services.AddScoped<IMailService, MailService>();
             builder.Services.AddScoped<ITokenService<User>, UserTokenService>();
+            builder.Services.AddScoped<IUserAuthService, UserAuthService>();
+
+            builder.Services.AddScoped<IUserService, UserService>();
             #endregion
 
             #region CORS

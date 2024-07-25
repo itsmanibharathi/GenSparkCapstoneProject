@@ -20,8 +20,8 @@ namespace api.Migrations
                     UserPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    ActivationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
-                    VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TeneantVerificationCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

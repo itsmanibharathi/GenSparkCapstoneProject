@@ -3,7 +3,7 @@
 namespace api.Exceptions
 {
     [Serializable]
-    internal class UnableToDoActionException : Exception
+    public class UnableToDoActionException : Exception
     {
         public UnableToDoActionException()
         {

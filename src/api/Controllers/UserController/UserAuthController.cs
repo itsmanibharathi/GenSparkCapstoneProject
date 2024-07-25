@@ -6,7 +6,7 @@ using api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers.User
+namespace api.Controllers.UserController
 {
     [Route("api/user/auth")]
     [ApiController]
@@ -36,10 +36,16 @@ namespace api.Controllers.User
                 var res = new ResponseDto(StatusCodes.Status404NotFound, "User not found");
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }
-            catch (InvalidPasswordException e)
+            catch (InvalidUserCredentialException e)
             {
-                _logger.LogError(e, "Invalid password");
-                var res = new ResponseDto(StatusCodes.Status401Unauthorized, "Invalid password");
+                _logger.LogError(e, "Invalid User Credential");
+                var res = new ResponseDto(StatusCodes.Status401Unauthorized, "Invalid User Credential");
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch (UserNotActivateException e)
+            {
+                _logger.LogError(e, "User not activated");
+                var res = new ResponseDto(StatusCodes.Status403Forbidden, "User not activated");
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }
             catch (UnableToDoActionException e)
@@ -49,6 +55,7 @@ namespace api.Controllers.User
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }
         }
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(GetUserRegisterDto getUserRegisterDto)

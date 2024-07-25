@@ -3,7 +3,7 @@
 namespace api.Exceptions
 {
     [Serializable]
-    internal class InvalidPasswordException : Exception
+    public class InvalidPasswordException : Exception
     {
         public InvalidPasswordException()
         {

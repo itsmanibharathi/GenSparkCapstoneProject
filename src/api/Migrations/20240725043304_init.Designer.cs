@@ -12,7 +12,7 @@ using api.Contexts;
 namespace api.Migrations
 {
     [DbContext(typeof(DbSql))]
-    [Migration("20240724112842_init")]
+    [Migration("20240725043304_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace api.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
+
+                    b.Property<string>("ActivationToken")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -53,9 +56,6 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserProfileImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VerificationToken")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");

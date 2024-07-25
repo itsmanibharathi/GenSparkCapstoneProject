@@ -10,9 +10,9 @@ namespace api.Models
         public string UserEmail { get; set; }
         public string? UserPhoneNumber { get; set; }
         public string? UserProfileImageUrl { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = false;
+        public string? ActivationToken { get; set; }
         public bool IsVerified { get; set; } = false;
-        public string? VerificationToken { get; set; }
         public string? TeneantVerificationCode { get; set; }
         // Navigation property
         //public ICollection<Property>? PropertiesOwned { get; set; }
