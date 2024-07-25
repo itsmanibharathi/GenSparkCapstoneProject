@@ -1,53 +1,41 @@
 import $ from 'jquery';
 import Page404 from '../components/404.html';
-import loadMain from '../modules/main/index.js';
-import loadCustomer from '../modules/customer/index.js';
-import loadRestaurant from '../modules/restaurant/index.js';
-import loadEmployee from '../modules/employee/index.js';
+import log from '../utility/loglevel.js';
+import Footer from '../components/Footer.html';
+import headerTemplate from '../components/headerTemplate.js';
 
-import loadComponent from '../Services/loadComponent.js';
+import apiService from './apiService.js';
+import jwtService from './jwtService.js';
+import localStorageService from './localStorageService.js';
+import showAlert from './alertService.js';
 
-const routes = {
-    '/': loadMain,
-    '/customer': loadCustomer,
-    '/customer/orders': loadCustomer,
-    '/customer/auth': loadCustomer,
-    '/customer/logout': loadCustomer,
-    '/customer/address': loadCustomer,
-    '/restaurant': loadRestaurant,
-    '/restaurant/orders': loadRestaurant,
-    '/restaurant/orders/all': loadRestaurant,
-    '/restaurant/product': loadRestaurant,
-    '/restaurant/auth': loadRestaurant,
-    '/restaurant/logout': loadRestaurant,
-    '/employee': loadEmployee,
-    '/employee/orders/search': loadEmployee,
-    '/employee/orders': loadEmployee,
-    '/employee/orders/all': loadEmployee,
-    '/employee/auth': loadEmployee,
-    '/employee/logout': loadEmployee,
-};
+import loadComponent from './loadComponent.js';
+
+import { HomePage, loadHomeCallback } from '../modules/Home/home.js';
+
+const token = new jwtService('User');
+const localStorage = new localStorageService('User');
+const api = new apiService(process.env.API_URL, token.get());
+
+const routes = [
+    { path: '/', component: HomePage, callback: loadHomeCallback },
+]
 
 const loadRoutes = () => {
-    const base = (process.env.BASE_PATH || '').toLowerCase();
     let path = window.location.pathname.toLowerCase();
-
-    // Remove base path if present
-    if (base && path.startsWith(base)) {
-        path = path.slice(base.length);
-    }
-
     path = path === '/' ? '/' : path.replace(/\/$/, '');
-
-    const hash = window.location.hash.toLowerCase();
-    if (hash && hash !== '#/') {
-        path = hash.replace('#', '');
+    const route = routes.find(r => r.path === path);
+    console.log("path", path, "router", route);
+    if (route) {
+        $('#404').html("");
+        $('#header-placeholder').html(headerTemplate(token));
+        loadComponent('#footer-placeholder', Footer);
+        loadComponent('#body-placeholder', route.component, route.callback);
     }
-
-    if (routes[path]) {
-        routes[path](path);
-    } else {
-        loadComponent("#root", Page404);
+    else {
+        loadComponent("#404", Page404);
+        $('#header-placeholder').html("");
+        $('#body-placeholder').html("");
     }
 };
 
