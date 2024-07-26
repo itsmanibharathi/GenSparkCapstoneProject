@@ -39,14 +39,10 @@ jobs:
 
       - name: 'Build and push Docker client image'
         run: |
-          docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest \
-                       --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:${{ env.VERSION }} ./client
+          docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest ./client
           docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest
-          docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:${{ env.VERSION }}
-
+          
       - name: 'Build and push Docker api image'
         run: |
-          docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectbackend:latest \
-                       --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectbackend:${{ env.VERSION }} ./api
-          docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectbackend:latest
-          docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectbackend:${{ env.VERSION }}
+          docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectapi:latest ./api
+          docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectapi:latest
