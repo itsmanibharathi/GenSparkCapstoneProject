@@ -30,4 +30,5 @@ jobs:
 
     - name: Build and push frontend image
       run: |
-        docker buildx build --platform linux/amd64 -t ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest . --push
+        docker build . --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest
+        docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest
