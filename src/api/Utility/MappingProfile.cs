@@ -12,7 +12,7 @@ namespace api.Utility
             CreateMap<UserAuth, ReturnUserLoginDto>();
 
             CreateMap<GetUserRegisterDto, User>();
-            CreateMap<UserAuth, ReturnUserRegisterDto>();
+            CreateMap<User, ReturnUserRegisterDto>();
 
             CreateMap<GetUserEditDto, User>();
             CreateMap<User, ReturnUserDto>();

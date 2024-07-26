@@ -1,4 +1,4 @@
-import $, { data } from 'jquery';
+import $ from 'jquery';
 import profilePage from './profile.html';
 import UploadProfile from '../../../public/assets/Image/uploadprofile.jpg';
 import log from '../../utility/loglevel.js';
@@ -48,7 +48,7 @@ const loadProfileCallback = (api, token) => {
                 formData.append('profileimage', fileInput.files[0]);
             }
 
-            data = {};
+            var data = {};
             for (const [key, value] of formData.entries()) {
                 log.debug(`${key}: ${value}`);
                 data[key] = value;

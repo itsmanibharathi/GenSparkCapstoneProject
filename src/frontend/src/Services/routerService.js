@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Page404 from '../components/404.html';
 import log from '../utility/loglevel.js';
-import Footer from '../components/Footer.html';
+import Footer from '../components/footer.html';
 import headerTemplate from '../components/headerTemplate.js';
 
 import apiService from './apiService.js';
@@ -14,7 +14,7 @@ import loadComponent from './loadComponent.js';
 import { homePage, loadHomeCallback } from '../modules/Home/home.js';
 import { authPage, loadAuthCallback } from '../modules/Auth/auth.js';
 import { postPropertyPage, loadPostPropertyCallback } from '../modules/PostProperty/postProperty.js';
-import { profilePage, loadProfileCallback } from '../modules/profile/profile.js';
+import { profilePage, loadProfileCallback } from '../modules/Profile/profile.js';
 import { verificationPage, loadVerificationCallback } from '../modules/Verification/verification.js';
 
 
