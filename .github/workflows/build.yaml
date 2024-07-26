@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
         run:
-          working-directory: ./src/client/
+          working-directory: ./src/frontend/
 
     steps:
     - name: Checkout code
@@ -28,6 +28,6 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and push client image
+    - name: Build and push frontend image
       run: |
-        docker buildx build --platform linux/amd64 -t ghcr.io/itsmanibharathi/gensparkcapstoneprojectclient:latest . --push
+        docker buildx build --platform linux/amd64 -t ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest . --push
