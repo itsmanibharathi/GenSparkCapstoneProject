@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
         run:
-          working-directory: ./src/api/
+          working-directory: ./src/client/
 
     steps:
     - name: Checkout code
@@ -30,4 +30,4 @@ jobs:
 
     - name: Build and push client image
       run: |
-        docker buildx build --platform linux/amd64 -t ghcr.io/itsmanibharathi/gensparkcapstoneprojectapi:latest . --push
+        docker buildx build --platform linux/amd64 -t ghcr.io/itsmanibharathi/gensparkcapstoneprojectclient:latest . --push
