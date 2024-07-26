@@ -13,14 +13,14 @@ namespace api.Services
         private readonly IUserAuthRepository _userAuthRepository;
         private readonly ITokenService<User> _userAuthTokenService;
         private readonly IPasswordHashService _passwordHashService;
-        private readonly IMailService _mailService;
+        private readonly IAzureMailService _mailService;
         private readonly IMapper _mapper;
 
         public UserAuthService(
             IUserAuthRepository userAuthRepository,
             ITokenService<User> tokenService,
             IPasswordHashService passwordHashService,
-            IMailService mailService,
+            IAzureMailService mailService,
             IMapper mapper) 
         {
             _userAuthRepository = userAuthRepository;

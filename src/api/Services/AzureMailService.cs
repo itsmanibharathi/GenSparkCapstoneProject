@@ -7,9 +7,9 @@ using Azure.Communication.Email;
 
 namespace api.Services
 {
-    public class MailService : IMailService
+    public class AzureMailService : IAzureMailService
     {
-        public MailService()
+        public AzureMailService()
         {
 
         }

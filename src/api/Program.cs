@@ -13,6 +13,8 @@ using api.Repositories;
 using api.Services.Interfaces;
 using api.Services;
 using api.Models;
+using API.Services;
+using api.Exceptions;
 
 namespace api
 {
@@ -89,7 +91,7 @@ namespace api
             var userSecret = Environment.GetEnvironmentVariable("JWT_USER_SECRET") ?? "temp";
             
             builder.Services.AddAuthentication()
-                .AddJwtBearer("CustomerScheme", options =>
+                .AddJwtBearer("UserScheme", options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -102,7 +104,11 @@ namespace api
 
             builder.Services.AddAuthorization(options =>
             {
-
+                options.AddPolicy("UserPolicy", policy =>
+                {
+                    policy.AuthenticationSchemes.Add("UserScheme");
+                    policy.RequireAuthenticatedUser();
+                });
             });
 
             #endregion
@@ -111,7 +117,7 @@ namespace api
             var connectionString = Environment.GetEnvironmentVariable("SQL_SERVER_CONNECTION_STRING");
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new Exception("SQL_SERVER_CONNECTION_STRIN environment variable not set.");
+                throw new EnvironmentVariableUndefinedException("SQL_SERVER_CONNECTION_STRING");
             }
             builder.Services.AddDbContext<DbSql>(options => options.UseSqlServer(connectionString));
             #endregion
@@ -123,7 +129,8 @@ namespace api
 
             #region Services
             builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
-            builder.Services.AddScoped<IMailService, MailService>();
+            builder.Services.AddScoped<IAzureMailService, AzureMailService>();
+            builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
             builder.Services.AddScoped<ITokenService<User>, UserTokenService>();
             builder.Services.AddScoped<IUserAuthService, UserAuthService>();
 

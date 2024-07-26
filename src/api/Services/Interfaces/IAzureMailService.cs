@@ -1,6 +1,6 @@
 ﻿namespace api.Services.Interfaces
 {
-    public interface IMailService
+    public interface IAzureMailService
     {
         public Task<bool> Send(string to, string subject, string body);
     }

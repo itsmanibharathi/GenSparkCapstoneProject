@@ -14,6 +14,8 @@ namespace api.Models
         public string? ActivationToken { get; set; }
         public bool IsVerified { get; set; } = false;
         public string? TeneantVerificationCode { get; set; }
+        public DateTime CreateAt { get; set; } = DateTime.Now;
+        public DateTime? UpdateAt { get; set; }
         // Navigation property
         //public ICollection<Property>? PropertiesOwned { get; set; }
         public UserAuth UserAuth { get; internal set; }

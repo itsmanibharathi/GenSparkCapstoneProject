@@ -13,6 +13,9 @@ namespace api.Utility
 
             CreateMap<GetUserRegisterDto, User>();
             CreateMap<UserAuth, ReturnUserRegisterDto>();
+
+            CreateMap<GetUserEditDto, User>();
+            CreateMap<User, ReturnUserDto>();
         }
     }
 }
