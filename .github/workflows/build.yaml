@@ -30,4 +30,4 @@ jobs:
 
     - name: Build and push client image
       run: |
-        docker buildx build --platform linux/amd64 -t ghcr.io/${{ github.repository }}/GenSparkCapstoneProjectApi:latest . --push
+        docker buildx build --platform linux/amd64 -t ghcr.io/${{ github.repository }}/api:latest . --push
