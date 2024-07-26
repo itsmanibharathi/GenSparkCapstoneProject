@@ -37,9 +37,9 @@ jobs:
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-      - name: 'Build and push Docker client image'
+      - name: 'Build and push Docker frontend image'
         run: |
-          docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest ./client
+          docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest ./frontend
           docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest
           
       - name: 'Build and push Docker api image'
