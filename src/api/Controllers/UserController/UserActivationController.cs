@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers.UserController
 {
-    [Route("/api/user/activate")]
+    [Route("user/activate")]
     [ApiController]
     public class UserActivationController : ControllerBase
     {

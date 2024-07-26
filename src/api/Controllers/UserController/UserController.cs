@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace api.Controllers.UserController
 {
     [Authorize(Policy = "UserPolicy")]
-    [Route("api/user")]
+    [Route("user")]
     [ApiController]
     public class UserController : ControllerBase
     {
