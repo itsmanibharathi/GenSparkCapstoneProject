@@ -1,14 +1,10 @@
-﻿namespace api.Models
+﻿namespace api.Models.Dtos.PropertyAmenityDtos
 {
-    public class Amenity
+    public class GetPropertyAmenityDto
     {
-        public int AmenityId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsPaid { get; set; }
         public int PropertyId { get; set; }
-        
-        // Navigation property
-        public Property? Property { get; set; }
     }
 }

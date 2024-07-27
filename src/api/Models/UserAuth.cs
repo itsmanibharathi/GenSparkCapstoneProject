@@ -6,6 +6,7 @@
         public string Password { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
+        // Navigation property
         public User User { get; set; }
     }
 }

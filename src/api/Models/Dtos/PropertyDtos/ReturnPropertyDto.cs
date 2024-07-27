@@ -1,9 +1,8 @@
 ﻿using api.Models.Enums;
-using System;
 
-namespace api.Models
+namespace api.Models.Dtos.PropertyDtos
 {
-    public class Property
+    public class ReturnPropertyDto
     {
         public int PropertyId { get; set; }
         public string Title { get; set; }
@@ -21,14 +20,8 @@ namespace api.Models
         public PropertyType Type { get; set; }
         public int UserId { get; set; }
         public PropertyStatus Status { get; set; }
-        public DateTime CreateAt { get; set; } = DateTime.Now;
-        public DateTime? UpdateAt { get; set; }
 
-        // Navigation properties
-        public User? User { get; set; }
-        public IEnumerable<PropertyAmenity>? Amenities { get; set; }
-        public IEnumerable<PropertyMediaFile>? MediaFiles { get; set; }
-        public PropertyHome? Home { get; set; }
-        public PropertyLand? Land { get; set; }
+        public DateTime CreateAt { get; set; } 
+        public DateTime? UpdateAt { get; set; }
     }
 }

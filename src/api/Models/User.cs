@@ -16,8 +16,9 @@ namespace api.Models
         public string? TeneantVerificationCode { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
+
         // Navigation property
-        //public ICollection<Property>? PropertiesOwned { get; set; }
+        public ICollection<Property>? Property { get; set; }
         public UserAuth UserAuth { get; internal set; }
     }
 }

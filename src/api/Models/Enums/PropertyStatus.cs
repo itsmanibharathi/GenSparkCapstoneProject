@@ -5,6 +5,7 @@
         Active,
         Inactive,
         Sold,
-        Rented
+        Rented,
+        Transfered
     }
 }
