@@ -76,11 +76,11 @@ namespace api.Services
                     string imageUrl;
                     if (user.UserProfileImageUrl != null)
                     {
-                        imageUrl = await _azureBlobStorageService.UpdateImageAsync($"{user.UserId}", user.UserProfileImageUrl, userEditDto.Profileimage);
+                        imageUrl = await _azureBlobStorageService.UpdateFileAsync($"{user.UserId}", user.UserProfileImageUrl, userEditDto.Profileimage);
                     }
                     else
                     {
-                        imageUrl = await _azureBlobStorageService.UploadImageAsync("user-profile-images", userEditDto.Profileimage.FileName, userEditDto.Profileimage);
+                        imageUrl = await _azureBlobStorageService.UploadFileAsync("user-profile-images", userEditDto.Profileimage.FileName, userEditDto.Profileimage);
                     }
                     user.UserProfileImageUrl = imageUrl;
                 }

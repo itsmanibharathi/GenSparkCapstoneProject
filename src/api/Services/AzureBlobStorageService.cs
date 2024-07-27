@@ -17,7 +17,7 @@ namespace API.Services
         {
         }
 
-        public async Task<string> UploadImageAsync(string containerName, string blobName, IFormFile file)
+        public async Task<string> UploadFileAsync(string containerName, string blobName, IFormFile file)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace API.Services
             }
         }
 
-        public async Task<string> UpdateImageAsync(string containerName, string blobName, IFormFile file)
+        public async Task<string> UpdateFileAsync(string containerName, string blobName, IFormFile file)
         {
             try
             {
@@ -70,6 +70,27 @@ namespace API.Services
             catch (Exception ex)
             {
                 throw new UnableToDoActionException("Unable to upload image", ex);
+            }
+        }
+
+        public async Task<bool> DeleteFileAsync(string containerName, string blobName)
+        {
+            try
+            {
+                string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING") ?? throw new EnvironmentVariableUndefinedException("AZURE_STORAGE_CONNECTION_STRING");
+                BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+
+                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+                BlobClient blobClient = containerClient.GetBlobClient(blobName);
+                return await blobClient.DeleteIfExistsAsync();
+            }
+            catch (EnvironmentVariableUndefinedException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToDoActionException("Unable to delete image", ex);
             }
         }
     }
