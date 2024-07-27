@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers.UserController
+namespace api.Controllers.UserControllers
 {
     [Authorize(Policy = "UserPolicy")]
     [Route("user")]
