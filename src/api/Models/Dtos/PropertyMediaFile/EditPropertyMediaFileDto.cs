@@ -2,7 +2,7 @@
 
 namespace api.Models.Dtos.PropertyMediaFile
 {
-    public class GetPropertyMediaFileDto
+    public class EditPropertyMediaFileDto
     {
         public int MediaFileId { get; set; }
         public string? Title { get; set; }

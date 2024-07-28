@@ -1,6 +1,6 @@
 ﻿namespace api.Models.Dtos.PropertyAmenityDtos
 {
-    public class GetPropertyAmenityDto
+    public class EditPropertyAmenityDto
     {
         public string Name { get; set; }
         public string Description { get; set; }

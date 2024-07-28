@@ -6,7 +6,7 @@
     public enum PropertyType
     {
         Rent,
-        Sale,
+        Buy,
         Lease
     }
 }

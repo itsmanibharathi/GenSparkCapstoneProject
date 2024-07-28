@@ -15,12 +15,12 @@ namespace api.Models
         public string? State { get; set; }
         public string? Country { get; set; }
         public string? ZipCode { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
+        public string? Latitude { get; set; }
+        public string? Longitude { get; set; }
         public PropertyCategory Category { get; set; }
         public PropertyType Type { get; set; }
         public int UserId { get; set; }
-        public PropertyStatus Status { get; set; }
+        public PropertyStatus? Status { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
 

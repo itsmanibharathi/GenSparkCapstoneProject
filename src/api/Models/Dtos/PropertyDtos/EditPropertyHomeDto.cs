@@ -2,7 +2,7 @@
 
 namespace api.Models.Dtos.PropertyDtos
 {
-    public class GetPropertyHomeDto
+    public class EditPropertyHomeDto
     {
         public int PropertyId { get; set; }
         public double Area { get; set; }

@@ -1,10 +1,9 @@
 ﻿using api.Models.Dtos.PropertyAmenityDtos;
-using api.Models.Dtos.PropertyMediaFile;
 using api.Models.Enums;
 
 namespace api.Models.Dtos.PropertyDtos
 {
-    public class ReturnPropertyDto
+    public class EditPropertyDto
     {
         public int PropertyId { get; set; }
         public string Title { get; set; }
@@ -22,11 +21,14 @@ namespace api.Models.Dtos.PropertyDtos
         public PropertyType Type { get; set; }
         public int UserId { get; set; }
         public PropertyStatus? Status { get; set; }
-        public DateTime CreateAt { get; set; }
+        public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
-        public IEnumerable<ReturnPropertyAmenityDto>? Amenities { get; set; }
-        public IEnumerable<ReturnPropertyMediaFileDto>? MediaFiles { get; set; }
-        public ReturnPropertyHomeDto? Home { get; set; }
-        public ReturnPropertyLandDto? Land { get; set; }
+
+        // Navigation properties
+        public User? User { get; set; }
+        public IEnumerable<EditPropertyAmenityDto>? Amenities { get; set; }
+        public IEnumerable<EditPropertyAmenityDto>? MediaFiles { get; set; }
+        public EditPropertyHomeDto? Home { get; set; }
+        public EditPropertyLandDto? Land { get; set; }
     }
 }
