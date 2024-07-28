@@ -5,6 +5,6 @@ namespace api.Services.Interfaces
     public interface IPropertyService
     {
         public Task<ReturnPropertyDto> GetAsync(int id);
-        public Task<ReturnPropertyDto> CreateAsync(GetPropertyDto getProperityDto);
+        public Task<ReturnPropertyDto> CreateAsync(CreatePropertyDto getProperityDto);
     }
 }

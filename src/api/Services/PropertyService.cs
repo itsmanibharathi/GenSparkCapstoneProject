@@ -17,7 +17,7 @@ namespace api.Services
             _propertyRepository = propertyRepository;
             _mapper = mapper;
         }
-        public async Task<ReturnPropertyDto> CreateAsync(GetPropertyDto getProperityDto)
+        public async Task<ReturnPropertyDto> CreateAsync(CreatePropertyDto getProperityDto)
         {
             try
             {

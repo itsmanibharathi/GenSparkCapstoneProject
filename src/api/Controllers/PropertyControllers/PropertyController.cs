@@ -3,6 +3,7 @@ using api.Models;
 using api.Models.Dtos.PropertyDtos;
 using api.Models.Dtos.ResponseDtos;
 using api.Services.Interfaces;
+using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,20 +11,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace api.Controllers.PropertyControllers
 {
     [Authorize(Policy = "UserPolicy")]
-    [Route("api/Property")]
+    [Route("Property")]
     [ApiController]
     public class PropertyController : ControllerBase
     {
         private readonly IPropertyService _propertyService;
         private readonly ILogger<PropertyController> _logger;
 
-        public PropertyController(IPropertyService propertyService, ILogger<PropertyController> logger )
+        public PropertyController(IPropertyService propertyService,
+            ILogger<PropertyController> logger )
         {
             _propertyService = propertyService;
+           
             _logger = logger;
         }
 
+        
+
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Response<ReturnPropertyDto>) , StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseDto), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProperty(int id)
         {
             try
@@ -47,10 +54,11 @@ namespace api.Controllers.PropertyControllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> CreateProperty(GetPropertyDto getPropertyDto)
+        public async Task<IActionResult> CreateProperty(CreatePropertyDto getPropertyDto)
         {
             try
             {
+                getPropertyDto.UserId = int.Parse(User.FindFirst("Id").Value);
                 var result = await _propertyService.CreateAsync(getPropertyDto);
                 var res = new ResponseDto<ReturnPropertyDto>(StatusCodes.Status201Created, "Property created successfully", result);
                 return StatusCode(statusCode: res.StatusCode, value: res);
@@ -74,5 +82,9 @@ namespace api.Controllers.PropertyControllers
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }
         }
+
+
+       
+
     }
 }

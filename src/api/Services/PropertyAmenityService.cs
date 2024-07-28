@@ -17,28 +17,6 @@ namespace api.Services
             _propertyAmenityRepository = propertyAmenityRepository;
             _mapper = mapper;
         }
-
-        public async Task<ReturnPropertyAmenityDto> CreatePropertyAmenityAsync(GetPropertyAmenityDto getPropertyAmenityDto)
-        {
-            try
-            {
-                var propertyAmenity = _mapper.Map<PropertyAmenity>(getPropertyAmenityDto);
-                propertyAmenity = await _propertyAmenityRepository.AddAsync(propertyAmenity);
-                return _mapper.Map<ReturnPropertyAmenityDto>(propertyAmenity);
-            }
-            catch (EntityAlreadyExistsException<PropertyAmenity>)
-            {
-                throw;
-            }
-            catch (UnableToDoActionException)
-            {
-                throw;
-            }
-            catch (Exception)
-            {
-                throw new UnableToDoActionException("Unable to create Property Amenity. Please try again later.");
-            }
-        }
         public async Task<bool> DeletePropertyAmenityAsync(int id)
         {
             try
