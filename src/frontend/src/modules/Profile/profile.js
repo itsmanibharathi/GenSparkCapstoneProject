@@ -4,7 +4,7 @@ import UploadProfile from '../../../public/assets/Image/uploadprofile.jpg';
 import log from '../../utility/loglevel.js';
 import showAlert from '../../Services/alertService.js';
 
-const loadProfileCallback = (api, token) => {
+const loadProfileCallback = (query, api, token) => {
     console.log('Profile Callback');
     $(document).ready(() => {
         var users = {

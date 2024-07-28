@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import homePage from './home.html';
 
-const loadHomeCallback = (api, token) => {
+const loadHomeCallback = (query, api, token) => {
     console.log('Home Callback');
 }
 
