@@ -97,3 +97,16 @@
 .cancelled{
     @apply bg-red-600 text-white;
 }
+
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+.required{
+    @apply after:content-['*'] after:text-red-500 after:font-bold ;
+}
