@@ -1,13 +1,15 @@
-import $ from 'jquery';
+import $, { get } from 'jquery';
 import editPropertyPage from './editProperty.html';
 import showAlert from '../../Services/alertService.js';
 import log from '../../utility/loglevel.js';
+import loadRoutes from '../../Services/routerService.js';
 
-const loadEditPropertyCallback = (query, api, token) => {
+const loadEditPropertyCallback = async (query, api, token) => {
     log.info('Loading Edit Property Callback');
     let currentStep = 1;
     const totalSteps = 4;
     function showStep(step) {
+        log.info('form data', gatherFormData());
         $('.step').removeClass('active');
         $(`.step:nth-of-type(${step})`).addClass('active');
         $('#currentStep').text(step);
@@ -30,39 +32,13 @@ const loadEditPropertyCallback = (query, api, token) => {
         }
     }
 
-    // $('#nextBtn').click(function () {
-    //     if (currentStep < totalSteps) {
-    //         currentStep++;
-    //         showStep(currentStep);
-    //     }
-    //     toggleButtons();
-    // });
-
-    // $('#prevBtn').click(function () {
-    //     if (currentStep > 1) {
-    //         currentStep--;
-    //         showStep(currentStep);
-    //     }
-    //     toggleButtons();
-    // });
-
-    //     <div class="flex flex-row justify-between flex-grow md:justify-end gap-2">
-    //     <button type="button" class="prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded "
-    //         onclick="prevStep()">
-    //         Previous
-    //     </button>
-    //     <button type="button" class="nextBtn bg-blue-500 text-white px-4 py-2 rounded self-end ml-auto"
-    //         onclick="nextStep()">
-    //         Next
-    //     </button>
-    //     <button type="submit" class="submitBtn hidden bg-green-500 text-white px-6 py-2 rounded mt-4"
-    //         id="submitBtn">Submit</button>
-    // </div>
     function toggleButtons() {
         if (currentStep === 1) {
             $('.prevBtn').addClass('hidden');
+            $('.nextBtn').addClass('ml-auto');
         } else {
             $('.prevBtn').removeClass('hidden');
+            $('.nextBtn').removeClass('ml-auto');
         }
 
         if (currentStep === totalSteps) {
@@ -75,6 +51,7 @@ const loadEditPropertyCallback = (query, api, token) => {
     }
 
     $('#category').change(function () {
+
         const selectedCategory = $(this).val();
         let detailsHtml = '';
 
@@ -133,7 +110,66 @@ const loadEditPropertyCallback = (query, api, token) => {
         $('#categoryDetails').html(detailsHtml);
     });
 
+    $(document).on('click', '#add-amenity', function () {
+        const amenityHtml = `
+            <div class="flex space-x-4 mb-2">
+                <input type="text" name="amenityName" placeholder="Amenity Name" class="px-3 py-2 border rounded flex-grow">
+                <input type="text" name="amenityDescription" placeholder="Amenity Description" class="px-3 py-2 border rounded flex-grow">
+                <label class="inline-flex items-center space-x-2">
+                    <input type="checkbox" name="isPaid" class="form-checkbox">
+                    <span>Is Paid</span>
+                </label>
+                <button type="button" class="remove-amenity bg-red-500 text-white px-3 py-2 rounded">Remove</button>
+            </div>
+        `;
+        $('#amenities').append(amenityHtml);
+    });
+
+    $(document).on('click', '.remove-amenity', function () {
+        $(this).parent().remove();
+    });
+
+    $(document).on('click', '#add-media', function () {
+        const mediaHtml = `
+        <div class="flex space-x-4 mb-2">
+            <input type="text" name="mediaTitle" placeholder="Media Title" class="px-3 py-2 border rounded flex-grow">
+            <select name="mediaType" class="px-3 py-2 border rounded flex-grow">
+                <option value="Image">Image</option>
+                <option value="Video">Video</option>
+            </select>
+            <form class="image-form" action="${process.env.API_URL}/media" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" class="px-3 py-2 border rounded flex-grow">
+            </form>
+            <input type="hidden" name="mediaUrl" class="px-3 py-2 border rounded flex-grow">
+            <span class="file-url"></span>
+            <button type="button" class="remove-media bg-red-500 text-white px-3 py-2 rounded">Remove</button>
+        </div>
+    `;
+        $('#mediaFiles').append(mediaHtml);
+    });
+
+    $(document).on('click', '.remove-media', function () {
+        $(this).parent().remove();
+    });
+
+    $(".image-form").on('change', 'input[type="file"]', async function (event) {
+        event.preventDefault();
+        const formdata = new FormData($(this)[0]);
+        console.log(formdata);
+
+        var response = await fetch(process.env.API_URL + '/media', {
+            method: 'POST',
+            body: formdata
+        });
+        console.log(response);
+    });
+
+
+
     function loadFormData(data) {
+        if (!data) {
+            loadRoutes('/');
+        }
         $('#propertyId').val(data.propertyId);
         $('#title').val(data.title);
         $('#description').val(data.description);
@@ -153,111 +189,148 @@ const loadEditPropertyCallback = (query, api, token) => {
 
         if (data.category === 'Home') {
             $('#category').change();
-            $('#area').val(data.home.area);
-            $('#numberOfBedrooms').val(data.home.numberOfBedrooms);
-            $('#numberOfBathrooms').val(data.home.numberOfBathrooms);
-            $('#yearBuilt').val(data.home.yearBuilt);
-            $('#furnishingStatus').val(data.home.furnishingStatus);
-            $('#floorNumber').val(data.home.floorNumber);
+            $('#area').val(data.home?.area ?? '');
+            $('#numberOfBedrooms').val(data.home?.numberOfBedrooms ?? '');
+            $('#numberOfBathrooms').val(data.home?.numberOfBathrooms ?? '');
+            $('#yearBuilt').val(data.home?.yearBuilt ?? '');
+            $('#furnishingStatus').val(data.home?.furnishingStatus ?? '');
+            $('#floorNumber').val(data.home?.floorNumber ?? '');
         } else if (data.category === 'Land') {
             $('#category').change();
-            $('#landArea').val(data.land.landArea);
-            $('#zoningInformation').val(data.land.zoningInformation);
-            $('#landType').val(data.land.landType);
+            $('#landArea').val(data.land?.landArea ?? '');
+            $('#zoningInformation').val(data.land?.zoningInformation ?? '');
+            $('#landType').val(data.land?.landType ?? '');
         }
 
-        data.amenities.forEach(amenity => {
-            const amenityHtml = `
-                        <div class="flex space-x-4 mb-2">
-                            <input type="text" name="amenityName" value="${amenity.name}" placeholder="Amenity Name" class="px-3 py-2 border rounded flex-grow">
-                            <input type="text" name="amenityDescription" value="${amenity.description}" placeholder="Amenity Description" class="px-3 py-2 border rounded flex-grow">
-                            <label class="inline-flex items-center space-x-2">
-                                <input type="checkbox" name="isPaid" class="form-checkbox" ${amenity.isPaid ? 'checked' : ''}>
-                                <span>Is Paid</span>
-                            </label>
-                            <button type="button" class="remove-amenity bg-red-500 text-white px-3 py-2 rounded">Remove</button>
-                        </div>
-                    `;
-            $('#amenities').append(amenityHtml);
-        });
+        $('#amenities').empty();
+        try {
+            data.amenities.forEach(amenity => {
+                const amenityHtml = `
+                    <div class="flex space-x-4 mb-2">
+                        <input type="text" name="amenityName" value="${amenity.name}" placeholder="Amenity Name" class="px-3 py-2 border rounded flex-grow">
+                        <input type="text" name="amenityDescription" value="${amenity.description}" placeholder="Amenity Description" class="px-3 py-2 border rounded flex-grow">
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="checkbox" name="isPaid" class="form-checkbox" ${amenity.isPaid ? 'checked' : ''}>
+                            <span>Is Paid</span>
+                        </label>
+                        <button type="button" class="remove-amenity bg-red-500 text-white px-3 py-2 rounded">Remove</button>
+                    </div>
+                `;
+                $('#amenities').append(amenityHtml);
+            });
+        }
+        catch (e) {
+            log.error(e);
+        }
 
-        data.mediaFiles.forEach(media => {
-            const mediaHtml = `
-                        <div class="flex space-x-4 mb-2">
-                            <input type="text" name="mediaTitle" value="${media.title}" placeholder="Media Title" class="px-3 py-2 border rounded flex-grow">
-                            <select name="mediaType" class="px-3 py-2 border rounded flex-grow">
-                                <option value="Image" ${media.type === 'Image' ? 'selected' : ''}>Image</option>
-                                <option value="Video" ${media.type === 'Video' ? 'selected' : ''}>Video</option>
-                            </select>
-                            <input type="file" name="file" class="px-3 py-2 border rounded flex-grow">
-                            <button type="button" class="remove-media bg-red-500 text-white px-3 py-2 rounded">Remove</button>
-                        </div>
-                    `;
-            $('#mediaFiles').append(mediaHtml);
-        });
+        $('#mediaFiles').empty();
+        try {
+
+
+
+            data.mediaFiles.forEach(media => {
+                const mediaHtml = `
+                <div class="flex space-x-4 mb-2">
+                <input type="text" name="mediaTitle" value="${media.title}" placeholder="Media Title" class="px-3 py-2 border rounded flex-grow">
+                <select name="mediaType" class="px-3 py-2 border rounded flex-grow">
+                <option value="Image" ${media.type === 'Image' ? 'selected' : ''}>Image</option>
+                <option value="Video" ${media.type === 'Video' ? 'selected' : ''}>Video</option>
+                </select>
+                <form class="image-form" action="${process.env.API_URL}/media" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" class="px-3 py-2 border rounded flex-grow">
+                </form>
+                <input type="hidden" name="mediaUrl" value="${media.url}" class="px-3 py-2 border rounded flex-grow">
+                <span class="file-url">${media.url}</span>
+                <button type="button" class="remove-media bg-red-500 text-white px-3 py-2 rounded">Remove</button>
+                </div>
+                `;
+                $('#mediaFiles').append(mediaHtml);
+            });
+        }
+        catch (e) {
+            log.error(e);
+        }
     }
 
-    const propertyData = {
-        "propertyId": 0,
-        "title": "Sample Property",
-        "description": "This is a sample property description.",
-        "price": 500000,
-        "landmark": "Near Central Park",
-        "street": "123 Main St",
-        "city": "Sample City",
-        "state": "Sample State",
-        "country": "Sample Country",
-        "zipCode": "12345",
-        "latitude": "40.7128",
-        "longitude": "-74.0060",
-        "category": "Home",
-        "type": "Rent",
-        "userId": 1,
-        "status": "Active",
-        "createAt": "2024-07-28T15:29:48.193Z",
-        "updateAt": "2024-07-28T15:29:48.193Z",
-        "amenities": [
-            {
-                "amenityId": 0,
-                "name": "Gym",
-                "description": "Well-equipped gym",
-                "isPaid": true,
-                "propertyId": 0,
-                "createAt": "2024-07-28T15:29:48.193Z",
-                "updateAt": "2024-07-28T15:29:48.193Z"
-            }
-        ],
-        "mediaFiles": [
-            {
-                "mediaFileId": 0,
-                "title": "Property Front View",
-                "type": "Image",
-                "url": "https://example.com/front-view.jpg",
-                "propertyId": 0,
-                "createAt": "2024-07-28T15:29:48.193Z",
-                "updateAt": "2024-07-28T15:29:48.193Z"
-            }
-        ],
-        "home": {
-            "propertyId": 0,
-            "area": 1200,
-            "numberOfBedrooms": 3,
-            "numberOfBathrooms": 2,
-            "yearBuilt": 2015,
-            "furnishingStatus": "Furnished",
-            "floorNumber": 1,
-            "createAt": "2024-07-28T15:29:48.193Z",
-            "updateAt": "2024-07-28T15:29:48.193Z"
-        },
-        "land": null
-    };
 
-    loadFormData(propertyData);
 
-    $('#propertyForm').submit(function (event) {
+    function gatherFormData() {
+        const propertyData = {
+            propertyId: $('#propertyId').val(),
+            title: $('#title').val(),
+            description: $('#description').val(),
+            price: $('#price').val(),
+            landmark: $('#landmark').val(),
+            street: $('#street').val(),
+            city: $('#city').val(),
+            state: $('#state').val(),
+            country: $('#country').val(),
+            zipCode: $('#zipCode').val(),
+            latitude: $('#latitude').val(),
+            longitude: $('#longitude').val(),
+            category: $('#category').val(),
+            type: $('#type').val(),
+            userId: $('#userId').val(),
+            status: $('#status').val(),
+            amenities: [],
+            mediaFiles: []
+        };
+
+        // Gather amenities data
+        $('#amenities > div').each(function () {
+            const amenity = {
+                name: $(this).find('input[name="amenityName"]').val(),
+                description: $(this).find('input[name="amenityDescription"]').val(),
+                isPaid: $(this).find('input[name="isPaid"]').is(':checked')
+
+            };
+            propertyData.amenities.push(amenity);
+        });
+
+        // Gather media files data
+        $('#mediaFiles > div').each(function () {
+            const media = {
+                title: $(this).find('input[name="mediaTitle"]').val(),
+                type: $(this).find('select[name="mediaType"]').val(),
+                url: $(this).find('input[name="mediaUrl"]').val()
+                // Assuming you handle file uploads separately
+            };
+            propertyData.mediaFiles.push(media);
+        });
+
+        return propertyData;
+    }
+
+    const getFormData = async (query) => {
+        if (!query.propertyId) {
+            return null;
+        }
+        return await api.get(`property/${query.propertyId}`)
+            .then(res => {
+                console.log("dataaa", res.data);
+                return res.data;
+            }).catch(err => {
+                log.error(err);
+                showAlert(err.message, 'error');
+                return null;
+            });
+    }
+    loadFormData(await getFormData(query));
+
+
+    $('#propertyForm').submit(async function (event) {
         event.preventDefault();
-        const formData = $(this).serializeArray();
-        console.log(formData);
+        var data = gatherFormData();
+        console.log(data);
+        await api.put('property', data)
+            .then((res) => {
+                log.info(res);
+                showAlert(res.message, 'success');
+            })
+            .catch((err) => {
+                log.error(err);
+                showAlert(err.message, 'error');
+            });
 
         // Simulate form submission
         alert('Form submitted successfully!');

@@ -36,20 +36,27 @@ const routes = [
 
 
 const loadRoutes = (path, query) => {
-    path = path || window.location.pathname.toLowerCase();
-    path = path === '/' ? '/' : path.replace(/\/$/, '');
+    if (path) {
+        log.info('path:', path);
+        const newUrl = new URL(window.location.href);
+        newUrl.pathname = path;
+        newUrl.search = '';
+        window.history.pushState({}, '', newUrl.href)
+    }
+    else {
+        path = window.location.pathname.toLowerCase();
+        path = path === '/' ? '/' : path.replace(/\/$/, '');
+
+        query = window.location.search;
+        query = query === '' ? '' : query.replace(/^\?/, '');
+        query = query === '' ? '' : query.split('&').reduce((acc, item) => {
+            const [key, value] = item.split('=');
+            acc[key] = value;
+            return acc;
+        }, {});
+    }
     log.info('path:', path);
-
-    query = query || window.location.search;
-    query = query === '' ? '' : query.replace(/^\?/, '');
-    query = query === '' ? '' : query.split('&').reduce((acc, item) => {
-        const [key, value] = item.split('=');
-        acc[key] = value;
-        return acc;
-    }, {});
-
     log.info('query:', query);
-
 
     if (path === '/logout') {
         token.remove();
