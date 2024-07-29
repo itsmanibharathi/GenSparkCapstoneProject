@@ -10,24 +10,27 @@
                     </div>
                 </div>
                 <div class="flex flex-row justify-between flex-grow md:justify-end gap-2">
+
                     <button type="button" class="prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded "
                         onclick="prevStep()">
-                        Previous
+                        <i class="m-auto fa-solid fa-arrow-left"></i> Previous
                     </button>
                     <button type="button" class="nextBtn bg-blue-500 text-white px-4 py-2 rounded self-end ml-auto"
                         onclick="nextStep()">
-                        Next
+                        Next <i class="m-auto fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
         </div>
 
-        <form id="propertyForm">
-            <!-- Step 1: Basic Info -->
-            <div class="step active">
-                <input type="hidden" name="propertyId" id="propertyId">
-
+        <!-- Step 1: Basic Info -->
+        <div class="step active">
+            <form id="propertyForm">
+                <div class="mb-4">
+                    <input type="hidden" name="propertyId" id="propertyId" class="w-full px-3 py-2 border rounded">
+                    <input type="hidden" name="userId" id="userId" class="w-full px-3 py-2 border rounded">
+                </div>
                 <div class="mb-4">
                     <label for="title" class="block text-gray-700">Title</label>
                     <input type="text" name="title" id="title" class="w-full px-3 py-2 border rounded">
@@ -88,7 +91,7 @@
                 <div class="mb-4">
                     <label for="category" class="block text-gray-700">Category</label>
                     <select name="category" id="category"
-                        class="w-full px-3 py-2 border rounded hover:cursor-not-allowed	" disabled>
+                        class="w-full px-3 py-2 border rounded hover:cursor-not-allowed" disabled>
                         <option value="Home">Home</option>
                         <option value="Land">Land</option>
                     </select>
@@ -96,18 +99,13 @@
 
                 <div class="mb-4">
                     <label for="type" class="block text-gray-700">Type</label>
-                    <select name="type" id="type" class="w-full px-3 py-2 border rounded">
+                    <select name="type" id="type" class="w-full px-3 py-2 border rounded hover:cursor-not-allowed"
+                        disabled>
                         <option value="Rent">Rent</option>
                         <option value="Sale">Sale</option>
                         <option value="Lease">Lease</option>
                     </select>
                 </div>
-
-                <div class="mb-4">
-                    <label for="userId" class="block text-gray-700">User ID</label>
-                    <input type="number" name="userId" id="userId" class="w-full px-3 py-2 border rounded">
-                </div>
-
                 <div class="mb-4">
                     <label for="status" class="block text-gray-700">Status</label>
                     <select name="status" id="status" class="w-full px-3 py-2 border rounded">
@@ -117,59 +115,54 @@
                         <option value="Rented">Rented</option>
                     </select>
                 </div>
+            </form>
+        </div>
 
-
+        <!-- Step 2: Specific Data -->
+        <div class="step">
+            <div id="categoryDetails" class="mb-4">
+                <!-- Dynamic Content Based on Category Selection -->
             </div>
+        </div>
 
-            <!-- Step 2: Specific Data -->
-            <div class="step">
-                <div id="categoryDetails" class="mb-4">
-                    <!-- Dynamic Content Based on Category Selection -->
-                </div>
-            </div>
-
-
-            <!-- Step 3: Amenities -->
-            <div class="step">
-                <div class="flex justify-between text-lg font-semibold mb-4">
-                    <h3>Amenities</h3>
-                    <button type="button" id="add-amenity" class="hover:text-secondary">
-                        <i class="fa-solid fa-house-flag"></i> New Amenity
-                    </button>
-                </div>
-                <div id="amenities">
-                    <!-- Amenities will be dynamically loaded here -->
-                </div>
-            </div>
-
-            <!-- Step 4: Media Files -->
-            <div class="step">
-                <div class="flex justify-between text-lg font-semibold mb-4">
-                    <h3>Media Files</h3>
-                    <button type="button" id="add-media" class="hover:text-secondary">
-                        <i class="fa-solid fa-file-image"></i> New Media File
-                    </button>
-                </div>
-                <div id="mediaFiles">
-                    <!-- Media files will be dynamically loaded here -->
-                </div>
-            </div>
-
-
-
-            <div class="flex flex-row justify-between flex-grow md:justify-end gap-2">
-                <button type="button" class="prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded "
-                    onclick="prevStep()">
-                    Previous
+        <!-- Step 3: Amenities -->
+        <div class="step">
+            <div class="flex justify-between text-lg font-semibold mb-4">
+                <h3>Amenities</h3>
+                <button type="button" id="add-amenity" class="hover:text-secondary">
+                    <i class="fa-solid fa-house-flag"></i> New Amenity
                 </button>
-                <button type="button" class="nextBtn bg-blue-500 text-white px-4 py-2 rounded self-end ml-auto"
-                    onclick="nextStep()">
-                    Next
-                </button>
-                <button type="submit" class="submitBtn hidden bg-green-500 text-white px-6 py-2 rounded mt-4"
-                    id="submitBtn">Submit</button>
             </div>
-        </form>
+            <div id="amenities">
+                <!-- Amenities will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Step 4: Media Files -->
+        <div class="step">
+            <div class="flex justify-between text-lg font-semibold mb-4">
+                <h3>Media Files</h3>
+                <button type="button" id="add-media" class="hover:text-secondary">
+                    <i class="fa-solid fa-file-image"></i> New Media File
+                </button>
+            </div>
+            <div id="mediaFiles">
+                <!-- Media files will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <div class="flex flex-row justify-between flex-grow md:justify-end gap-2">
+            <button type="button" class="prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded " onclick="prevStep()">
+                <i class="m-auto fa-solid fa-arrow-left"></i> Previous
+            </button>
+            <button type="button" class="nextBtn bg-blue-500 text-white px-4 py-2 rounded self-end ml-auto"
+                onclick="nextStep()">
+                Next <i class="m-auto fa-solid fa-arrow-right"></i>
+            </button>
+            <button class="submitBtn hidden bg-green-500 text-white px-6 py-2 rounded mt-4"
+                id="submitBtn">Submit</button>
+        </div>
+
     </div>
 
 </div>
