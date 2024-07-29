@@ -6,5 +6,6 @@ namespace api.Services.Interfaces
     {
         public Task<ReturnPropertyDto> GetAsync(int id);
         public Task<ReturnPropertyDto> CreateAsync(CreatePropertyDto getProperityDto);
+        public Task<ReturnPropertyDto> UpdateAsync(EditPropertyDto editPropertyDto);
     }
 }

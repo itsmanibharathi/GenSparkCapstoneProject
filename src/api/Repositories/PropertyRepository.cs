@@ -17,21 +17,26 @@ namespace api.Repositories
             return await _context.Properties.AnyAsync(x => x.Title == entity.Title && x.Price == entity.Price && x.UserId == x.UserId);
         }
 
-        public override Task<Property> GetAsync(int id)
+        public override async Task<Property> GetAsync(int id)
         {
             try
             {
-                return _context.Properties
+                return await _context
+                    .Properties
                     .Include(x => x.Amenities)
                     .Include(x => x.MediaFiles)
                     .Include(x => x.Land)
                     .Include(x => x.Home)
-                    .FirstOrDefaultAsync(x => x.PropertyId == id)
-                    ?? throw new EntityNotFoundException<Property>($"property with id {id} not found");
+                    .FirstAsync(x => x.PropertyId == id) 
+                    ?? throw new EntityNotFoundException<Property>($"No property in the database with id {id}");
             }
             catch (EntityNotFoundException<Property>)
             {
                 throw;
+            }
+            catch (InvalidOperationException)
+            {
+                throw new EntityNotFoundException<Property>($"No property in the database with id {id}");
             }
             catch (Exception e)
             {

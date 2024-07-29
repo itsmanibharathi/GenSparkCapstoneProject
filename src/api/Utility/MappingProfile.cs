@@ -33,6 +33,10 @@ namespace api.Utility
                 .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
                 .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
 
+            CreateMap<EditPropertyDto,Property>()
+                .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
+                .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
+
 
             CreateMap<EditPropertyMediaFileDto, PropertyMediaFile>();
             CreateMap<PropertyMediaFile, ReturnPropertyMediaFileDto>();

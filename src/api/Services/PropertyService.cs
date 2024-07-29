@@ -43,7 +43,8 @@ namespace api.Services
         {
             try
             {
-                return _mapper.Map<ReturnPropertyDto>(await _propertyRepository.GetAsync(id));
+                var res = await _propertyRepository.GetAsync(id);
+                return _mapper.Map<ReturnPropertyDto>(res);
             }
             catch (EntityNotFoundException<Property>)
             {
@@ -56,6 +57,28 @@ namespace api.Services
             catch (Exception)
             {
                 throw new UnableToDoActionException("Unable to get property. Please try again later.");
+            }
+        }
+
+        public async Task<ReturnPropertyDto> UpdateAsync(EditPropertyDto editPropertyDto)
+        {
+            try
+            {
+                var property = _mapper.Map<Property>(editPropertyDto);
+                await _propertyRepository.UpdateAsync(property);
+                return _mapper.Map<ReturnPropertyDto>(property);
+            }
+            catch (EntityNotFoundException<Property>)
+            {
+                throw;
+            }
+            catch (UnableToDoActionException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new UnableToDoActionException("Unable to update property. Please try again later.");
             }
         }
     }

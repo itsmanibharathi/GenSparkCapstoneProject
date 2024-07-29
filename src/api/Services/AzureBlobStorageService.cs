@@ -17,13 +17,14 @@ namespace API.Services
         {
         }
 
-        public async Task<string> UploadFileAsync(string containerName, string blobName, IFormFile file)
+        public async Task<string> UploadFileAsync(string containerName, IFormFile file)
         {
             try
             {
                 string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING") ?? throw new EnvironmentVariableUndefinedException("AZURE_STORAGE_CONNECTION_STRING");
                 BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+                string blobName = Guid.NewGuid().ToString() + file.FileName;
                 BlobClient blobClient = containerClient.GetBlobClient(blobName);
 
                 using (MemoryStream memoryStream = new MemoryStream())

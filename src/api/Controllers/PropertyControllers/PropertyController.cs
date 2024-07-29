@@ -83,8 +83,43 @@ namespace api.Controllers.PropertyControllers
             }
         }
 
+        [HttpPut()]
+        public async Task<IActionResult> UpdateProperty(EditPropertyDto editPropertyDto)
+        {
+            try
+            {
+                if (editPropertyDto.UserId != int.Parse(User.FindFirst("Id").Value))
+                {
+                    var r = new ResponseDto(StatusCodes.Status403Forbidden, "You are not allowed to update this property");
+                    return StatusCode(statusCode: r.StatusCode, value: r);
+                }
+                var result = await _propertyService.UpdateAsync(editPropertyDto);
 
-       
+                var res = new ResponseDto<ReturnPropertyDto>(StatusCodes.Status200OK, "Property updated successfully", result);
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch (EntityNotFoundException<Property> e)
+            {
+                _logger.LogError(e, "Property not found");
+                var res = new ResponseDto(StatusCodes.Status404NotFound, "Property not found");
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch (UnableToDoActionException e)
+            {
+                _logger.LogError(e, "Unable to update property");
+                var res = new ResponseDto(StatusCodes.Status500InternalServerError, "Unable to update property");
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "something went wrong ");
+                var res = new ResponseDto(StatusCodes.Status500InternalServerError, "something went wrong");
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+        }
+
+
+
 
     }
 }

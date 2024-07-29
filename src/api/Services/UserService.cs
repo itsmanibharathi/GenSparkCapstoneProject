@@ -80,7 +80,7 @@ namespace api.Services
                     }
                     else
                     {
-                        imageUrl = await _azureBlobStorageService.UploadFileAsync("user-profile-images", userEditDto.Profileimage.FileName, userEditDto.Profileimage);
+                        imageUrl = await _azureBlobStorageService.UploadFileAsync("user-profile-images", userEditDto.Profileimage);
                     }
                     user.UserProfileImageUrl = imageUrl;
                 }
