@@ -9,31 +9,43 @@ import propertyMediFileTemplate from '../../components/propertyMediFileTemplate.
 
 const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     log.info('Loading Edit Property Callback');
+    const pages = ['basicinfo', 'specificinfo', 'amenitiesinfo', 'mediafileinfo'];
     let currentStep = 1;
     const totalSteps = 4;
+    var isdirty = false;
 
-
-    function showStep(step) {
+    function showStep(page) {
+        log.info('Showing Step', page);
         log.info('Formdata', gatherFormData());
-        $('.step').removeClass('active');
-        $(`.step:nth-of-type(${step})`).addClass('active');
+        pages.forEach((page) => {
+            $(`#${page}`).hide();
+        });
+        if (!pages.includes(page))
+            page = pages[currentStep - 1];
+        $(`#${page}`).show();
+
+        var step = pages.indexOf(page) + 1;
         $('#currentStep').text(step);
         $('#progressBar').css('width', `${(step / totalSteps) * 100}%`);
+        window.history.pushState({}, '', `?page=${pages[step - 1]}&propertyId=${query.propertyId}`);
+        toggleButtons();
     }
 
     window.nextStep = function () {
+        if ($(`#${pages[currentStep - 1]} form`)[0].checkValidity() === false) {
+            showAlert('Please fill all the required fields', 'error');
+            return;
+        }
         if (currentStep < totalSteps) {
             currentStep++;
-            showStep(currentStep);
-            toggleButtons();
+            showStep(pages[currentStep - 1]);
         }
     }
 
     window.prevStep = function () {
         if (currentStep > 1) {
             currentStep--;
-            showStep(currentStep);
-            toggleButtons();
+            showStep(pages[currentStep - 1]);
         }
     }
 
@@ -54,6 +66,73 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
             $('.submitBtn').addClass('hidden');
         }
     }
+
+    $('form').on('change', function (e) {
+        isdirty = true;
+    });
+
+
+
+    $('#basicinfoForm').on('blur', 'input', function (e) {
+        const input = e.target;
+        const value = input.value;
+        if (value === '' && input.required) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'This field is required';
+        }
+        else if (input.name === 'price' && !/^[0-9]+$/.test(value)) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid price';
+        }
+        else if (input.name === 'zipCode' && !/^[0-9]{6}$/.test(value)) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid Zip Code';
+        }
+        else {
+            input.classList.remove('border-red-500');
+            input.nextElementSibling.innerText = '';
+            if (value !== '') {
+                input.classList.add('border-green-500');
+            }
+        }
+    });
+    console.log('specificinfo form :', $('#specificinfo form'));
+    $('#specificinfo form').on('blur', 'input', function (e) {
+        alert('home');
+        const input = e.target;
+        const value = input.value;
+        if (value === '' && input.required) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'This field is required';
+        }
+        else if (input.name === 'area' && !/^[0-9]+$/.test(value)) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid price';
+        }
+        else if (input.name === 'numberOfBedrooms' && !/^[0-9]+$/.test(value)) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid number of bedrooms';
+        }
+        else if (input.name === 'numberOfBathrooms' && !/^[0-9]+$/.test(value)) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid number of bathrooms';
+        }
+        else if (input.name === 'yearBuilt' && !/^[0-9]+$/.test(value)) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid year built';
+        }
+        else if (input.name === 'floorNumber' && value > 0) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'Invalid floor number';
+        } else {
+            input.classList.remove('border-red-500');
+            input.nextElementSibling.innerText = '';
+            if (value !== '') {
+                input.classList.add('border-green-500');
+            }
+        }
+    });
+
 
 
     $(document).on('click', '#add-amenity', function () {
@@ -111,7 +190,7 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
 
     const populateForm = (data) => {
 
-        $('#propertyForm').find('input, textarea, select').each(function () {
+        $('#basicinfoForm').find('input, textarea, select').each(function () {
             $(this).val(data[$(this).attr('name')]);
         });
         if (data.category === 'Home') {
@@ -130,13 +209,13 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
             $('#mediaFiles').append(propertyMediFileTemplate(mediaFile));
         });
 
-        showStep(currentStep);
+        // showStep(currentStep);
     }
 
     const gatherFormData = () => {
         const formData = {}
 
-        var tempFormData = $('#propertyForm').serializeArray();
+        var tempFormData = $('#basicinfoForm').serializeArray();
         tempFormData.forEach((item) => {
             formData[item.name] = item.value;
         });
@@ -205,7 +284,8 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     });
 
     toggleButtons();
-    showStep(currentStep);
+    var page = query.page.toLowerCase() || pages[currentStep - 1];
+    showStep(page || pages[currentStep - 1]);
     const propertyData = await getProperty(query);
     populateForm(propertyData);
 
