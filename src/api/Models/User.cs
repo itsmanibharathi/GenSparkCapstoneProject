@@ -20,5 +20,6 @@ namespace api.Models
         // Navigation property
         public ICollection<Property>? Property { get; set; }
         public UserAuth UserAuth { get; internal set; }
+        public UserVerify? UserVerify { get; internal set; }
     }
 }

@@ -17,6 +17,7 @@ namespace api.Contexts
         public DbSet<PropertyLand> Lands { get; set; }
         public DbSet<PropertyHome> Homes { get; set; }
         public DbSet<PropertyAmenity> Amenities { get; set; }
+        public DbSet<UserVerify> UserVerifies { get; set; }
 
         #endregion
 
@@ -36,6 +37,10 @@ namespace api.Contexts
                 .HasMany(x => x.Property)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.UserVerify)
+                .WithOne(x => x.User)
+                .HasForeignKey<UserVerify>(x => x.UserId);
             #endregion
 
             #region UserAuth
@@ -43,6 +48,12 @@ namespace api.Contexts
             modelBuilder.Entity<UserAuth>().ToTable("UserAuths");
             modelBuilder.Entity<UserAuth>()
                 .HasKey(x => x.UserId);
+            #endregion
+
+            #region UserVerify
+            modelBuilder.Entity<UserVerify>().ToTable("UserVerifies");
+            modelBuilder.Entity<UserVerify>()
+                .HasKey(x => x.Id);
             #endregion
 
             #region property
@@ -99,7 +110,6 @@ namespace api.Contexts
             modelBuilder.Entity<PropertyAmenity>()
                 .HasKey(x => x.AmenityId);
             #endregion
-
 
 
         }

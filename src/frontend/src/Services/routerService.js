@@ -16,7 +16,7 @@ import { authPage, loadAuthCallback } from '../modules/Auth/auth.js';
 import { postPropertyPage, loadPostPropertyCallback } from '../modules/PostProperty/postProperty.js';
 import { editPropertyPage, loadEditPropertyCallback } from '../modules/EditProperty/editProperty.js';
 import { profilePage, loadProfileCallback } from '../modules/Profile/profile.js';
-import { verificationPage, loadVerificationCallback } from '../modules/Verification/verification.js';
+import { userVerifyPage, loaduserVerifyCallback } from '../modules/UserVerify/userVerify.js';
 
 
 const token = new jwtService('User');
@@ -29,8 +29,7 @@ const routes = [
     { path: '/property/post', component: postPropertyPage, callback: loadPostPropertyCallback },
     { path: '/property/edit', component: editPropertyPage, callback: loadEditPropertyCallback },
     { path: '/profile', component: profilePage, callback: loadProfileCallback },
-    { path: '/verification', component: verificationPage, callback: loadVerificationCallback }
-
+    { path: '/user/verify', component: userVerifyPage, callback: loaduserVerifyCallback }
 ];
 
 

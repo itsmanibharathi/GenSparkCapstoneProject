@@ -125,6 +125,7 @@ namespace api
             #region Repositories
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
+            builder.Services.AddScoped<IUserVerifyRepository, UserVerifyRepository>();
             builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
             builder.Services.AddScoped<IPropertyMediaFileRepository, PropertyMediaFileRepository>();
             builder.Services.AddScoped<IPropertyAmenityRepository, PropertyAmenityRepository>();
@@ -136,6 +137,7 @@ namespace api
             builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
             builder.Services.AddScoped<ITokenService<User>, UserTokenService>();
             builder.Services.AddScoped<IUserAuthService, UserAuthService>();
+            builder.Services.AddScoped<IUserVerifyService, UserVerifyService>();
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPropertyService, PropertyService>();
