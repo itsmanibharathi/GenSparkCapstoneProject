@@ -83,7 +83,8 @@ namespace API.Services
 
                 BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
                 BlobClient blobClient = containerClient.GetBlobClient(blobName);
-                return await blobClient.DeleteIfExistsAsync();
+                var res = await blobClient.DeleteIfExistsAsync();
+                return res;
             }
             catch (EnvironmentVariableUndefinedException)
             {
