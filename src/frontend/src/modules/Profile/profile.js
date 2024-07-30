@@ -4,94 +4,137 @@ import UploadProfile from '../../../public/assets/Image/uploadprofile.jpg';
 import log from '../../utility/loglevel.js';
 import showAlert from '../../Services/alertService.js';
 
-const loadProfileCallback = (query, api, token) => {
-    console.log('Profile Callback');
-    $(document).ready(() => {
-        var users = {
-            userName: "Manibharathi",
-            userEmail: "manibharathidct@gmail.com",
-            userPhoneNumber: "6385687966",
-            userProfileImageUrl: null,
-            isActive: true,
-            createAt: "0001-01-01T00:00:00",
-            updateAt: null
+const loadProfileCallback = async (query, api, token, localStorage) => {
+    var profileImgIsDirty = false;
+    var profileDataIsDirty = false;
+
+    const loadUserData = (user) => {
+        $('#userName').val(user.userName);
+        $('#userEmail').val(user.userEmail);
+        $('#userPhoneNumber').val(user.userPhoneNumber);
+        $('#profile-image').attr('src', user.userProfileImageUrl || UploadProfile);
+    };
+
+    $('#profileimage').change((event) => {
+        profileImgIsDirty = true;
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                $('#profile-image').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
         }
+    });
 
-        const loadUserData = (user) => {
-            console.log('User:', user.userName);
-            $('#userName').val(user.userName);
-            $('#userEmail').val(user.userEmail);
-            $('#userPhoneNumber').val(user.userPhoneNumber);
-            $('#profile-image').attr('src', user.userProfileImageUrl || UploadProfile);
-        };
+    $('#profileData-form').change(() => {
+        profileDataIsDirty = true;
+    });
 
-        $('#profileimage').change((event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    $('#profile-image').attr('src', e.target.result);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        $('#profile-form').submit((e) => {
-            e.preventDefault();
-
-            // Create a FormData object to hold the form data
-            const formData = new FormData($('#profile-form')[0]);
-
-            // Include the profile image in the FormData object
-            const fileInput = $('#profileimage')[0];
-            if (fileInput.files.length > 0) {
-                formData.append('profileimage', fileInput.files[0]);
-            }
-
-            var data = {};
-            for (const [key, value] of formData.entries()) {
-                log.debug(`${key}: ${value}`);
-                data[key] = value;
-            }
-
-            // form format data
-            const formDatas = new FormData("#profile-form");
+    $(window).on('beforeunload', function (event) {
+        if (profileImgIsDirty || profileDataIsDirty) {
+            const message = 'You have unsaved changes. Are you sure you want to leave?';
+            event.returnValue = message;
+            return message;
+        }
+    });
 
 
-            api.put('user', formData)
-                .then((response) => {
-                    log.debug('Profile update response:', response);
-                    showAlert(res.message, 'success');
-                    loadUserData(response.data);
+    $('#save-button').on('click', async (e) => {
+        e.preventDefault();
+        log.debug('Form submitted');
+        if (!profileImgIsDirty && !profileDataIsDirty) {
+            showAlert('No changes to save', 'info');
+            return;
+        }
+        if (profileImgIsDirty) {
+            const formData = new FormData($('#imageForm')[0]);
+            var url = $('#profile-image').attr('src');
+            if (url.includes('http')) {
+                const containerName = url.split('/')[3];
+                const blobName = url.split('/')[4];
+                await fetch(`${process.env.API_URL}/media/${containerName}/${blobName}`, {
+                    method: 'PUT',
+                    body: formData
                 })
-                .catch((error) => {
-                    log.error('Profile update error:', error);
-                    showAlert(error.message, 'error');
-                });
-
-            $('#edit-button').removeClass('hidden');
-            $('#save-button').addClass('hidden');
-            $('#userName, #userEmail, #userPhoneNumber').prop('readonly', true);
+                    .then(response => response.json())
+                    .then(res => {
+                        log.info(res);
+                        showAlert(res.message, 'success');
+                        $('#profile-image').attr('src', res.data);
+                        profileImgIsDirty = false;
+                    })
+                    .catch((error) => {
+                        log.error(error.message, error);
+                        showAlert(error.message, 'error');
+                    });
+            }
+            else {
+                await fetch(`${process.env.API_URL}/media/profile`, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(res => {
+                        log.info(res);
+                        showAlert(res.message, 'success');
+                        $('#profile-image').attr('src', res.data);
+                        profileImgIsDirty = false;
+                    })
+                    .catch((error) => {
+                        log.error(error.message, error);
+                        showAlert(error.message, 'error');
+                        $(this).remove();
+                    });
+            }
+        }
+        const formData = $('#profileData-form').serializeArray();
+        var data = {};
+        formData.forEach((element) => {
+            data[element.name] = element.value;
         });
-
-        $('#edit-button').click(() => {
-            $('#edit-button').addClass('hidden');
-            $('#save-button').removeClass('hidden');
-            $('#userName, #userEmail, #userPhoneNumber').prop('readonly', false);
-        });
-
-        var user = api.get('user')
+        data.userProfileImageUrl = $('#profile-image').attr('src');
+        log.debug('User data:', data);
+        await api.put('user', data)
             .then((response) => {
-                log.debug('User data:', response.data);
-                loadUserData(response.data);
+                log.debug('User data updated:', response.data);
+                showAlert(response.message, 'success');
+                localStorage.set('user', JSON.stringify(response.data));
+                profileDataIsDirty = false;
             })
             .catch((error) => {
-                log.error('User data error:', error);
+                log.error('User data update error:', error);
                 showAlert(error.message, 'error');
-            }
-            );
-        loadUserData(user);
+            });
+
+        $('#edit-button').removeClass('hidden');
+        $('#save-button').addClass('hidden');
+        $('#upload-button').toggleClass('hidden');
+        $('#userName, #userPhoneNumber').prop('readonly', true);
     });
+
+    $('#edit-button').click(() => {
+        $('#edit-button').addClass('hidden');
+        $('#save-button').removeClass('hidden');
+        $('#upload-button').toggleClass('hidden');
+        $('#userName, #userPhoneNumber').prop('readonly', false);
+    });
+
+    $('#upload-button').click(() => {
+        $('#profileimage').click();
+    });
+
+    var user = await api.get('user')
+        .then((response) => {
+            log.debug('User data:', response.data);
+            return response.data;
+        })
+        .catch((error) => {
+            log.error('User data error:', error);
+            showAlert(error.message, 'error');
+        }
+        );
+    loadUserData(user);
 }
 
 module.exports = {

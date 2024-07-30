@@ -70,21 +70,7 @@ namespace api.Services
             try
             {
                 var user = await _userRepository.GetAsync(id);
-                if(userEditDto.Profileimage != null)
-                {
-                    // Upload the image to the blob storage
-                    string imageUrl;
-                    if (user.UserProfileImageUrl != null)
-                    {
-                        imageUrl = await _azureBlobStorageService.UpdateFileAsync($"{user.UserId}", user.UserProfileImageUrl, userEditDto.Profileimage);
-                    }
-                    else
-                    {
-                        imageUrl = await _azureBlobStorageService.UploadFileAsync("user-profile-images", userEditDto.Profileimage);
-                    }
-                    user.UserProfileImageUrl = imageUrl;
-                }
-                _mapper.Map(userEditDto, user);
+                user = _mapper.Map(userEditDto, user);
                 await _userRepository.UpdateAsync(user);
                 return _mapper.Map<ReturnUserDto>(user);
             }

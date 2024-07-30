@@ -50,7 +50,7 @@ namespace api.Controllers.UserControllers
         }
 
         [HttpPut()]
-        public async Task<IActionResult> EditUser([FromForm] GetUserEditDto getUserEditDto)
+        public async Task<IActionResult> EditUser(GetUserEditDto getUserEditDto)
         {
             try
             {
