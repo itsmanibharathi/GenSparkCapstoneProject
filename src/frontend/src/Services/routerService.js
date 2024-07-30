@@ -71,7 +71,7 @@ const loadRoutes = (path, query) => {
         $('#404').html("");
         $('#header-placeholder').html(headerTemplate(token));
         loadComponent('#footer-placeholder', Footer);
-        loadComponent('#body-placeholder', route.component, route.callback, query, api, token);
+        loadComponent('#body-placeholder', route.component, route.callback, query, api, token, localStorage);
     } else {
         loadComponent("#404", Page404);
         $('#header-placeholder').html("");

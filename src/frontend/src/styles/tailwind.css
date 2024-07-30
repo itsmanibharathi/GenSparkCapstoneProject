@@ -104,3 +104,11 @@
 .required{
     @apply after:content-['*'] after:text-red-500 after:font-bold ;
 }
+
+.carousel img {
+    display: none;
+}
+
+.carousel img.active {
+    display: block;
+}

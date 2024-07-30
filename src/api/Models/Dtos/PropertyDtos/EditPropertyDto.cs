@@ -1,4 +1,5 @@
 ﻿using api.Models.Dtos.PropertyAmenityDtos;
+using api.Models.Dtos.PropertyMediaFile;
 using api.Models.Enums;
 
 namespace api.Models.Dtos.PropertyDtos
@@ -25,9 +26,8 @@ namespace api.Models.Dtos.PropertyDtos
         public DateTime? UpdateAt { get; set; }
 
         // Navigation properties
-        public User? User { get; set; }
         public IEnumerable<EditPropertyAmenityDto>? Amenities { get; set; }
-        public IEnumerable<EditPropertyAmenityDto>? MediaFiles { get; set; }
+        public IEnumerable<EditPropertyMediaFileDto>? MediaFiles { get; set; }
         public EditPropertyHomeDto? Home { get; set; }
         public EditPropertyLandDto? Land { get; set; }
     }

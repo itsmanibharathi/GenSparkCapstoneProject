@@ -10,7 +10,6 @@
                     </div>
                 </div>
                 <div class="flex flex-row justify-between flex-grow md:justify-end gap-2">
-
                     <button type="button" class="prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded "
                         onclick="prevStep()">
                         <i class="m-auto fa-solid fa-arrow-left"></i> Previous
@@ -144,8 +143,20 @@
                     <i class="fa-solid fa-house-flag"></i> New Amenity
                 </button>
             </div>
-            <div id="amenities">
-                <!-- Amenities will be dynamically loaded here -->
+            <div class="overflow-x-auto mt-4">
+                <table class="table-auto w-full">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="px-4 py-2  required" data-sort="name">Amenity Name</th>
+                            <th class="px-4 py-2  required" data-sort="description">Amenity Description
+                            </th>
+                            <th class="px-4 py-2 " data-sort="isPaid">Is Paid</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="amenities">
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -157,20 +168,30 @@
                     <i class="fa-solid fa-file-image"></i> New Media File
                 </button>
             </div>
-            <div id="mediaFiles">
-                <!-- Media files will be dynamically loaded here -->
+            <div class="overflow-x-auto mt-4">
+                <table class="table-auto w-full">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="px-4 py-2 required">Title</th>
+                            <th class="px-4 py-2 required">Image</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mediaFiles">
+                    </tbody>
+                </table>
             </div>
         </div>
 
         <div class="flex flex-row justify-between flex-grow md:justify-end gap-2">
-            <button type="button" class="prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded " onclick="prevStep()">
+            <button type="button" class="down-control prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded " onclick="prevStep()">
                 <i class="m-auto fa-solid fa-arrow-left"></i> Previous
             </button>
-            <button type="button" class="nextBtn bg-blue-500 text-white px-4 py-2 rounded self-end ml-auto"
+            <button type="button" class="down-control nextBtn bg-blue-500 text-white px-4 py-2 rounded self-end ml-auto"
                 onclick="nextStep()">
                 Next <i class="m-auto fa-solid fa-arrow-right"></i>
             </button>
-            <button class="submitBtn hidden bg-green-500 text-white px-6 py-2 rounded mt-4"
+            <button class="submitBtn hidden bg-green-500 text-white px-4 py-2 rounded"
                 id="submitBtn">Submit</button>
         </div>
 

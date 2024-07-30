@@ -13,8 +13,8 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     let currentStep = 1;
     const totalSteps = 4;
     var isdirty = false;
-
     function showStep(page) {
+        toggleButtons();
         log.info('Showing Step', page);
         log.info('Formdata', gatherFormData());
         pages.forEach((page) => {
@@ -28,14 +28,29 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
         $('#currentStep').text(step);
         $('#progressBar').css('width', `${(step / totalSteps) * 100}%`);
         window.history.pushState({}, '', `?page=${pages[step - 1]}&propertyId=${query.propertyId}`);
-        toggleButtons();
     }
 
-    window.nextStep = function () {
-        if ($(`#${pages[currentStep - 1]} form`)[0].checkValidity() === false) {
+    function validateForm() {
+        if (currentStep < 3 && !$(`#${pages[currentStep - 1]} form`)[0].checkValidity()) {
             showAlert('Please fill all the required fields', 'error');
-            return;
+            return false;
         }
+
+        const hasVisibleSaveBtn = $(document).find('.saveBtn').filter(function () {
+            return !$(this).hasClass('hidden');
+        }).length > 0;
+
+        if (hasVisibleSaveBtn) {
+            showAlert('Please save the amenity', 'error');
+            return false;
+        }
+        return true;
+    }
+
+
+    window.nextStep = function () {
+        if (!validateForm())
+            return;
         if (currentStep < totalSteps) {
             currentStep++;
             showStep(pages[currentStep - 1]);
@@ -43,6 +58,8 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     }
 
     window.prevStep = function () {
+        if (!validateForm())
+            return;
         if (currentStep > 1) {
             currentStep--;
             showStep(pages[currentStep - 1]);
@@ -50,6 +67,9 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     }
 
     function toggleButtons() {
+        log.info('Toggle Buttons');
+        log.info('Current Step', currentStep);
+
         if (currentStep === 1) {
             $('.prevBtn').addClass('hidden');
             $('.nextBtn').addClass('ml-auto');
@@ -67,9 +87,11 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
         }
     }
 
-    $('form').on('change', function (e) {
+    $('.container').on('change', function (e) {
         isdirty = true;
+        log.info('Form is dirty', isdirty);
     });
+
 
 
 
@@ -96,9 +118,7 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
             }
         }
     });
-    console.log('specificinfo form :', $('#specificinfo form'));
-    $('#specificinfo form').on('blur', 'input', function (e) {
-        alert('home');
+    $('#specificinfo').on('blur', 'input', function (e) {
         const input = e.target;
         const value = input.value;
         if (value === '' && input.required) {
@@ -133,44 +153,203 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
         }
     });
 
-
-
-    $(document).on('click', '#add-amenity', function () {
-        $('#amenities').append(propertyAmenityTemplate());
+    $('#amenities').on('blur', 'input', function (e) {
+        const input = e.target;
+        const value = input.value;
+        if (value === '' && input.required) {
+            input.classList.add('border-red-500');
+            input.nextElementSibling.innerText = 'This field is required';
+        }
+        else {
+            input.classList.remove('border-red-500');
+            input.nextElementSibling.innerText = '';
+            if (value !== '') {
+                input.classList.add('border-green-500');
+            }
+        }
     });
 
-    $(document).on('click', '.remove-amenity', function () {
-        $(this).parent().remove();
+    // Add amenity template
+    $('#add-amenity').click(function () {
+        var index = $('#amenities tr').length;
+        $('#amenities').append(propertyAmenityTemplate(null, index, query.propertyId));
+        $('#amenities tr').last().find('.amenityForm').toggleClass('hidden');
+        $('#amenities tr').last().find('.amenityTable').toggleClass('hidden');
+
     });
 
-    $(document).on('click', '#add-media', function () {
-        $('#mediaFiles').append(propertyMediFileTemplate());
-    });
-
-    $(document).on('click', '.remove-media', function () {
-        $(this).parent().remove();
-    });
-
-    // create a on change event for file input
-    $(document).on('change', '.fileInput', async function () {
-        var formData = new FormData($(this).parent('.uploadForm')[0]);
-        log.info(formData);
-        fetch(`${process.env.API_URL}/media`, {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                log.info(data);
-                $(this).siblings('.file-url').text(data.data);
-                $(this).siblings('input[name="mediaUrl"]').val(data.data);
+    // Delete amenity row
+    $('#amenities').on('click', '.deleteBtn', function () {
+        api.delete(`property/amenity/${$(this).closest('tr').find('input[name="amenityId"]').val()}`)
+            .then((res) => {
+                log.info(res);
+                $(this).closest('tr').remove();
+                showAlert(res.message, 'success');
             })
-            .catch((error) => {
-                log.error(error.message, error);
-                $(this).parent().remove();
+            .catch((err) => {
+                log.error(err);
+                showAlert(err.message, 'error');
+            });
+    });
+
+    // Edit amenity row
+    $('#amenities').on('click', '.editBtn', function () {
+        var tr = $(this).closest('tr');
+        tr.find('.amenityTable').toggleClass('hidden');
+        tr.find('.amenityForm').toggleClass('hidden');
+    });
+
+    // Save amenity row
+    $('#amenities').on('click', '.saveBtn', function () {
+        var tr = $(this).closest('tr');
+
+        var name = tr.find('input[name="name"]').val();
+        var description = tr.find('input[name="description"]').val();
+        if (name === '' || description === '') {
+            showAlert('Please fill all the required fields', 'error');
+            return;
+        }
+        var isPaid = tr.find('input[name="isPaid"]').is(':checked');
+        tr.find('td[name="name"]').text(name);
+        tr.find('td').eq(2).text(description);
+        tr.find('td').eq(4).text(isPaid ? "Paid" : "Free");
+
+        tr.find('.amenityTable').toggleClass('hidden');
+        tr.find('.amenityForm').toggleClass('hidden');
+
+        // Send save request to the server here
+    });
+
+
+    $('#add-media').on('click', function () {
+        var index = $('#mediaFiles tr').length;
+        $('#mediaFiles').append(propertyMediFileTemplate(null, index, query.propertyId));
+        $('#mediaFiles tr').last().find('.mediaForm').toggleClass('hidden');
+        $('#mediaFiles tr').last().find('.mediaTable').toggleClass('hidden');
+
+    });
+
+    $('#mediaFiles').on('click', '.deleteBtn', function () {
+        var mediaId = $(this).closest('tr').find('input[name="mediaFileId"]').val();
+
+        if (mediaId > 0) {
+            api.delete(`Property/MediaFile/${mediaId}`)
+                .then((res) => {
+                    log.info(res);
+                    $(this).closest('tr').remove();
+                    showAlert(res.message, 'success');
+                })
+                .catch((err) => {
+                    log.error(err);
+                    showAlert(err.message, 'error');
+                });
+        }
+        var url = $(this).closest('tr').find('input[name="url"]').val();
+        if (!url) {
+            $(this).closest('tr').remove();
+            return;
+        }
+        var contanerName = url.split('/')[3];
+        var blobName = url.split('/')[4];
+        log.info('Delete file', contanerName, blobName);
+        api.delete(`media/${contanerName}/${blobName}`)
+            .then((res) => {
+                log.info(res);
+                $(this).closest('tr').remove();
+                showAlert(res.message, 'success');
+            })
+            .catch((err) => {
+                log.error(err);
+                showAlert(err.message, 'error');
             });
 
     });
+
+    // Edit amenity row
+    $('#mediaFiles').on('click', '.editBtn', function () {
+        var tr = $(this).closest('tr');
+
+        tr.find('.mediaTable').toggleClass('hidden');
+        tr.find('.mediaForm').toggleClass('hidden');
+    });
+
+
+
+    $('#mediaFiles').on('click', '.saveBtn', async function () {
+        alert('save button clicked');
+        var tr = $(this).closest('tr');
+        var mediaId = $(this).closest('tr').find('input[name="mediaFileId"]').val();
+        log.info('Media Id', mediaId);
+        var title = tr.find('input[name="title"]').val();
+        if (title === '') {
+            showAlert('Please fill all the required fields', 'error');
+            return;
+        }
+        var fileInput = tr.find('input[type="file"]')[0];
+        var url = tr.find('input[name="url"]').val();
+        log.info('File Input', fileInput);
+        log.info('File', fileInput.files);
+        if (fileInput && fileInput.files.length > 0) {
+            if (mediaId > 0) {
+                log.info('Update file');
+                var containerName = url.split('/')[3];
+                var blobName = url.split('/')[4];
+                var formData = new FormData(tr.find('.uploadForm')[0]);
+                await fetch(`${process.env.API_URL}/media/${containerName}/${blobName}`, {
+                    method: 'PUT',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(res => {
+                        log.info(res);
+                        tr.find('input[name="url"]').val(res.data);
+                        tr.find('td[name="url"]').html(`<img src="${res.data}">`);
+                        tr.find('td[name="title"]').text(title);
+                        showAlert(res.message, 'success');
+                    })
+                    .catch((error) => {
+                        log.error(error.message, error);
+                        showAlert(error.message, 'error');
+                        $(this).remove();
+                    });
+            }
+            else {
+                log.info('Create file');
+                var formData = new FormData(tr.find('.uploadForm')[0]);
+                await fetch(`${process.env.API_URL}/media/mediafile`, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(res => {
+                        log.info(res);
+                        tr.find('input[name="url"]').val(res.data);
+                        tr.find('td[name="url"]').html(`<img src="${res.data}">`);
+                        tr.find('td[name="title"]').text(title);
+                        showAlert(res.message, 'success');
+                    })
+                    .catch((error) => {
+                        log.error(error.message, error);
+                        showAlert(error.message, 'error');
+                        $(this).remove();
+                    });
+
+            }
+        }
+        tr.find('.mediaTable').toggleClass('hidden');
+        tr.find('.mediaForm').toggleClass('hidden');
+
+        // Send save request to the server here
+    });
+
+    $('#mediaFiles').on('click', '.refreshBtn', function () {
+        var tr = $(this).closest('tr');
+        var url = tr.find('input[name="url"]').val();
+        tr.find('td[name="url"]').html(`<img src="${url}">`);
+    });
+
+    // create a on change event for file input
+
 
     const getProperty = async (query) => {
         if (!query.propertyId) {
@@ -178,7 +357,6 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
         }
         return await api.get(`property/${query.propertyId}`)
             .then(res => {
-                console.log("dataaa", res.data);
                 localStorage.set('property', res.data);
                 return res.data;
             }).catch(err => {
@@ -200,13 +378,12 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
             $('#categoryDetails').html(propertyCategoryTemplate.PropertyLand(data.land));
         }
 
-
-        data.amenities.forEach(amenity => {
-            $('#amenities').append(propertyAmenityTemplate(amenity));
+        data.amenities.forEach((amenity, index) => {
+            $('#amenities').append(propertyAmenityTemplate(amenity, index, query.propertyId));
         });
 
-        data.mediaFiles.forEach(mediaFile => {
-            $('#mediaFiles').append(propertyMediFileTemplate(mediaFile));
+        data.mediaFiles.forEach((mediaFile, index) => {
+            $('#mediaFiles').append(propertyMediFileTemplate(mediaFile, index, query.propertyId));
         });
 
         // showStep(currentStep);
@@ -225,25 +402,26 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
         formData.amenities = [];
         formData.mediaFiles = [];
 
-        $('#amenities form').each(function () {
-            var data = {}
-            var tempFormData = $(this).serializeArray();
-            tempFormData.forEach((item) => {
-                data[item.name] = item.value;
-                if (item.name === 'isPaid') {
-                    data[item.name] = item.value === 'on' ? true : false;
-                }
-            });
+        $('#amenities tr').each(function () {
+            var data = {
+                propertyId: query.propertyId,
+                amenityId: $(this).find('input[name="amenityId"]').val(),
+                name: $(this).find('input[name="name"]').val(),
+                description: $(this).find('input[name="description"]').val(),
+                isPaid: $(this).find('input[name="isPaid"]').val() === 'on' ? true : false,
+            }
             formData.amenities.push(data);
         });
 
 
-        $('#mediaFiles form').each(function () {
-            var data = {}
-            var tempFormData = $(this).serializeArray();
-            tempFormData.forEach((item) => {
-                data[item.name] = item.value;
-            });
+        $('#mediaFiles tr').each(function () {
+            var data = {
+                mediaFileId: $(this).find('input[name="mediaFileId"]').val(),
+                url: $(this).find('input[name="url"]').val(),
+                propertyId: $(this).find('input[name="propertyId"]').val(),
+                type: $(this).find('input[name="type"]').val(),
+                title: $(this).find('input[name="title"]').val()
+            }
             formData.mediaFiles.push(data);
         });
 
@@ -270,7 +448,6 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     $('.submitBtn').on('click', async function (event) {
         event.preventDefault();
         var data = gatherFormData();
-        console.log(data);
         await api.put('property', data)
             .then((res) => {
                 log.info(res);
@@ -283,9 +460,22 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
             });
     });
 
+    $(window).on('beforeunload', function (event) {
+        if (isdirty) {
+            const message = 'You have unsaved changes. Are you sure you want to leave?';
+            event.returnValue = message;
+            return message;
+        }
+    });
+
+
     toggleButtons();
-    var page = query.page.toLowerCase() || pages[currentStep - 1];
-    showStep(page || pages[currentStep - 1]);
+    var page = query?.page?.toLowerCase() ?? pages[currentStep - 1];
+    if (!pages.includes(page)) {
+        page = pages[0];
+    }
+    currentStep = pages.indexOf(page) + 1;
+    showStep(page);
     const propertyData = await getProperty(query);
     populateForm(propertyData);
 

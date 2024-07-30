@@ -29,16 +29,10 @@ class apiService {
                 'Authorization': `Bearer ${this.token}`
             }
         };
-        log.debug('Data:', data);
+
         if (data != null) {
             options.body = JSON.stringify(data);
         }
-        // if (data.file) {
-        //     log.debug('File:', data.file);
-        //     options.body = data.file;
-        // }
-
-        log.debug('API Request:', options);
         console.debug(`${this.url}/${endpoint}`);
         const response = await fetch(`${this.url}/${endpoint}`, options);
         const json = await response.json();
