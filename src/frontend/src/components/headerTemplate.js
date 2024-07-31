@@ -6,7 +6,7 @@ const headerTemplate = (token) => {
             <nav class="flex justify-between items-center w-[92%] h-[8%] mx-auto">
                 <div>
                     <a href="/">
-                        <img class="w-16 cursor-pointer" src="${logo}" alt="Logo">
+                        <p class="text-2xl text-primary font-bold">360area.tech</p>
                     </a>
                 </div>
                 <div class="bg-tertiary  z-50 text-lg nav-links duration-500 md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">

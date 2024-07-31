@@ -52,7 +52,7 @@ const loadPostPropertyCallback = (query, api, token, localStorage) => {
         localStorage.set('propertyForm', oldData);
     });
 
-    $('#propertyForm').on('submit', (e) => {
+    $('#propertyForm').on('submit', async (e) => {
         e.preventDefault();
         if (token.get() === null) {
             showAlert('Please login to post a property', 'error');
@@ -68,17 +68,15 @@ const loadPostPropertyCallback = (query, api, token, localStorage) => {
         });
         log.info("data: ", data);
         if (isFormDirty) {
-            api.post('Property', data)
+            await api.post('Property', data)
                 .then(response => {
-                    if (response.status === 201) {
-                        alert('Property posted successfully');
-                        $('#propertyForm').trigger('reset');
-                        $('#propertyForm input').removeClass('border-green-500');
-                        $('#propertyForm select').removeClass('border-green-500');
-                        isFormDirty = false;
-                    }
+                    $('#propertyForm input').removeClass('border-green-500');
+                    $('#propertyForm select').removeClass('border-green-500');
+                    isFormDirty = false;
+                    $('#refreshForm').trigger('click');
                     showAlert(response.message, 'success');
-                    loadRoutes(`/property/edit?PropertyId=${response.data.PropertyId}`);
+                    log.info(response);
+                    loadRoutes('/property/edit', { propertyId: response.data.propertyId });
                 })
                 .catch(error => {
                     showAlert(error.message, 'error');
