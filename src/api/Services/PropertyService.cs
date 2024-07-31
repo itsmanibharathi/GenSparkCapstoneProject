@@ -60,6 +60,23 @@ namespace api.Services
             }
         }
 
+        public async Task<IEnumerable<ReturnPropertyDto>> SearchPropertyAsync(PropertyQueryDto propertyQueryDto)
+        {
+            try
+            {
+                var res= await _propertyRepository.SearchPropertyAsync(propertyQueryDto);
+                return _mapper.Map<IEnumerable<ReturnPropertyDto>>(res);
+            }
+            catch (EntityNotFoundException<Property>)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new UnableToDoActionException("Unable to search property. Please try again later.");
+            }
+        }
+
         public async Task<ReturnPropertyDto> UpdateAsync(EditPropertyDto editPropertyDto)
         {
             try

@@ -119,6 +119,29 @@ namespace api.Controllers.PropertyControllers
         }
 
 
+        [HttpGet]
+        public async Task<IActionResult> GetProperties([FromQuery] PropertyQueryDto propertyQueryDto)
+        {
+            try
+            {
+                var result = await _propertyService.SearchPropertyAsync(propertyQueryDto);
+                var res = new ResponseDto<IEnumerable<ReturnPropertyDto>>(StatusCodes.Status200OK, "Properties found", result);
+
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch (EntityNotFoundException<Property> e)
+            {
+                _logger.LogError(e, "Property not found");
+                var res = new ResponseDto(StatusCodes.Status404NotFound, "Property not found");
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "something went wrong ");
+                var res = new ResponseDto(StatusCodes.Status500InternalServerError, "something went wrong");
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+        }
 
 
     }

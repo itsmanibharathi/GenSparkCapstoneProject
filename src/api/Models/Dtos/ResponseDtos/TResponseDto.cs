@@ -8,7 +8,7 @@
         /// <summary>
         /// ResponseDto Constructor
         /// </summary>
-        public ResponseDto()
+        public ResponseDto(int status200OK)
         {
             StatusCode = 200;
             Message = "Success";

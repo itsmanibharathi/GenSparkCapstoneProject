@@ -1,6 +1,7 @@
 ﻿using api.Contexts;
 using api.Exceptions;
 using api.Models;
+using api.Models.Dtos.PropertyDtos;
 using api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +44,30 @@ namespace api.Repositories
                 throw new UnableToDoActionException("Unable to get Property", e);
             }
 
+        }
+
+        public async Task<IEnumerable<Property>> SearchPropertyAsync(PropertyQueryDto propertyQueryDto)
+        {
+            try
+            {
+                var res= await _context
+                    .Properties
+                    .Include(x => x.Amenities)
+                    .Include(x => x.MediaFiles)
+                    .Include(x => x.Land)
+                    .Include(x => x.Home)
+                    .ToListAsync();
+                return res;
+                //throw new EntityNotFoundException<Property>();
+            }
+            catch (EntityNotFoundException<Property>)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new UnableToDoActionException("Unable to search property", e);
+            }
         }
     }
 }
