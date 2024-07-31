@@ -58,8 +58,8 @@ namespace api.Controllers.PropertyControllers
         {
             try
             {
-                getPropertyDto.UserId = int.Parse(User.FindFirst("Id").Value);
-                var result = await _propertyService.CreateAsync(getPropertyDto);
+                int userId = int.Parse(User.FindFirst("Id").Value);
+                var result = await _propertyService.CreateAsync(userId, getPropertyDto);
                 var res = new ResponseDto<ReturnPropertyDto>(StatusCodes.Status201Created, "Property created successfully", result);
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }
@@ -93,6 +93,7 @@ namespace api.Controllers.PropertyControllers
                     var r = new ResponseDto(StatusCodes.Status403Forbidden, "You are not allowed to update this property");
                     return StatusCode(statusCode: r.StatusCode, value: r);
                 }
+
                 var result = await _propertyService.UpdateAsync(editPropertyDto);
 
                 var res = new ResponseDto<ReturnPropertyDto>(StatusCodes.Status200OK, "Property updated successfully", result);

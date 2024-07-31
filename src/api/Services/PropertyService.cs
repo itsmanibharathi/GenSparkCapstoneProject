@@ -10,18 +10,23 @@ namespace api.Services
     public class PropertyService : IPropertyService
     {
         private readonly IPropertyRepository _propertyRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public PropertyService(IPropertyRepository propertyRepository, IMapper mapper)
+        public PropertyService(IPropertyRepository propertyRepository,IUserRepository userRepository, IMapper mapper)
         {
             _propertyRepository = propertyRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
-        public async Task<ReturnPropertyDto> CreateAsync(CreatePropertyDto getProperityDto)
+        public async Task<ReturnPropertyDto> CreateAsync(int userId,CreatePropertyDto getProperityDto)
         {
             try
             {
+
                 var property = _mapper.Map<Property>(getProperityDto);
+                property.User = await _userRepository.GetAsync(userId);
+                property.User.IsOwner = true;
                 await _propertyRepository.AddAsync(property);
                 return _mapper.Map<ReturnPropertyDto>(property);
             }

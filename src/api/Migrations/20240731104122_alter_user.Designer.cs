@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Contexts;
 
@@ -11,9 +12,10 @@ using api.Contexts;
 namespace api.Migrations
 {
     [DbContext(typeof(DbSql))]
-    partial class DbSqlModelSnapshot : ModelSnapshot
+    [Migration("20240731104122_alter_user")]
+    partial class alter_user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,9 +232,6 @@ namespace api.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsOwner")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
@@ -255,6 +254,9 @@ namespace api.Migrations
 
                     b.Property<string>("UserProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("isOwner")
+                        .HasColumnType("bit");
 
                     b.HasKey("UserId");
 

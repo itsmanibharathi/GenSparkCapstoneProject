@@ -10,6 +10,7 @@ namespace api.Models
         public string UserEmail { get; set; }
         public string? UserPhoneNumber { get; set; }
         public string? UserProfileImageUrl { get; set; }
+        public bool? IsOwner { get; set; } = false;
         public bool IsActive { get; set; } = false;
         public bool IsVerified { get; set; } = false;
         public string? TeneantVerificationCode { get; set; }

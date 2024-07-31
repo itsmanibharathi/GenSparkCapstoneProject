@@ -6,7 +6,7 @@ namespace api.Services.Interfaces
     {
         public Task<ReturnPropertyDto> GetAsync(int id);
         public Task<IEnumerable<ReturnPropertyDto>> SearchPropertyAsync(PropertyQueryDto propertyQueryDto);
-        public Task<ReturnPropertyDto> CreateAsync(CreatePropertyDto getProperityDto);
+        public Task<ReturnPropertyDto> CreateAsync(int userId, CreatePropertyDto getProperityDto);
         public Task<ReturnPropertyDto> UpdateAsync(EditPropertyDto editPropertyDto);
     }
 }
