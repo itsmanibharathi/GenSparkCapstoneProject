@@ -76,7 +76,10 @@ namespace api.Services
                     User = _mapper.Map<User>(getUserRegisterDto),
                     Password = _passwordHashService.Hash(getUserRegisterDto.Password)
                 };
-                userAuth.User.UserVerify.Token = Guid.NewGuid().ToString();
+                userAuth.User.UserVerify = new UserVerify
+                {
+                    Token = Guid.NewGuid().ToString()
+                };
                 var res = await _userAuthRepository.AddAsync(userAuth);
                 await _mailService.Send(userAuth.User.UserEmail, "Activate your account", $"Click <a href='http://localhost:3000/user/Verify?id={userAuth.User.UserVerify.Id}&token={userAuth.User.UserVerify.Token}'>here</a> to activate your account");
                 return _mapper.Map<ReturnUserRegisterDto>(res.User);

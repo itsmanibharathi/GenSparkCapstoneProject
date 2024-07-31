@@ -2,6 +2,7 @@
 using api.Models;
 using api.Models.Dtos.ResponseDtos;
 using api.Models.Dtos.UserDtos;
+using api.Services;
 using api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,12 @@ namespace api.Controllers.UserControllers
     [ApiController]
     public class UserVerifyController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUserVerifyService _userVerifyService;
         private readonly ILogger<UserVerifyController> _logger;
 
-        public UserVerifyController(IUserService userService, ILogger<UserVerifyController> logger)
+        public UserVerifyController(IUserVerifyService userVerifyService, ILogger<UserVerifyController> logger)
         {
-            _userService = userService;
+            _userVerifyService = userVerifyService;
             _logger = logger;
         }
 
@@ -27,7 +28,7 @@ namespace api.Controllers.UserControllers
             try
             {
 
-                var result = await _userService.Activation(id, token);
+                var result = await _userVerifyService.VertifyUserAsync(id, token);
                 var res = new ResponseDto(StatusCodes.Status200OK,result);
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }

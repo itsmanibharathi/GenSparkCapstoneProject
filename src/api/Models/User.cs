@@ -11,7 +11,6 @@ namespace api.Models
         public string? UserPhoneNumber { get; set; }
         public string? UserProfileImageUrl { get; set; }
         public bool IsActive { get; set; } = false;
-        public string? ActivationToken { get; set; }
         public bool IsVerified { get; set; } = false;
         public string? TeneantVerificationCode { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;

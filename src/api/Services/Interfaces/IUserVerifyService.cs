@@ -2,6 +2,6 @@
 {
     public interface IUserVerifyService
     {
-        public Task<string> VertifyUser(int id, string token);
+        public Task<string> VertifyUserAsync(int id, string token);
     }
 }

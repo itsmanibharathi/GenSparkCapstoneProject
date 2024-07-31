@@ -17,7 +17,7 @@ namespace api.Services
             _userRepository = userRepository;
 
         }
-        public async Task<string> VertifyUser(int id, string token)
+        public async Task<string> VertifyUserAsync(int id, string token)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace api.Services
                 }
                 if (userVerify.Token == token)
                 {
-                    userVerify.Token = null;
+                    userVerify.Token = "";
                     userVerify.UserVerifyStatus = UserVerifyStatus.Verified;
                     userVerify.User.IsActive = true;
                     await _userVerifyRepository.UpdateAsync(userVerify);
