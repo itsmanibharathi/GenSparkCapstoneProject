@@ -7,9 +7,14 @@
             </div>
 
             <!-- Right Side -->
-            <div class="md:w-1/2 p-10 bg-gray-50 rounded-r-lg">
+            <div class="relative md:w-1/2 p-10 bg-gray-50 rounded-r-lg">
                 <h3 class="text-2xl font-bold mb-4">Start posting your property</h3>
                 <form id="propertyForm">
+                    <button
+                        class="absolute top-0 right-0 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        id="refreshForm"> <i class="fas fa-sync-alt"></i>
+
+                    </button>
                     <div class="mb-4">
                         <label class="block text-gray-700 font-bold">Add Basic Details</label>
                         <p class="text-gray-700 required">It is for</p>
@@ -17,7 +22,7 @@
                             <select class="border border-gray-300 rounded px-4 py-2 w-full mr-2" id="type" name="type"
                                 required>
                                 <option value="">Select Type</option>"
-                                <option value="Buy">Buy</option>
+                                <option value="Sale">Sale</option>
                                 <option value="Rent">Rent</option>
                                 <option value="Lease">Lease</option>
                             </select>
@@ -28,7 +33,7 @@
                             <select class="border border-gray-300 rounded px-4 py-2 w-full mr-2" id="category"
                                 name="category" required>
                                 <option value="">Select Category</option>"
-                                <option value="House">House</option>
+                                <option value="Home">Home</option>
                                 <option value="Land">Land</option>
                             </select>
                         </div>

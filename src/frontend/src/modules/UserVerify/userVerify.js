@@ -9,7 +9,7 @@ const loaduserVerifyCallback = (query, api, token) => {
             .then(response => {
                 $('#user-verify').html(response.message);
                 showAlert(response.message, 'success');
-                loadRoutes('/login');
+                loadRoutes('/auth');
             })
             .catch(error => {
                 $('#user-verify').html(error.message);

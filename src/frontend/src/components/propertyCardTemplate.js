@@ -13,7 +13,7 @@ const propertyCardTemplate = (property) => {
                         <div class="p-4">
                             <h2 class="text-xl font-semibold">${property.Title} <span class="${property.Category}">${property.Category} </span> </h2> 
                             <p class="text-gray-600">${property.Description}</p>
-                            <p class="text-gray-800 font-bold">$${property.Price.toLocaleString()}</p>
+                            <p class="text-gray-800 font-bold">$${property.Price}</p>
                             <p class="text-gray-600">${property.Street}, ${property.City}, ${property.State}, ${property.Country}</p>
                             <p class="text-gray-500">${property.ZipCode}</p>
                             <p class="text-gray-500">${property.Status}</p>

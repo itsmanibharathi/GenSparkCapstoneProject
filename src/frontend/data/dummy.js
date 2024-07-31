@@ -1,4 +1,4 @@
-export const property = [
+export const properties = [
     {
         PropertyId: 1,
         Title: "Beautiful Family Home",
