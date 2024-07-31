@@ -3,7 +3,7 @@ import authPage from './auth.html';
 import { signInPage, signUpPage } from '../../Services/authLayoutService.js';
 import showAlert from '../../Services/alertService.js';
 import loadRoutes from '../../Services/routerService.js';
-const loadAuthCallback = (api, token) => {
+const loadAuthCallback = (query, api, token) => {
     console.log('Loading Auth Callback');
     $('#signUpPage').on('click', signUpPage);
     $('#signInPage').on('click', signInPage);
@@ -89,7 +89,7 @@ const loadAuthCallback = (api, token) => {
             })
             .catch((err) => {
                 console.log(err);
-                showAlert(res.message, 'error');
+                showAlert(err.message, 'error');
             });
     });
 }

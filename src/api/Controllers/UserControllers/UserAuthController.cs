@@ -6,7 +6,7 @@ using api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers.UserController
+namespace api.Controllers.UserControllers
 {
     [Route("user/auth")]
     [ApiController]

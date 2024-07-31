@@ -6,26 +6,27 @@ using api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers.UserController
+namespace api.Controllers.UserControllers
 {
-    [Route("user/activate")]
+    [Route("user/verify")]
     [ApiController]
-    public class UserActivationController : ControllerBase
+    public class UserVerifyController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ILogger<UserActivationController> _logger;
+        private readonly ILogger<UserVerifyController> _logger;
 
-        public UserActivationController(IUserService userService, ILogger<UserActivationController> logger)
+        public UserVerifyController(IUserService userService, ILogger<UserVerifyController> logger)
         {
             _userService = userService;
             _logger = logger;
         }
 
-        [HttpPut()]
-        public async Task<IActionResult> ActivateUser([FromQuery] int id, string token)
+        [HttpPut("{id}/{token}")]
+        public async Task<IActionResult> ActivateUser( int id, string token)
         {
             try
             {
+
                 var result = await _userService.Activation(id, token);
                 var res = new ResponseDto(StatusCodes.Status200OK,result);
                 return StatusCode(statusCode: res.StatusCode, value: res);

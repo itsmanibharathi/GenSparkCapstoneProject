@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers.UserController
+namespace api.Controllers.UserControllers
 {
     [Authorize(Policy = "UserPolicy")]
     [Route("user")]
@@ -50,7 +50,7 @@ namespace api.Controllers.UserController
         }
 
         [HttpPut()]
-        public async Task<IActionResult> EditUser([FromForm] GetUserEditDto getUserEditDto)
+        public async Task<IActionResult> EditUser(GetUserEditDto getUserEditDto)
         {
             try
             {

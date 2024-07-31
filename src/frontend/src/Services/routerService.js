@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $, { queue } from 'jquery';
 import Page404 from '../components/404.html';
 import log from '../utility/loglevel.js';
 import Footer from '../components/footer.html';
@@ -14,8 +14,9 @@ import loadComponent from './loadComponent.js';
 import { homePage, loadHomeCallback } from '../modules/Home/home.js';
 import { authPage, loadAuthCallback } from '../modules/Auth/auth.js';
 import { postPropertyPage, loadPostPropertyCallback } from '../modules/PostProperty/postProperty.js';
+import { editPropertyPage, loadEditPropertyCallback } from '../modules/EditProperty/editProperty.js';
 import { profilePage, loadProfileCallback } from '../modules/Profile/profile.js';
-import { verificationPage, loadVerificationCallback } from '../modules/Verification/verification.js';
+import { userVerifyPage, loaduserVerifyCallback } from '../modules/UserVerify/userVerify.js';
 
 
 const token = new jwtService('User');
@@ -25,16 +26,36 @@ const api = new apiService(process.env.API_URL, token.get());
 const routes = [
     { path: '/', component: homePage, callback: loadHomeCallback },
     { path: '/auth', component: authPage, callback: loadAuthCallback },
-    { path: '/postproperty', component: postPropertyPage, callback: loadPostPropertyCallback },
+    { path: '/property/post', component: postPropertyPage, callback: loadPostPropertyCallback },
+    { path: '/property/edit', component: editPropertyPage, callback: loadEditPropertyCallback },
     { path: '/profile', component: profilePage, callback: loadProfileCallback },
-    { path: '/verification', component: verificationPage, callback: loadVerificationCallback }
+    { path: '/user/verify', component: userVerifyPage, callback: loaduserVerifyCallback }
 ];
 
-const loadRoutes = (path) => {
-    path = path || window.location.pathname.toLowerCase();
-    path = path === '/' ? '/' : path.replace(/\/$/, '');
-    log.info('path:', path);
 
+
+const loadRoutes = (path, query) => {
+    if (path) {
+        log.info('path:', path);
+        const newUrl = new URL(window.location.href);
+        newUrl.pathname = path;
+        newUrl.search = '';
+        window.history.pushState({}, '', newUrl.href)
+    }
+    else {
+        path = window.location.pathname.toLowerCase();
+        path = path === '/' ? '/' : path.replace(/\/$/, '');
+
+        query = window.location.search;
+        query = query === '' ? '' : query.replace(/^\?/, '');
+        query = query === '' ? '' : query.split('&').reduce((acc, item) => {
+            const [key, value] = item.split('=');
+            acc[key] = value;
+            return acc;
+        }, {});
+    }
+    log.info('path:', path);
+    log.info('query:', query);
 
     if (path === '/logout') {
         token.remove();
@@ -49,7 +70,7 @@ const loadRoutes = (path) => {
         $('#404').html("");
         $('#header-placeholder').html(headerTemplate(token));
         loadComponent('#footer-placeholder', Footer);
-        loadComponent('#body-placeholder', route.component, route.callback, api, token);
+        loadComponent('#body-placeholder', route.component, route.callback, query, api, token, localStorage);
     } else {
         loadComponent("#404", Page404);
         $('#header-placeholder').html("");
@@ -57,12 +78,9 @@ const loadRoutes = (path) => {
     }
 };
 
-$(document).ready(() => {
-    loadRoutes();
 
-    $(window).on('popstate', () => {
-        loadRoutes();
-    });
+$(window).on('popstate', () => {
+    loadRoutes();
 });
 
 $(document).on('click', 'a', function (e) {

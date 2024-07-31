@@ -15,15 +15,20 @@ namespace api.Models
         public string? State { get; set; }
         public string? Country { get; set; }
         public string? ZipCode { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public string? Latitude { get; set; }
+        public string? Longitude { get; set; }
         public PropertyCategory Category { get; set; }
         public PropertyType Type { get; set; }
-        public int OwnerId { get; set; }
-        public PropertyStatus Status { get; set; }
+        public int UserId { get; set; }
+        public PropertyStatus? Status { get; set; }
+        public DateTime CreateAt { get; set; } = DateTime.Now;
+        public DateTime? UpdateAt { get; set; }
 
         // Navigation properties
-        public ICollection<Amenity>? Amenities { get; set; }
-        public ICollection<MediaFile>? MediaFiles { get; set; }
+        public User? User { get; set; }
+        public IEnumerable<PropertyAmenity>? Amenities { get; set; }
+        public IEnumerable<PropertyMediaFile>? MediaFiles { get; set; }
+        public PropertyHome? Home { get; set; }
+        public PropertyLand? Land { get; set; }
     }
 }

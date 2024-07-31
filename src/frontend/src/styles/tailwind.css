@@ -61,30 +61,24 @@
     @apply text-button;
 }
 
-
-
-.create{
-    @apply bg-gray-400 text-white;
+.Home{
+    @apply bg-blue-500 text-white;
 }
-
-.place{
-    @apply bg-blue-600 text-white;
-}
-
-.preparing{
-    @apply bg-yellow-400 text-white;
-}
-
-
-
-.prepared{
+.Land{
     @apply bg-green-500 text-white;
 }
 
-.pickedup{
-    @apply bg-purple-600 text-white;
+.Rent{
+    @apply bg-yellow-500 text-white;
 }
 
+.Sale{
+    @apply bg-red-500 text-white;
+}
+
+.lease{
+    @apply bg-purple-500 text-white;
+}
 
 
 
@@ -96,4 +90,25 @@
 
 .cancelled{
     @apply bg-red-600 text-white;
+}
+
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+.required{
+    @apply after:content-['*'] after:text-red-500 after:font-bold ;
+}
+
+.carousel img {
+    display: none;
+}
+
+.carousel img.active {
+    display: block;
 }

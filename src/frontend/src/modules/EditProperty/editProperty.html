@@ -1,0 +1,200 @@
+<div class="bg-gray-100 p-10">
+    <div class="container mx-auto bg-white p-8 rounded shadow-md">
+        <h2 class="text-2xl font-bold mb-5">Property Form</h2>
+        <div class="mb-4">
+            <div class="flex flex-col justify-between md:flex-row">
+                <div class="flex items-center">
+                    <div class="mr-2">Step <span id="currentStep">1</span> of 4</div>
+                    <div class="w-64 bg-gray-300 h-2 rounded-full overflow-hidden">
+                        <div id="progressBar" class="bg-blue-500 h-full" style="width: 25%;"></div>
+                    </div>
+                </div>
+                <div class="flex flex-row justify-between flex-grow md:justify-end gap-2">
+                    <button type="button" class="prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded "
+                        onclick="prevStep()">
+                        <i class="m-auto fa-solid fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="nextBtn bg-blue-500 text-white px-4 py-2 rounded self-end ml-auto"
+                        onclick="nextStep()">
+                        Next <i class="m-auto fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Step 1: Basic Info -->
+        <div id="basicinfo">
+            <form id="basicinfoForm">
+                <div class="mb-4">
+                    <input type="hidden" name="propertyId" id="propertyId" class="w-full px-3 py-2 border rounded">
+                    <input type="hidden" name="userId" id="userId" class="w-full px-3 py-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-700 required">Title</label>
+                    <input type="text" name="title" id="title" class="w-full px-3 py-2 border rounded" required>
+                    <span class="text-red-500 text-xs italic"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700">Description</label>
+                    <textarea name="description" id="description" class="w-full px-3 py-2 border rounded"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="price" class="block text-gray-700 required">Price</label>
+                    <input type="number" name="price" id="price" class="w-full px-3 py-2 border rounded" required>
+                    <span class="text-red-500 text-xs italic"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="landmark" class="block text-gray-700">Landmark</label>
+                    <input type="text" name="landmark" id="landmark" class="w-full px-3 py-2 border rounded">
+
+                </div>
+
+                <div class="mb-4">
+                    <label for="street" class="block text-gray-700 required">Street</label>
+                    <input type="text" name="street" id="street" class="w-full px-3 py-2 border rounded" required>
+                    <span class="text-red-500 text-xs italic"></span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label for="city" class="block text-gray-700 required">City</label>
+                        <input type="text" name="city" id="city" class="w-full px-3 py-2 border rounded" required>
+                        <span class="text-red-500 text-xs italic"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="state" class="block text-gray-700 required">State</label>
+                        <input type="text" name="state" id="state" class="w-full px-3 py-2 border rounded" required>
+                        <span class="text-red-500 text-xs italic"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="country" class="block text-gray-700 required">Country</label>
+                        <input type="text" name="country" id="country" class="w-full px-3 py-2 border rounded" required>
+                        <span class="text-red-500 text-xs italic"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="zipCode" class="block text-gray-700 required">Zip Code</label>
+                        <input type="text" name="zipCode" id="zipCode" class="w-full px-3 py-2 border rounded" required>
+                        <span class="text-red-500 text-xs italic"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="latitude" class="block text-gray-700">Latitude</label>
+                        <input type="text" name="latitude" id="latitude" class="w-full px-3 py-2 border rounded">
+                        <span class="text-red-500 text-xs italic"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="longitude" class="block text-gray-700">Longitude</label>
+                        <input type="text" name="longitude" id="longitude" class="w-full px-3 py-2 border rounded">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="category" class="block text-gray-700 ">Category</label>
+                    <select name="category" id="category"
+                        class="w-full px-3 py-2 border rounded hover:cursor-not-allowed" disabled>
+                        <option value="Home">Home</option>
+                        <option value="Land">Land</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="type" class="block text-gray-700">Type</label>
+                    <select name="type" id="type" class="w-full px-3 py-2 border rounded hover:cursor-not-allowed"
+                        disabled>
+                        <option value="Rent">Rent</option>
+                        <option value="Sale">Sale</option>
+                        <option value="Lease">Lease</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="status" class="block text-gray-700">Status</label>
+                    <select name="status" id="status" class="w-full px-3 py-2 border rounded">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Sold">Sold</option>
+                        <option value="Rented">Rented</option>
+                    </select>
+                </div>
+
+
+            </form>
+        </div>
+
+        <!-- Step 2: Specific info -->
+        <div id="specificinfo">
+            <div id="categoryDetails" class="mb-4">
+                <!-- Dynamic Content Based on Category Selection -->
+            </div>
+        </div>
+
+        <!-- Step 3: Amenities -->
+        <div id="amenitiesinfo">
+            <div class="flex justify-between text-lg font-semibold mb-4">
+                <h3>Amenities</h3>
+                <button type="button" id="add-amenity" class="hover:text-secondary">
+                    <i class="fa-solid fa-house-flag"></i> New Amenity
+                </button>
+            </div>
+            <div class="overflow-x-auto mt-4">
+                <table class="table-auto w-full">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="px-4 py-2  required" data-sort="name">Amenity Name</th>
+                            <th class="px-4 py-2  required" data-sort="description">Amenity Description
+                            </th>
+                            <th class="px-4 py-2 " data-sort="isPaid">Is Paid</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="amenities">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Step 4: Media Files -->
+        <div id="mediafileinfo">
+            <div class="flex justify-between text-lg font-semibold mb-4">
+                <h3>Media Files</h3>
+                <button type="button" id="add-media" class="hover:text-secondary">
+                    <i class="fa-solid fa-file-image"></i> New Media File
+                </button>
+            </div>
+            <div class="overflow-x-auto mt-4">
+                <table class="table-auto w-full">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="px-4 py-2 required">Title</th>
+                            <th class="px-4 py-2 required">Image</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mediaFiles">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex flex-row justify-between flex-grow md:justify-end gap-2">
+            <button type="button" class="down-control prevBtn hidden bg-gray-500 text-white px-4 py-2 rounded " onclick="prevStep()">
+                <i class="m-auto fa-solid fa-arrow-left"></i> Previous
+            </button>
+            <button type="button" class="down-control nextBtn bg-blue-500 text-white px-4 py-2 rounded self-end ml-auto"
+                onclick="nextStep()">
+                Next <i class="m-auto fa-solid fa-arrow-right"></i>
+            </button>
+            <button class="submitBtn hidden bg-green-500 text-white px-4 py-2 rounded"
+                id="submitBtn">Submit</button>
+        </div>
+
+    </div>
+
+</div>
