@@ -36,16 +36,5 @@ jobs:
         run: |
           docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest ./frontend
           docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest
-
-      - name: Get the version tag
-        id: get_version_tag
-        run: |
-            # Extract the version tag from the GITHUB_REF environment variable
-            VERSION_TAG=${GITHUB_REF#refs/tags/}
-            echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_ENV
-        
-      - name: Display the version tag
-        run: |
-            echo "Version tag: $VERSION_TAG"
   
           
