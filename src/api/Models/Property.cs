@@ -30,5 +30,7 @@ namespace api.Models
         public IEnumerable<PropertyMediaFile>? MediaFiles { get; set; }
         public PropertyHome? Home { get; set; }
         public PropertyLand? Land { get; set; }
+        public ICollection<UserPropertyInteraction>? UserPropertyInteractions { get; set; }
+
     }
 }

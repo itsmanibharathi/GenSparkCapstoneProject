@@ -22,5 +22,7 @@ namespace api.Models
         public UserAuth UserAuth { get; internal set; }
         public UserVerify? UserVerify { get; internal set; }
         public ICollection<UserSubscriptionPlan>? UserSubscriptionPlan { get; set; }
+        public ICollection<UserPropertyInteraction>? UserPropertyInteractions { get; set; }
+
     }
 }

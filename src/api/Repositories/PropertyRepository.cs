@@ -69,5 +69,36 @@ namespace api.Repositories
                 throw new UnableToDoActionException("Unable to search property", e);
             }
         }
+
+        public async Task<Property> GetWithOwnerInfoAsync(int id)
+        {
+            try
+            {
+                var property = await _context
+                    .Properties
+                    .Include(x => x.User)
+                    .Include(x => x.UserPropertyInteractions)
+                    .SingleOrDefaultAsync(x => x.PropertyId == id);
+
+                if (property == null)
+                {
+                    throw new EntityNotFoundException<Property>($"No property in the database with id {id}");
+                }
+
+                return property;
+            }
+            catch (EntityNotFoundException<Property>)
+            {
+                throw;
+            }
+            catch (InvalidOperationException)
+            {
+                throw new EntityNotFoundException<Property>($"No property in the database with id {id}");
+            }
+            catch (Exception e)
+            {
+                throw new UnableToDoActionException("Unable to get Property", e);
+            }
+        }
     }
 }
