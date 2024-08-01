@@ -9,6 +9,7 @@ import jwtService from './jwtService.js';
 import localStorageService from './localStorageService.js';
 import showAlert from './alertService.js';
 
+
 import loadComponent from './loadComponent.js';
 
 import { homePage, loadHomeCallback } from '../modules/Home/home.js';
@@ -17,7 +18,7 @@ import { postPropertyPage, loadPostPropertyCallback } from '../modules/PostPrope
 import { editPropertyPage, loadEditPropertyCallback } from '../modules/EditProperty/editProperty.js';
 import { profilePage, loadProfileCallback } from '../modules/Profile/profile.js';
 import { userVerifyPage, loaduserVerifyCallback } from '../modules/UserVerify/userVerify.js';
-
+import { subscriptionPlanPage, loadSubscriptionPlanCallback } from '../modules/SubscriptionPlan/subscriptionPlan.js';
 
 const token = new jwtService('User');
 const localStorage = new localStorageService('User');
@@ -29,7 +30,8 @@ const routes = [
     { path: '/property/post', component: postPropertyPage, callback: loadPostPropertyCallback },
     { path: '/property/edit', component: editPropertyPage, callback: loadEditPropertyCallback },
     { path: '/profile', component: profilePage, callback: loadProfileCallback },
-    { path: '/user/verify', component: userVerifyPage, callback: loaduserVerifyCallback }
+    { path: '/user/verify', component: userVerifyPage, callback: loaduserVerifyCallback },
+    { path: '/subscription/plan', component: subscriptionPlanPage, callback: loadSubscriptionPlanCallback }
 ];
 
 
