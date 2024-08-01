@@ -62,8 +62,14 @@ const propertyCardTemplate = (property) => {
                     <span class="text-sm">${highlights}</span>
                 </div>
                 <div class="mt-4 flex justify-between items-center">
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded"><i class="fas fa-phone-alt"></i> View Number</button>
-                    <button class="bg-green-500 text-white px-4 py-2 rounded"><i class="fas fa-envelope"></i> Contact</button>
+                    <button property-id="${property.propertyId}" class="viewOwnerInfo bg-blue-500 text-white px-4 py-2 rounded"><i class="fas fa-phone-alt"></i> View Number</button>
+                    <button property-id="${property.propertyId}" class="ContactMe bg-green-500 text-white px-4 py-2 rounded"><i class="fas fa-envelope"></i> Contact Me</button>
+                </div>
+                <div class="ownerInfo hidden">
+                    <span class="text-sm font-semibold">Property Owner:</span>
+                    <span class="ownerName text-sm"></span>
+                    <span class="ownerEmail text-sm"></span>
+                    <span class="ownerPhoneNumber text-sm"></span>
                 </div>
                 <div class="text-sm text-gray-500 mt-2"><i class="fas fa-users"></i> 2 people already contacted this week</div>
             </div>

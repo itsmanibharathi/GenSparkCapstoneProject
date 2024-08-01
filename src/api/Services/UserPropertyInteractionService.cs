@@ -94,7 +94,14 @@ namespace api.Services
                     PropertyId = propertyId,
                     InteractionType = PropertyInteractionsType.ViewOwnerInfo
                 };
-                await _userPropertyInteractionRepository.AddAsync(userPropertyInteraction);
+                try
+                {
+                    await _userPropertyInteractionRepository.AddAsync(userPropertyInteraction);
+                }
+                catch (EntityAlreadyExistsException<UserPropertyInteraction>)
+                {
+                    return _mapper.Map<BuyerViewOwnerInfoDto>(property.User);
+                }
                 var to = property.User.UserEmail;
                 var subject = "Some One View your Post";
                 var body = $"You have been contacted by {user.UserEmail}";
