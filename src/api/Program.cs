@@ -129,6 +129,9 @@ namespace api
             builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
             builder.Services.AddScoped<IPropertyMediaFileRepository, PropertyMediaFileRepository>();
             builder.Services.AddScoped<IPropertyAmenityRepository, PropertyAmenityRepository>();
+
+            builder.Services.AddScoped<IUserSubscriptionPlanRepository, UserSubscriptionPlanRepository>();
+            builder.Services.AddScoped<ISubscriptionPlanRepository, SubscriptionPlanRepository>();
             #endregion
 
             #region Services
@@ -143,6 +146,8 @@ namespace api
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<IPropertyMediaFileService, PropertyMediaFileService>();
             builder.Services.AddScoped<IPropertyAmenityService, PropertyAmenityService>();
+            builder.Services.AddScoped<IUserSubscriptionPlanService, UserSubscriptionPlanService>();
+            builder.Services.AddScoped<ISubscriptionPlanService, SubscriptionPlanService>();
             #endregion
 
             #region CORS

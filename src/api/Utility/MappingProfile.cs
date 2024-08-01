@@ -2,6 +2,7 @@
 using api.Models.Dtos.PropertyAmenityDtos;
 using api.Models.Dtos.PropertyDtos;
 using api.Models.Dtos.PropertyMediaFile;
+using api.Models.Dtos.SubscriptionDto;
 using api.Models.Dtos.UserDtos;
 using AutoMapper;
 
@@ -40,6 +41,9 @@ namespace api.Utility
 
             CreateMap<EditPropertyMediaFileDto, PropertyMediaFile>();
             CreateMap<PropertyMediaFile, ReturnPropertyMediaFileDto>();
+
+
+            CreateMap<SubscriptionPlan, ReturnSubscriptionPlanDto>();
         }
     }
 }

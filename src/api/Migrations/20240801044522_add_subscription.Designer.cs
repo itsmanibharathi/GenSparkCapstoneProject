@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Contexts;
 
@@ -11,9 +12,10 @@ using api.Contexts;
 namespace api.Migrations
 {
     [DbContext(typeof(DbSql))]
-    partial class DbSqlModelSnapshot : ModelSnapshot
+    [Migration("20240801044522_add_subscription")]
+    partial class add_subscription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,58 +249,12 @@ namespace api.Migrations
                     b.Property<decimal>("SubscriptionPlanPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("SubscriptionPlanId");
 
                     b.ToTable("SubscriptionPlans", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            SubscriptionPlanId = 101,
-                            CreatedAt = new DateTime(2024, 8, 1, 10, 41, 44, 519, DateTimeKind.Local).AddTicks(5676),
-                            IsActive = true,
-                            SubscriptionPlanDescription = "New User View Contact Subscription Plan",
-                            SubscriptionPlanDuration = 3,
-                            SubscriptionPlanDurationType = 1,
-                            SubscriptionPlanName = "Free Trial On Contact Me",
-                            SubscriptionPlanPrice = 0m
-                        },
-                        new
-                        {
-                            SubscriptionPlanId = 102,
-                            CreatedAt = new DateTime(2024, 8, 1, 10, 41, 44, 519, DateTimeKind.Local).AddTicks(5689),
-                            IsActive = true,
-                            SubscriptionPlanDescription = "View Owner info",
-                            SubscriptionPlanDuration = 2,
-                            SubscriptionPlanDurationType = 0,
-                            SubscriptionPlanName = "Free Trial On View Owner info",
-                            SubscriptionPlanPrice = 0m
-                        },
-                        new
-                        {
-                            SubscriptionPlanId = 103,
-                            CreatedAt = new DateTime(2024, 8, 1, 10, 41, 44, 519, DateTimeKind.Local).AddTicks(5692),
-                            IsActive = true,
-                            SubscriptionPlanDescription = "Share your contact info to the Owner",
-                            SubscriptionPlanDuration = 30,
-                            SubscriptionPlanDurationType = 1,
-                            SubscriptionPlanName = "Contact Me",
-                            SubscriptionPlanPrice = 100m
-                        },
-                        new
-                        {
-                            SubscriptionPlanId = 104,
-                            CreatedAt = new DateTime(2024, 8, 1, 10, 41, 44, 519, DateTimeKind.Local).AddTicks(5738),
-                            IsActive = true,
-                            SubscriptionPlanDescription = "View Owner info for 10 Property",
-                            SubscriptionPlanDuration = 10,
-                            SubscriptionPlanDurationType = 0,
-                            SubscriptionPlanName = "View Owner info",
-                            SubscriptionPlanPrice = 100m
-                        });
                 });
 
             modelBuilder.Entity("api.Models.User", b =>

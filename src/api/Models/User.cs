@@ -21,5 +21,6 @@ namespace api.Models
         public ICollection<Property>? Property { get; set; }
         public UserAuth UserAuth { get; internal set; }
         public UserVerify? UserVerify { get; internal set; }
+        public ICollection<UserSubscriptionPlan>? UserSubscriptionPlan { get; set; }
     }
 }
