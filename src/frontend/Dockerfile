@@ -8,6 +8,9 @@ COPY . .
 
 RUN npm run build
 
+ARG FRONTEND_URL
+ENV FRONTEND_URL=$FRONTEND_URL
+
 ARG API_URL
 ENV API_URL=$API_URL
 
@@ -15,7 +18,7 @@ FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
