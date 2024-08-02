@@ -5,6 +5,7 @@ using api.Models.Dtos.PropertyDtos;
 using api.Repositories.Interfaces;
 using api.Services.Interfaces;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Services
 {
@@ -66,12 +67,31 @@ namespace api.Services
             }
         }
 
-        public async Task<IEnumerable<ReturnPropertyDto>> SearchPropertyAsync(PropertyQueryDto propertyQueryDto)
+        public async Task<IEnumerable<ReturnPropertyDto>> SearchPropertyAsync(int userId, PropertyQueryDto propertyQueryDto)
         {
             try
             {
                 var res= await _propertyRepository.SearchPropertyAsync(propertyQueryDto);
-                return _mapper.Map<IEnumerable<ReturnPropertyDto>>(res);
+
+                if(propertyQueryDto.GetMyProperty)
+                {
+                    res = res.Where(x => x.UserId == userId);
+                }
+                if(propertyQueryDto.SearchQuery != null)
+                {
+                    res = res.Where(x => x.Title.Contains(propertyQueryDto.SearchQuery) || x.Description.Contains(propertyQueryDto.SearchQuery) || x.Landmark.Contains(propertyQueryDto.SearchQuery) || x.City.Contains(propertyQueryDto.SearchQuery) || x.State.Contains(propertyQueryDto.SearchQuery) || x.Country.Contains(propertyQueryDto.SearchQuery));
+                }
+                if(propertyQueryDto.Type != null)
+                {
+                    res = res.Where(x => x.Type == propertyQueryDto.Type);
+                }
+                if (propertyQueryDto.Category != null)
+                {
+                    res = res.Where(x => x.Category == propertyQueryDto.Category);
+                }
+                res.OrderBy(res => res.CreateAt);
+                var result = await res.ToListAsync();
+                return _mapper.Map<IEnumerable<ReturnPropertyDto>>(result);
             }
             catch (EntityNotFoundException<Property>)
             {
@@ -93,7 +113,7 @@ namespace api.Services
                 {
                     await _propertyRepository.AddAsync(property);
                 }
-                return _mapper.Map<IEnumerable<ReturnPropertyDto>>(properties);
+                return _mapper.Map<List<ReturnPropertyDto>>(properties);
             }
             catch (EntityAlreadyExistsException<Property>)
             {

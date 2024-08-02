@@ -44,7 +44,11 @@ namespace api
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    // loop handling
+                    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    //options.JsonSerializerOptions.MaxDepth = 0;
                 });
+        
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 

@@ -46,28 +46,46 @@ namespace api.Repositories
 
         }
 
-        public async Task<IEnumerable<Property>> SearchPropertyAsync(PropertyQueryDto propertyQueryDto)
+        //public async Task<IEnumerable<Property>> SearchPropertyAsync(int userId,PropertyQueryDto propertyQueryDto)
+        //{
+        //    try
+        //    {
+        //        //var query = _context.Properties
+        //        //    .Include(x => x.Amenities)
+        //        //    .Include(x => x.MediaFiles)
+        //        //    .Include(x => x.Land)
+        //        //    .Include(x => x.Home)
+        //        //    .Include(x => x.UserPropertyInteractions)
+        //        //    .ToListAsync();
+
+        //        //if (propertyQueryDto.GetMyProperty == true)
+        //        //{
+        //        //    query = query.Where(x => x.UserId == userId);
+        //        //    return await query.ToListAsync();
+        //        //}
+
+        //        return await _context.Properties.ToListAsync();
+
+        //    }
+        //    catch (EntityNotFoundException<Property>)
+        //    {
+        //        throw;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new UnableToDoActionException("Unable to search property", e);
+        //    }
+        //}
+
+        public async Task<IQueryable<Property>> SearchPropertyAsync(PropertyQueryDto queryDto)
         {
-            try
-            {
-                var res= await _context
-                    .Properties
-                    .Include(x => x.Amenities)
-                    .Include(x => x.MediaFiles)
-                    .Include(x => x.Land)
-                    .Include(x => x.Home)
-                    .ToListAsync();
-                return res;
-                //throw new EntityNotFoundException<Property>();
-            }
-            catch (EntityNotFoundException<Property>)
-            {
-                throw;
-            }
-            catch (Exception e)
-            {
-                throw new UnableToDoActionException("Unable to search property", e);
-            }
+            var query = _context.Set<Property>()
+                    .Include(p => p.Amenities)
+                    .Include(p => p.MediaFiles)
+                    .Include(p => p.Home)
+                    .Include(p => p.Land)
+                    .AsQueryable();
+            return query;
         }
 
         public async Task<Property> GetWithOwnerInfoAsync(int id)

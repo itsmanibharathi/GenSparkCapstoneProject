@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers.PropertyControllers
 {
-    [Authorize(Policy = "UserPolicy")]
     [Route("Property")]
     [ApiController]
     public class PropertyController : ControllerBase
@@ -29,6 +28,7 @@ namespace api.Controllers.PropertyControllers
         
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "UserPolicy")]
         [ProducesResponseType(typeof(Response<ReturnPropertyDto>) , StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseDto), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProperty(int id)
@@ -54,6 +54,7 @@ namespace api.Controllers.PropertyControllers
         }
 
         [HttpPost()]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> CreateProperty(CreatePropertyDto getPropertyDto)
         {
             try
@@ -84,6 +85,7 @@ namespace api.Controllers.PropertyControllers
         }
 
         [HttpPut()]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> UpdateProperty(EditPropertyDto editPropertyDto)
         {
             try
@@ -119,13 +121,15 @@ namespace api.Controllers.PropertyControllers
             }
         }
 
-
+        [Authorize(Policy = "UserPolicy")]
         [HttpGet]
         public async Task<IActionResult> GetProperties([FromQuery] PropertyQueryDto propertyQueryDto)
         {
             try
             {
-                var result = await _propertyService.SearchPropertyAsync(propertyQueryDto);
+                
+                int userId = int.Parse(User.FindFirst("Id").Value);
+                var result = await _propertyService.SearchPropertyAsync(userId, propertyQueryDto);
                 var res = new ResponseDto<IEnumerable<ReturnPropertyDto>>(StatusCodes.Status200OK, "Properties found", result);
 
                 return StatusCode(statusCode: res.StatusCode, value: res);

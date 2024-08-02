@@ -5,7 +5,7 @@ namespace api.Repositories.Interfaces
 {
     public interface IPropertyRepository : IRepository<int,Property>
     {
-        public Task<IEnumerable<Property>> SearchPropertyAsync(PropertyQueryDto propertyQueryDto);
+        public Task<IQueryable<Property>> SearchPropertyAsync( PropertyQueryDto propertyQueryDto);
         public Task<Property> GetWithOwnerInfoAsync(int id);
     }
 }

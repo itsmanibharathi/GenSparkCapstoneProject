@@ -1,6 +1,6 @@
 ﻿using api.Exceptions;
 using api.Models;
-using api.Models.Dtos.IUserPropertyInteractionDto;
+using api.Models.Dtos.UserPropertyInteractionDto;
 using api.Models.Enums;
 using api.Repositories;
 using api.Repositories.Interfaces;

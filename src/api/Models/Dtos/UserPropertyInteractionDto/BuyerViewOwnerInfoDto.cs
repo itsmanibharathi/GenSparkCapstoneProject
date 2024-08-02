@@ -1,4 +1,4 @@
-﻿namespace api.Models.Dtos.IUserPropertyInteractionDto
+﻿namespace api.Models.Dtos.UserPropertyInteractionDto
 {
     public class BuyerViewOwnerInfoDto
     {

@@ -1,4 +1,4 @@
-﻿using api.Models.Dtos.IUserPropertyInteractionDto;
+﻿using api.Models.Dtos.UserPropertyInteractionDto;
 
 namespace api.Services.Interfaces
 {
