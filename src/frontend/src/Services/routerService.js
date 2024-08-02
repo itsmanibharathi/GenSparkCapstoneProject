@@ -38,7 +38,6 @@ const routes = [
 
 const loadRoutes = (path, query) => {
     if (path) {
-        log.info('path:', path);
         const newUrl = new URL(window.location.href);
         newUrl.pathname = path;
         newUrl.search = '';
@@ -61,7 +60,7 @@ const loadRoutes = (path, query) => {
 
     if (path === '/logout') {
         token.remove();
-        localStorage.remove();
+        localStorage.clear();
         showAlert('Logged out successfully', 'success');
         history.replaceState(null, '', '/');
         path = '/';

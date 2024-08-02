@@ -9,7 +9,7 @@ const headerTemplate = (token) => {
                         <p class="text-2xl text-primary font-bold">360area.tech</p>
                     </a>
                 </div>
-                <div class="bg-tertiary  z-50 text-lg nav-links duration-500 md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">
+                <div class="bg-tertiary  z-40 text-lg nav-links duration-500 md:static absolute md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">
                     <ul class="m-auto flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
                         <li><a href="/property/post" class="nav">Post Property</a></li>
                         <li><a href="/subscription/plan" class="nav">Subscription Plan</a></li>
