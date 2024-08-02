@@ -4,7 +4,7 @@ import showAlert from '../../Services/alertService.js';
 import log from '../../utility/loglevel.js';
 import loadRoutes from '../../Services/routerService.js';
 import propertyCategoryTemplate from '../../components/propertyCategoryTemplate.js';
-import propertyAmenityTemplate from '../../components/propertyamenityTemplate.js';
+import propertyAmenityTemplate from '../../components/propertyAmenityTemplate.js';
 import propertyMediFileTemplate from '../../components/propertyMediFileTemplate.js';
 
 const loadEditPropertyCallback = async (query, api, token, localStorage) => {
