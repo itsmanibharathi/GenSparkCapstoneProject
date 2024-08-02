@@ -2,6 +2,7 @@
 using api.Models;
 using api.Models.Dtos.PropertSeedData;
 using api.Models.Dtos.PropertyDtos;
+using api.Models.Enums;
 using api.Repositories.Interfaces;
 using api.Services.Interfaces;
 using AutoMapper;
@@ -76,6 +77,10 @@ namespace api.Services
                 if(propertyQueryDto.GetMyProperty)
                 {
                     res = res.Where(x => x.UserId == userId);
+                }
+                else
+                {
+                    res = res.Where(x => x.Status == PropertyStatus.Active);
                 }
                 if(propertyQueryDto.SearchQuery != null)
                 {

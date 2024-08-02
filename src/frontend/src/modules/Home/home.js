@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import homePage from './home.html';
-import { properties } from '../../../data/dummy.js';
+// import { properties } from '../../../data/dummy.js';
 import showAlert from '../../Services/alertService.js';
 import log from '../../utility/loglevel.js';
 import loadRoutes from '../../Services/routerService.js';
@@ -11,8 +11,6 @@ import propertyCardTemplate from '../../components/propertyCardTemplate.js';
 
 const loadHomeCallback = (query, api, token) => {
     log.info('Home page loaded');
-    log.info("properties", properties);
-
     $('.typeCtrl').on('click', function () {
         $('.typeCtrl').removeClass('type-select');
         $(this).addClass('type-select');
@@ -20,19 +18,39 @@ const loadHomeCallback = (query, api, token) => {
 
     $('#Search-Btn').on('click', async function () {
         var data = {
-            "query": $('#query').val(),
-            "type": $('.typeCtrl.type-select').attr('value'),
-            "Category": $('#Category').val(),
+            "query": $('#query').val() || '',
+            "type": $('.typeCtrl.type-select').attr('value') || '',
+            "category": $('#Category').val() || '',
+            "getMyProperty": false
         }
-        log.info(data);
-        var res = properties.filter(property => property['type'] = data.type || property['category'] == data.Category || property['title'].includes(data.query) || property['description'].includes(data.query) || property['city'].includes(data.query) || property['state'].includes(data.query) || property['country'].includes(data.query));
+        if (data.query == 'Mypost') {
+            data.query = '';
+            data.getMyProperty = true;
+        }
 
+        function serializeQueryParams(obj) {
+            // add key only if value is not empty
+            return Object.keys(obj)
+                .filter(key => obj[key] !== '')
+                .map(key => `${key}=${obj[key]}`)
+                .join('&');
+        }
+        log.info("data", data);
+        var urlQuery = serializeQueryParams(data);
+        log.info("url", `Property?${urlQuery}`);
+        await api.get(`Property?${urlQuery} `)
+            .then((res) => {
+                loadProperties(res.data);
+            })
+            .catch((err) => {
+                showAlert(err.message, 'error');
+            });
         // await api.get('/properties/search', data, token)
-        loadProperties(res);
+        // var res = properties.filter(property => property['type'] = data.type || property['category'] == data.Category || property['title'].includes(data.query) || property['description'].includes(data.query) || property['city'].includes(data.query) || property['state'].includes(data.query) || property['country'].includes(data.query));
     });
     function loadProperties(properties) {
         if (properties == undefined || properties.length == 0) {
-            $('#property-card').append(`<img src="${DataNotFountImg}" alt="No data found" class="w-1/2 mx-auto" />`);
+            $('#property-card').append(`< img src = "${DataNotFountImg}" alt = "No data found" class= "w-1/2 mx-auto" /> `);
             return;
         }
         var propertycard = $('#property-card');
@@ -49,11 +67,8 @@ const loadHomeCallback = (query, api, token) => {
             $('.typeCtrl.hidden').removeClass('hidden');
             $('.typeCtrl.type-select').removeClass('type-select');
             $('.typeCtrl[value="Mypost"]').addClass('type-select');
-            loadProperties(properties.filter(property => property.userId == token.select('Id')));
         }
-        else {
-            loadProperties();
-        }
+        $('#Search-Btn').trigger('click');
     }
     onLoadHome();
 
@@ -80,13 +95,13 @@ const loadHomeCallback = (query, api, token) => {
     });
 
     $(document).on('click', '.viewOwnerInfo', async function () {
-        await api.get(`property/Interaction/viewOwnerInfo/${$(this).attr('property-id')}`)
+        await api.get(`property/Interaction/viewOwnerInfo/${$(this).attr('property-id')} `)
             .then((res) => {
                 var ownerInfoContainer = $(this).closest('.mt-4').siblings('.ownerInfo');
                 ownerInfoContainer.toggleClass('hidden');
-                ownerInfoContainer.find('.ownerName').text(res.userName);
-                ownerInfoContainer.find('.ownerEmail').text(res.userEmail);
-                ownerInfoContainer.find('.ownerPhoneNumber').text(res.userPhoneNumber);
+                ownerInfoContainer.find('.ownerName').text(res.data.userName);
+                ownerInfoContainer.find('.ownerEmail').text(res.data.userEmail);
+                ownerInfoContainer.find('.ownerPhoneNumber').text(res.data.userPhoneNumber);
             })
             .catch((err) => {
                 showAlert(err.message, 'error');
@@ -94,7 +109,7 @@ const loadHomeCallback = (query, api, token) => {
     });
 
     $(document).on('click', '.ContactMe', async function () {
-        await api.put(`property/Interaction/contact/${$(this).attr('property-id')}`)
+        await api.put(`property/Interaction/contact/${$(this).attr('property-id')} `)
             .then((res) => {
                 showAlert(res.message, 'success');
             })

@@ -95,7 +95,7 @@ namespace api.Controllers.PropertyControllers
             catch (InvalidOperationException ex)
             {
                 _logger.LogError(ex, "Error in UserPropertyInteractionController Intraction");
-                var res = new ResponseDto(StatusCodes.Status400BadRequest, "Unable to contact owner");
+                var res = new ResponseDto(StatusCodes.Status400BadRequest,ex.Message);
                 return StatusCode(res.StatusCode, res);
             }
             catch (EntityNotFoundException<User> ex)

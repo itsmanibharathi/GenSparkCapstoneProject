@@ -58,10 +58,14 @@ const headerTemplate = (token) => {
         document.addEventListener('click', function(event) {
             const profileMenu = document.getElementById('profile-menu');
             const profileIcon = document.querySelector('img');
-            
-            if (!profileMenu.contains(event.target) && event.target !== profileIcon) {
-                profileMenu.classList.add('hidden');
+            try{
+                if (!profileMenu.contains(event.target) && event.target !== profileIcon) {
+                    profileMenu.classList.add('hidden');
+                }
             }
+            catch(err){
+            }
+
         });
         </script>`
     );

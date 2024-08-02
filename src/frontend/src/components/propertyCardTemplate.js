@@ -1,7 +1,7 @@
 const propertyCardTemplate = (property) => {
     const imagesHtml = property['mediaFiles'].map((mediaFile, index) => `
         <div class="carousel-item ${index === 0 ? 'carousel-active' : ''}">
-            <img src="https://cdn.pixabay.com/photo/2023/08/02/18/21/yoga-8165759_1280.jpg" alt="${mediaFile['title']}" class="w-full h-full object-cover">
+            <img src="${mediaFile.url}" alt="${mediaFile.title}" class="w-full h-full object-cover">
             <div class="carousel-caption absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white p-2 text-sm">
                 ${mediaFile['title']}
             </div>
@@ -50,8 +50,11 @@ const propertyCardTemplate = (property) => {
             <div class="p-4 sm:w-1/2">
                 <h2 class="text-xl font-semibold">${property.title} ${property.category}</h2>
                 <p class="text-gray-600">${property.description}</p>
-                <p class="text-gray-800 font-bold">
-                ${property.type != 'Sale' ? `₹${property.price.toLocaleString()}/month + Deposit ₹${(property.price * 3).toLocaleString()} ` : ''} 
+
+                <p class="text-gray-800 font-bold"> For: <span class=" font-thin" >${property.type}</span></p>
+                <p class="text-gray-800 font-bold"> Price: <span class=" font-thin" >
+                ${property.type == 'Rent' ? `₹${property.price.toLocaleString()}/month + Deposit ₹${(property.price * 3).toLocaleString()} ` : `₹${property.price.toLocaleString()}`} 
+                </span>
                 </p>
                 <p class="text-gray-600"><i class="fas fa-map-marker-alt"></i> ${property.street}, ${property.city}, ${property.state}, ${property.country}, ${property.zipCode}</p>
                 <div class=" grid grid-cols-2 ">
