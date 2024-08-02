@@ -1,5 +1,6 @@
 ﻿using api.Exceptions;
 using api.Models;
+using api.Models.Dtos.PropertSeedData;
 using api.Models.Dtos.PropertyDtos;
 using api.Repositories.Interfaces;
 using api.Services.Interfaces;
@@ -79,6 +80,32 @@ namespace api.Services
             catch (Exception)
             {
                 throw new UnableToDoActionException("Unable to search property. Please try again later.");
+            }
+        }
+
+        public async Task<IEnumerable<ReturnPropertyDto>> SeedPropert(IEnumerable<SeedPropertyDto> seedPropertyDtos)
+        {
+            try
+            {
+                var properties = _mapper.Map<IEnumerable<Property>>(seedPropertyDtos);
+                // for each property, add the property to the database
+                foreach (var property in properties)
+                {
+                    await _propertyRepository.AddAsync(property);
+                }
+                return _mapper.Map<IEnumerable<ReturnPropertyDto>>(properties);
+            }
+            catch (EntityAlreadyExistsException<Property>)
+            {
+                throw;
+            }
+            catch (UnableToDoActionException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new UnableToDoActionException("Unable to seed property. Please try again later.");
             }
         }
 

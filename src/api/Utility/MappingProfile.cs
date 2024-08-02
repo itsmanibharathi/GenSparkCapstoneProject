@@ -1,5 +1,6 @@
 ﻿using api.Models;
 using api.Models.Dtos.IUserPropertyInteractionDto;
+using api.Models.Dtos.PropertSeedData;
 using api.Models.Dtos.PropertyAmenityDtos;
 using api.Models.Dtos.PropertyDtos;
 using api.Models.Dtos.PropertyMediaFile;
@@ -38,6 +39,15 @@ namespace api.Utility
             CreateMap<EditPropertyDto,Property>()
                 .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
                 .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
+
+            CreateMap<SeedPropertyDto,Property>()
+                .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
+                .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
+            CreateMap<SeedPropertyHomeDto, PropertyHome>();
+            CreateMap<SeedPropertyAmenityDto, PropertyAmenity>();
+            CreateMap<SeedPropertyMediaFileDto, PropertyMediaFile>();
+            CreateMap<SeedPropertyLandDto, PropertyLand>();
+
             CreateMap<User, BuyerViewOwnerInfoDto>();
 
 

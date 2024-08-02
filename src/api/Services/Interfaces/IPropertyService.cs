@@ -1,4 +1,5 @@
-﻿using api.Models.Dtos.PropertyDtos;
+﻿using api.Models.Dtos.PropertSeedData;
+using api.Models.Dtos.PropertyDtos;
 
 namespace api.Services.Interfaces
 {
@@ -8,5 +9,6 @@ namespace api.Services.Interfaces
         public Task<IEnumerable<ReturnPropertyDto>> SearchPropertyAsync(PropertyQueryDto propertyQueryDto);
         public Task<ReturnPropertyDto> CreateAsync(int userId, CreatePropertyDto getProperityDto);
         public Task<ReturnPropertyDto> UpdateAsync(EditPropertyDto editPropertyDto);
+        public Task<IEnumerable<ReturnPropertyDto>> SeedPropert(IEnumerable<SeedPropertyDto> seedPropertyDtos);
     }
 }
