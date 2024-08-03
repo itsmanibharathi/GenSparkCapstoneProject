@@ -5,15 +5,15 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - 'src/frontend/**'
+    paths:
+      - 'src/frontend/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./src/
+        working-directory: ./src/frontend/
 
     steps:
       - name: 'Checkout GitHub Action'
@@ -34,7 +34,7 @@ jobs:
       
       - name: 'Build and push Docker frontend image'
         run: |
-          docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest ./frontend
+          docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest .
           docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest
   
           
