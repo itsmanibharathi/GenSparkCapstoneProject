@@ -141,7 +141,7 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
             input.classList.add('border-red-500');
             input.nextElementSibling.innerText = 'Invalid year built';
         }
-        else if (input.name === 'floorNumber' && value > 0) {
+        else if (input.name === 'floorNumber' && value < 0) {
             input.classList.add('border-red-500');
             input.nextElementSibling.innerText = 'Invalid floor number';
         } else {
@@ -367,15 +367,23 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     }
 
     const populateForm = (data) => {
-
+        if (!data) {
+            return;
+        }
+        if (!data.latitude && !data.longitude) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                $('#latitude').val(position.coords.latitude);
+                $('#longitude').val(position.coords.longitude);
+            });
+        }
         $('#basicinfoForm').find('input, textarea, select').each(function () {
             $(this).val(data[$(this).attr('name')]);
         });
         if (data.category === 'Home') {
-            $('#categoryDetails').html(propertyCategoryTemplate.PropertyHome(data.home));
+            $('#categoryDetails').html(propertyCategoryTemplate.PropertyHome(data.home, query.propertyId));
         }
         else if (data.category === 'Land') {
-            $('#categoryDetails').html(propertyCategoryTemplate.PropertyLand(data.land));
+            $('#categoryDetails').html(propertyCategoryTemplate.PropertyLand(data.land, query.propertyId));
         }
 
         data.amenities.forEach((amenity, index) => {

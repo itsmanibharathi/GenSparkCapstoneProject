@@ -6,5 +6,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 $(document).ready(() => {
-    loadRoutes();
+    if (!window.routesLoaded) {
+        loadRoutes();
+        window.routesLoaded = true;
+    }
 });

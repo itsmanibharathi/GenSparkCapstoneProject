@@ -1,9 +1,0 @@
-# configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: app-config
-  namespace: real-estate-app
-data:
-  DATABASE_URL: "sqlserver://$(DB_USER):$(DB_PASSWORD)@your-db-host:1433;databaseName=your-db"
-  # Add other configurations here

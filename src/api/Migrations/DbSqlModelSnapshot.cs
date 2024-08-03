@@ -216,6 +216,91 @@ namespace api.Migrations
                     b.ToTable("MediaFiles", (string)null);
                 });
 
+            modelBuilder.Entity("api.Models.SubscriptionPlan", b =>
+                {
+                    b.Property<int>("SubscriptionPlanId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubscriptionPlanId"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SubscriptionPlanDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubscriptionPlanDuration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubscriptionPlanDurationType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubscriptionPlanName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("SubscriptionPlanPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SubscriptionPlanId");
+
+                    b.ToTable("SubscriptionPlans", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            SubscriptionPlanId = 101,
+                            CreatedAt = new DateTime(2024, 8, 1, 16, 2, 5, 802, DateTimeKind.Local).AddTicks(3544),
+                            IsActive = true,
+                            SubscriptionPlanDescription = "New User View Contact Subscription Plan",
+                            SubscriptionPlanDuration = 3,
+                            SubscriptionPlanDurationType = 1,
+                            SubscriptionPlanName = "Free Trial On Contact Me",
+                            SubscriptionPlanPrice = 0m
+                        },
+                        new
+                        {
+                            SubscriptionPlanId = 102,
+                            CreatedAt = new DateTime(2024, 8, 1, 16, 2, 5, 802, DateTimeKind.Local).AddTicks(3561),
+                            IsActive = true,
+                            SubscriptionPlanDescription = "View Owner info",
+                            SubscriptionPlanDuration = 2,
+                            SubscriptionPlanDurationType = 0,
+                            SubscriptionPlanName = "Free Trial On View Owner info",
+                            SubscriptionPlanPrice = 0m
+                        },
+                        new
+                        {
+                            SubscriptionPlanId = 103,
+                            CreatedAt = new DateTime(2024, 8, 1, 16, 2, 5, 802, DateTimeKind.Local).AddTicks(3565),
+                            IsActive = true,
+                            SubscriptionPlanDescription = "Share your contact info to the Owner",
+                            SubscriptionPlanDuration = 30,
+                            SubscriptionPlanDurationType = 1,
+                            SubscriptionPlanName = "Contact Me",
+                            SubscriptionPlanPrice = 100m
+                        },
+                        new
+                        {
+                            SubscriptionPlanId = 104,
+                            CreatedAt = new DateTime(2024, 8, 1, 16, 2, 5, 802, DateTimeKind.Local).AddTicks(3567),
+                            IsActive = true,
+                            SubscriptionPlanDescription = "View Owner info for 10 Property",
+                            SubscriptionPlanDuration = 10,
+                            SubscriptionPlanDurationType = 0,
+                            SubscriptionPlanName = "View Owner info",
+                            SubscriptionPlanPrice = 100m
+                        });
+                });
+
             modelBuilder.Entity("api.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -224,13 +309,13 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
-                    b.Property<string>("ActivationToken")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsOwner")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsVerified")
@@ -279,6 +364,74 @@ namespace api.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("UserAuths", (string)null);
+                });
+
+            modelBuilder.Entity("api.Models.UserPropertyInteraction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InteractionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPropertyInteractions", (string)null);
+                });
+
+            modelBuilder.Entity("api.Models.UserSubscriptionPlan", b =>
+                {
+                    b.Property<int>("UserSubscriptionPlanId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserSubscriptionPlanId"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("SubscriptionEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SubscriptionPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubscriptionStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserSubscriptionPlanId");
+
+                    b.HasIndex("SubscriptionPlanId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserSubscriptionPlans", (string)null);
                 });
 
             modelBuilder.Entity("api.Models.UserVerify", b =>
@@ -379,6 +532,44 @@ namespace api.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("api.Models.UserPropertyInteraction", b =>
+                {
+                    b.HasOne("api.Models.Property", "Property")
+                        .WithMany("UserPropertyInteractions")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.User", "User")
+                        .WithMany("UserPropertyInteractions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("api.Models.UserSubscriptionPlan", b =>
+                {
+                    b.HasOne("api.Models.SubscriptionPlan", "SubscriptionPlan")
+                        .WithOne("UserSubscriptionPlan")
+                        .HasForeignKey("api.Models.UserSubscriptionPlan", "SubscriptionPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.User", "User")
+                        .WithMany("UserSubscriptionPlan")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SubscriptionPlan");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("api.Models.UserVerify", b =>
                 {
                     b.HasOne("api.Models.User", "User")
@@ -399,6 +590,14 @@ namespace api.Migrations
                     b.Navigation("Land");
 
                     b.Navigation("MediaFiles");
+
+                    b.Navigation("UserPropertyInteractions");
+                });
+
+            modelBuilder.Entity("api.Models.SubscriptionPlan", b =>
+                {
+                    b.Navigation("UserSubscriptionPlan")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("api.Models.User", b =>
@@ -407,6 +606,10 @@ namespace api.Migrations
 
                     b.Navigation("UserAuth")
                         .IsRequired();
+
+                    b.Navigation("UserPropertyInteractions");
+
+                    b.Navigation("UserSubscriptionPlan");
 
                     b.Navigation("UserVerify");
                 });

@@ -17,32 +17,37 @@ import { postPropertyPage, loadPostPropertyCallback } from '../modules/PostPrope
 import { editPropertyPage, loadEditPropertyCallback } from '../modules/EditProperty/editProperty.js';
 import { profilePage, loadProfileCallback } from '../modules/Profile/profile.js';
 import { userVerifyPage, loaduserVerifyCallback } from '../modules/UserVerify/userVerify.js';
-
+import { subscriptionPlanPage, loadSubscriptionPlanCallback } from '../modules/SubscriptionPlan/subscriptionPlan.js';
 
 const token = new jwtService('User');
 const localStorage = new localStorageService('User');
 const api = new apiService(process.env.API_URL, token.get());
 
 const routes = [
-    { path: '/', component: homePage, callback: loadHomeCallback },
-    { path: '/auth', component: authPage, callback: loadAuthCallback },
-    { path: '/property/post', component: postPropertyPage, callback: loadPostPropertyCallback },
-    { path: '/property/edit', component: editPropertyPage, callback: loadEditPropertyCallback },
-    { path: '/profile', component: profilePage, callback: loadProfileCallback },
-    { path: '/user/verify', component: userVerifyPage, callback: loaduserVerifyCallback }
+    { path: '/', component: homePage, callback: loadHomeCallback, title: 'Home' },
+    { path: '/auth', component: authPage, callback: loadAuthCallback, title: 'Authenticate' },
+    { path: '/property/post', component: postPropertyPage, callback: loadPostPropertyCallback, title: 'Post Property' },
+    { path: '/property/edit', component: editPropertyPage, callback: loadEditPropertyCallback, title: 'Edit Property' },
+    { path: '/profile', component: profilePage, callback: loadProfileCallback, title: 'Profile' },
+    { path: '/user/verify', component: userVerifyPage, callback: loaduserVerifyCallback, title: 'Verify User' },
+    { path: '/subscription/plan', component: subscriptionPlanPage, callback: loadSubscriptionPlanCallback, title: 'Subscription Plan' }
 ];
 
-
+let isNavigating = false;
 
 const loadRoutes = (path, query) => {
+    if (isNavigating) return;
+    isNavigating = true;
+    setTimeout(() => { isNavigating = false; }, 100); 
+
     if (path) {
-        log.info('path:', path);
+        log.info('Navigating to path:', path);
         const newUrl = new URL(window.location.href);
         newUrl.pathname = path;
         newUrl.search = '';
-        window.history.pushState({}, '', newUrl.href)
-    }
-    else {
+        window.history.pushState({}, '', newUrl.href);
+    } else {
+        log.info('Navigating twwo path:', path);
         path = window.location.pathname.toLowerCase();
         path = path === '/' ? '/' : path.replace(/\/$/, '');
 
@@ -71,6 +76,7 @@ const loadRoutes = (path, query) => {
         $('#header-placeholder').html(headerTemplate(token));
         loadComponent('#footer-placeholder', Footer);
         loadComponent('#body-placeholder', route.component, route.callback, query, api, token, localStorage);
+        document.title = route.title + ' | 360area.tech';
     } else {
         loadComponent("#404", Page404);
         $('#header-placeholder').html("");
@@ -78,23 +84,26 @@ const loadRoutes = (path, query) => {
     }
 };
 
+const initializeRouter = () => {
+    $(window).on('popstate', () => {
+        loadRoutes();
+    });
 
-$(window).on('popstate', () => {
-    loadRoutes();
-});
+    $(document).on('click', 'a', function (e) {
+        const href = $(this).attr('href');
+        if (href && !href.startsWith('http')) {
+            e.preventDefault();
 
-$(document).on('click', 'a', function (e) {
-    const href = $(this).attr('href');
-    if (href && !href.startsWith('http')) {
-        e.preventDefault();
-
-        if (window.location.pathname !== href) {
-            history.pushState(null, '', href);
-            loadRoutes(href);
+            if (window.location.pathname !== href) {
+                history.pushState(null, '', href);
+                loadRoutes(href);
+            }
+        } else {
+            window.location.href = href;
         }
-    } else {
-        window.location.href = href;
-    }
-});
+    });
+};
+
+initializeRouter();
 
 export default loadRoutes;

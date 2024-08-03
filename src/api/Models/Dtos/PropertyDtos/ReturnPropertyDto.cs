@@ -1,5 +1,6 @@
 ﻿using api.Models.Dtos.PropertyAmenityDtos;
 using api.Models.Dtos.PropertyMediaFile;
+using api.Models.Dtos.UserPropertyInteractionDto;
 using api.Models.Enums;
 
 namespace api.Models.Dtos.PropertyDtos
@@ -26,6 +27,7 @@ namespace api.Models.Dtos.PropertyDtos
         public DateTime? UpdateAt { get; set; }
         public IEnumerable<ReturnPropertyAmenityDto>? Amenities { get; set; }
         public IEnumerable<ReturnPropertyMediaFileDto>? MediaFiles { get; set; }
+        //public IEnumerable<ReturnUserPropertyInteractionDto>? UserPropertyInteractions { get; set; }
         public ReturnPropertyHomeDto? Home { get; set; }
         public ReturnPropertyLandDto? Land { get; set; }
     }

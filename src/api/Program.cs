@@ -44,7 +44,11 @@ namespace api
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    // loop handling
+                    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    //options.JsonSerializerOptions.MaxDepth = 0;
                 });
+        
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
@@ -129,6 +133,10 @@ namespace api
             builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
             builder.Services.AddScoped<IPropertyMediaFileRepository, PropertyMediaFileRepository>();
             builder.Services.AddScoped<IPropertyAmenityRepository, PropertyAmenityRepository>();
+
+            builder.Services.AddScoped<IUserSubscriptionPlanRepository, UserSubscriptionPlanRepository>();
+            builder.Services.AddScoped<ISubscriptionPlanRepository, SubscriptionPlanRepository>();
+            builder.Services.AddScoped<IUserPropertyInteractionRepository,  UserPropertyInteractionRepository>();
             #endregion
 
             #region Services
@@ -143,6 +151,9 @@ namespace api
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<IPropertyMediaFileService, PropertyMediaFileService>();
             builder.Services.AddScoped<IPropertyAmenityService, PropertyAmenityService>();
+            builder.Services.AddScoped<IUserSubscriptionPlanService, UserSubscriptionPlanService>();
+            builder.Services.AddScoped<ISubscriptionPlanService, SubscriptionPlanService>();
+            builder.Services.AddScoped<IUserPropertyInteractionService, UserPropertyInteractionService>();
             #endregion
 
             #region CORS

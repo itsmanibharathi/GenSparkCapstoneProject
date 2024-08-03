@@ -37,6 +37,7 @@ namespace api.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim("Id", item.UserId.ToString()),
+                    new Claim("isOwner", item.IsOwner.ToString()),
                     new Claim(ClaimTypes.Name, item.UserName)
                 }),
                 Expires = DateTime.UtcNow.AddDays(100),

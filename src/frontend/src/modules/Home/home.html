@@ -1,5 +1,26 @@
 <div class="container mx-auto p-4">
-    <div id="property-cards" class="flex flex-col gap-2 ">
+    <!-- seartch box have   -->
+    <div id="homeCtrl" class="flex flex-col bg-white w-10/12 mx-auto rounded-lg  shadow-lg p-2">
+        <div class="flex justify-evenly">
 
+            <div value="MyPost" class="typeCtrl hidden">Mypost</div>
+            <div value="" class="typeCtrl type-select">All</div>
+            <div value="Sale" class="typeCtrl">Buy</div>
+            <div value="Rent" class="typeCtrl">Rent</div>
+            <div value="Lease" class="typeCtrl">Lease</div>
+        </div>
+        <div class="flex gap-2">
+            <select name="Category" id="Category" class="w-1/5">
+                <option value="">all Category</option>
+                <option value="Home">Home</option>
+                <option value="Land">Land</option>
+            </select>
+            <input type="text" class="p-2 appearance-none m-auto" name="query" id="query" placeholder="Search">
+            <button id="allow-location-Btn"><i
+                    class="fa-solid fa-location-crosshairs rounded-full p-2 bg-blue-100 text-secondary hover:bg-blue-200 "></i></button>
+            <button id="Search-Btn" class="bg-button hover:bg-button-hover rounded-lg px-4 py-2">Search</button>
+        </div>
+    </div>
+    <div id="property-card" class="mx-auto mt-2 flex flex-col gap-2 w-10/12">
     </div>
 </div>

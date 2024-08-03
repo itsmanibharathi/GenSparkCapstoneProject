@@ -9,16 +9,15 @@ class tokenService {
         return localStorage.getItem(`${this.moduleName}_token`);
     }
 
-    name = () => {
-        // decode the token and get the name of the user
+    select = (key) => {
         const token = this.get();
         if (!token) {
             return null;
         }
         const payload = token.split('.')[1];
         const decoded = atob(payload);
-        const { unique_name } = JSON.parse(decoded);
-        return unique_name;
+        const user = JSON.parse(decoded);
+        return user[key] ?? null;
     }
 
     set = (token) => {

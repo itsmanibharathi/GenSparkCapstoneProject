@@ -6,7 +6,7 @@ import log from '../../utility/loglevel.js';
 import loadRoutes from '../../Services/routerService.js';
 
 
-const loadPostPropertyCallback = (query, api, token) => {
+const loadPostPropertyCallback = (query, api, token, localStorage) => {
     $('#PostPropertyImage').attr('src', postPropertyImage);
     // validate the form
     var isFormDirty = false;
@@ -31,6 +31,12 @@ const loadPostPropertyCallback = (query, api, token) => {
             if (input.value !== '') {
                 input.classList.add('border-green-500');
             }
+            var oldData = localStorage.get('propertyForm');
+            if (oldData === null) {
+                oldData = {};
+            }
+            oldData[input.name] = input.value;
+            localStorage.set('propertyForm', oldData);
         }
 
     });
@@ -38,19 +44,23 @@ const loadPostPropertyCallback = (query, api, token) => {
     $('#propertyForm').on('change', 'select', (e) => {
         e.preventDefault();
         let select = e.target;
-        if (select.value == '') {
-            select.classList.add('border-red-500');
-            select.nextElementSibling.innerText = 'This field is required';
+        var oldData = localStorage.get('propertyForm');
+        if (oldData === null) {
+            oldData = {};
         }
-        else {
-            select.classList.remove('border-red-500');
-            select.nextElementSibling.innerText = '';
-            select.classList.add('border-green-500');
-        }
+        oldData[select.name] = select.value;
+        localStorage.set('propertyForm', oldData);
     });
 
-    $('#propertyForm').on('submit', (e) => {
+    $('#propertyForm').on('submit', async (e) => {
         e.preventDefault();
+        if (token.get() === null) {
+            showAlert('Please login to post a property', 'error');
+            return;
+        }
+        if ($('#propertyForm')[0].checkValidity() === false) {
+            showAlert('Please fill the required fields', 'error');
+        }
         const formdata = $('#propertyForm').serializeArray();
         const data = {};
         formdata.forEach(item => {
@@ -58,17 +68,15 @@ const loadPostPropertyCallback = (query, api, token) => {
         });
         log.info("data: ", data);
         if (isFormDirty) {
-            api.post('Property', data)
+            await api.post('Property', data)
                 .then(response => {
-                    if (response.status === 201) {
-                        alert('Property posted successfully');
-                        $('#propertyForm').trigger('reset');
-                        $('#propertyForm input').removeClass('border-green-500');
-                        $('#propertyForm select').removeClass('border-green-500');
-                        isFormDirty = false;
-                    }
+                    $('#propertyForm input').removeClass('border-green-500');
+                    $('#propertyForm select').removeClass('border-green-500');
+                    isFormDirty = false;
+                    $('#refreshForm').trigger('click');
                     showAlert(response.message, 'success');
-                    loadRoutes(`/property/edit/${response.data.id}`);
+                    log.info(response);
+                    loadRoutes('/property/edit', { propertyId: response.data.propertyId });
                 })
                 .catch(error => {
                     showAlert(error.message, 'error');
@@ -76,6 +84,28 @@ const loadPostPropertyCallback = (query, api, token) => {
                 });
         }
     });
+
+    $('#refreshForm').on('click', (e) => {
+        e.preventDefault();
+        $('#propertyForm').trigger('reset');
+        $('#propertyForm input').removeClass('border-green-500');
+        $('#propertyForm select').removeClass('border-green-500');
+        localStorage.remove('propertyForm');
+    });
+    function loadOldData() {
+        var oldData = localStorage.get('propertyForm');
+        if (oldData !== null) {
+            Object.keys(oldData).forEach(key => {
+                if (key === 'Type' || key === 'Category') {
+                    $(`select[name=${key}]`).val(oldData[key]);
+                } else {
+                    $(`input[name=${key}]`).val(oldData[key]);
+                }
+            });
+        }
+    }
+    loadOldData();
+
 }
 
 module.exports = {

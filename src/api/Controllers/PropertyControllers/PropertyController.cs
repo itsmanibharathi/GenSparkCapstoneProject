@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers.PropertyControllers
 {
-    [Authorize(Policy = "UserPolicy")]
     [Route("Property")]
     [ApiController]
     public class PropertyController : ControllerBase
@@ -29,6 +28,7 @@ namespace api.Controllers.PropertyControllers
         
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "UserPolicy")]
         [ProducesResponseType(typeof(Response<ReturnPropertyDto>) , StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseDto), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProperty(int id)
@@ -54,12 +54,13 @@ namespace api.Controllers.PropertyControllers
         }
 
         [HttpPost()]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> CreateProperty(CreatePropertyDto getPropertyDto)
         {
             try
             {
-                getPropertyDto.UserId = int.Parse(User.FindFirst("Id").Value);
-                var result = await _propertyService.CreateAsync(getPropertyDto);
+                int userId = int.Parse(User.FindFirst("Id").Value);
+                var result = await _propertyService.CreateAsync(userId, getPropertyDto);
                 var res = new ResponseDto<ReturnPropertyDto>(StatusCodes.Status201Created, "Property created successfully", result);
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }
@@ -84,6 +85,7 @@ namespace api.Controllers.PropertyControllers
         }
 
         [HttpPut()]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> UpdateProperty(EditPropertyDto editPropertyDto)
         {
             try
@@ -93,6 +95,7 @@ namespace api.Controllers.PropertyControllers
                     var r = new ResponseDto(StatusCodes.Status403Forbidden, "You are not allowed to update this property");
                     return StatusCode(statusCode: r.StatusCode, value: r);
                 }
+
                 var result = await _propertyService.UpdateAsync(editPropertyDto);
 
                 var res = new ResponseDto<ReturnPropertyDto>(StatusCodes.Status200OK, "Property updated successfully", result);
@@ -118,7 +121,32 @@ namespace api.Controllers.PropertyControllers
             }
         }
 
+        [Authorize(Policy = "UserPolicy")]
+        [HttpGet]
+        public async Task<IActionResult> GetProperties([FromQuery] PropertyQueryDto propertyQueryDto)
+        {
+            try
+            {
+                
+                int userId = int.Parse(User.FindFirst("Id").Value);
+                var result = await _propertyService.SearchPropertyAsync(userId, propertyQueryDto);
+                var res = new ResponseDto<IEnumerable<ReturnPropertyDto>>(StatusCodes.Status200OK, "Properties found", result);
 
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch (EntityNotFoundException<Property> e)
+            {
+                _logger.LogError(e, "Property not found");
+                var res = new ResponseDto(StatusCodes.Status404NotFound, "Property not found");
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "something went wrong ");
+                var res = new ResponseDto(StatusCodes.Status500InternalServerError, "something went wrong");
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+        }
 
 
     }
