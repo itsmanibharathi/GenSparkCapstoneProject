@@ -5,6 +5,8 @@ class apiService {
         this.token = token;
     }
 
+
+
     get = async (endpoint) => {
         return await this.request('GET', endpoint);
     }
@@ -33,7 +35,7 @@ class apiService {
         if (data != null) {
             options.body = JSON.stringify(data);
         }
-        console.debug(`${this.url}/${endpoint}`);
+        console.log(`${this.url}/${endpoint}`);
         const response = await fetch(`${this.url}/${endpoint}`, options);
         const json = await response.json();
         if (response.status >= 200 && response.status < 300) {
