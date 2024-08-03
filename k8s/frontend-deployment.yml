@@ -18,6 +18,11 @@ spec:
         image: ghcr.io/itsmanibharathi/gensparkcapstoneprojectfrontend:latest
         ports:
         - containerPort: 80
+        - containerPort: 443 
+        volumeMounts:
+        - name: tls-secret
+          mountPath: /etc/tls
+          readOnly: true
         env:
         - name: API_URL
           valueFrom:
@@ -29,3 +34,7 @@ spec:
             secretKeyRef:
               name: my-app-secrets
               key: FRONTEND_URL
+      volumes:
+      - name: tls-secret
+        secret:
+          secretName: tls-secret
