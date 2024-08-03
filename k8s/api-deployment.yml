@@ -18,6 +18,11 @@ spec:
         image: ghcr.io/itsmanibharathi/gensparkcapstoneprojectapi:latest
         ports:
         - containerPort: 80
+        - containerPort: 443
+        volumeMounts:
+        - name: tls-secret
+          mountPath: /etc/tls
+          readOnly: true
         env:
         - name: SQL_SERVER_CONNECTION_STRING
           valueFrom:
@@ -46,3 +51,7 @@ spec:
               key: AZURE_STORAGE_CONNECTION_STRING
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
+      volumes:
+      - name: tls-secret
+        secret:
+          secretName: tls-secret
