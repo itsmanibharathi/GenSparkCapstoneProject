@@ -36,3 +36,5 @@ jobs:
         run: |
           docker build --tag ghcr.io/itsmanibharathi/gensparkcapstoneprojectapi:latest .
           docker push ghcr.io/itsmanibharathi/gensparkcapstoneprojectapi:latest
+
+ 
