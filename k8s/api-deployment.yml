@@ -20,8 +20,8 @@ spec:
         - containerPort: 80
         - containerPort: 443
         volumeMounts:
-        - name: tls-secret
-          mountPath: /etc/tls
+        - name: pfx-secret
+          mountPath: /etc/pfx
           readOnly: true
         env:
         - name: SQL_SERVER_CONNECTION_STRING
@@ -52,6 +52,7 @@ spec:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
       volumes:
-      - name: tls-secret
+      - name: pfx-secret
         secret:
-          secretName: tls-secret
+          secretName: pfx-secret
+          

@@ -32,6 +32,11 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=https://+:443;http://+:80
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=123
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/etc/pfx/360area.pfx
+
 ENTRYPOINT ["dotnet", "api.dll"]
 
 
