@@ -146,10 +146,12 @@ namespace api.Contexts
 
             modelBuilder.Entity<Property>()
                 .HasKey(x => x.PropertyId);
+
             modelBuilder.Entity<Property>()
                 .HasMany(x => x.Amenities)
                 .WithOne(x => x.Property)
                 .HasForeignKey(x => x.PropertyId);
+
             modelBuilder.Entity<Property>()
                 .HasMany(x => x.MediaFiles)
                 .WithOne(x => x.Property)

@@ -49,12 +49,12 @@ const loadHomeCallback = (query, api, token) => {
         // var res = properties.filter(property => property['type'] = data.type || property['category'] == data.Category || property['title'].includes(data.query) || property['description'].includes(data.query) || property['city'].includes(data.query) || property['state'].includes(data.query) || property['country'].includes(data.query));
     });
     function loadProperties(properties) {
-        if (properties == undefined || properties.length == 0) {
-            $('#property-card').append(`< img src = "${DataNotFountImg}" alt = "No data found" class= "w-1/2 mx-auto" /> `);
-            return;
-        }
         var propertycard = $('#property-card');
         propertycard.empty();
+        if (properties == undefined || properties.length == 0) {
+            propertycard.append(`<img src = "${DataNotFountImg}" alt = "No data found" class= "w-1/2 mx-auto rounded-lg" /> `);
+            return;
+        }
         properties.forEach(property => {
             propertycard.append(propertyCardTemplate(property));
         });

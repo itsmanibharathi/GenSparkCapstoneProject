@@ -6,7 +6,6 @@ using api.Models.Dtos.PropertyDtos;
 using api.Models.Dtos.PropertyMediaFile;
 using api.Models.Dtos.SubscriptionDto;
 using api.Models.Dtos.UserDtos;
-using api.Models.Dtos.UserPropertyInteractionDto;
 using AutoMapper;
 
 namespace api.Utility
@@ -25,50 +24,29 @@ namespace api.Utility
             CreateMap<User, ReturnUserDto>();
 
             CreateMap<CreatePropertyDto, Property>();
+            CreateMap<Property, ReturnPropertyDto>();
 
             CreateMap<EditPropertyHomeDto, PropertyHome>();
-            CreateMap<PropertyHome, ReturnPropertyHomeDto>()
-                .PreserveReferences();
-            CreateMap<PropertyLand, ReturnPropertyLandDto>()
-                .PreserveReferences();
+            CreateMap<PropertyHome, ReturnPropertyHomeDto>();
+
+            CreateMap<EditPropertyLandDto, PropertyLand>();
+            CreateMap<PropertyLand, ReturnPropertyLandDto>();
 
             CreateMap<EditPropertyAmenityDto, PropertyAmenity>();
-            CreateMap<EditPropertyLandDto, PropertyLand>();
-
-            CreateMap<PropertyAmenity, ReturnPropertyAmenityDto>()
-                .PreserveReferences();
-
-            CreateMap<Property, ReturnUserPropertyInteractionDto>();
-
+            CreateMap<PropertyAmenity, ReturnPropertyAmenityDto>();
+            
+            CreateMap<PropertyMediaFile, ReturnPropertyMediaFileDto>();
+            CreateMap<EditPropertyMediaFileDto, PropertyMediaFile>();
+            
             CreateMap<Property, ReturnPropertyDto>()
-                .PreserveReferences()
-                .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
-                .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
-      
-
-
-
-            CreateMap<EditPropertyDto,Property>()
                 .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
                 .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
 
-            CreateMap<SeedPropertyDto,Property>()
+            CreateMap<EditPropertyDto, Property>()
                 .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
                 .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
-
-            CreateMap<SeedPropertyHomeDto, PropertyHome>();
-            CreateMap<SeedPropertyAmenityDto, PropertyAmenity>();
-            CreateMap<SeedPropertyMediaFileDto, PropertyMediaFile>();
-            CreateMap<SeedPropertyLandDto, PropertyLand>();
 
             CreateMap<User, BuyerViewOwnerInfoDto>();
-
-
-            CreateMap<EditPropertyMediaFileDto, PropertyMediaFile>();
-                                
-            CreateMap<PropertyMediaFile, ReturnPropertyMediaFileDto>()
-                                .PreserveReferences();
-
 
             CreateMap<SubscriptionPlan, ReturnSubscriptionPlanDto>();
         }

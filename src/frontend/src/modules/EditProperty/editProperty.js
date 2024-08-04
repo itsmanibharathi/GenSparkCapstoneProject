@@ -89,7 +89,6 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
 
     $('.container').on('change', function (e) {
         isdirty = true;
-        log.info('Form is dirty', isdirty);
     });
 
 
@@ -460,6 +459,7 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
             .then((res) => {
                 log.info(res);
                 showAlert(res.message, 'success');
+                isdirty = false;
                 loadRoutes('/');
             })
             .catch((err) => {

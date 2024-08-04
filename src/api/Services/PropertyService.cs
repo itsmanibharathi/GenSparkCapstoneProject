@@ -30,6 +30,14 @@ namespace api.Services
                 var property = _mapper.Map<Property>(getProperityDto);
                 property.User = await _userRepository.GetAsync(userId);
                 property.User.IsOwner = true;
+                if(property.Category == PropertyCategory.Home)
+                {
+                    property.Home = new PropertyHome();
+                }
+                else
+                {
+                    property.Land = new PropertyLand(); 
+                }
                 await _propertyRepository.AddAsync(property);
                 return _mapper.Map<ReturnPropertyDto>(property);
             }
@@ -95,6 +103,10 @@ namespace api.Services
                     res = res.Where(x => x.Category == propertyQueryDto.Category);
                 }
                 res.OrderBy(res => res.CreateAt);
+                res.Include(p => p.Amenities)
+                    .Include(p => p.MediaFiles)
+                    .Include(p => p.Home)
+                    .Include(p => p.Land);
                 var result = await res.ToListAsync();
                 return _mapper.Map<IEnumerable<ReturnPropertyDto>>(result);
             }

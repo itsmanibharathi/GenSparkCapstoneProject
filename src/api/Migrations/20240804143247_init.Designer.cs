@@ -12,8 +12,8 @@ using api.Contexts;
 namespace api.Migrations
 {
     [DbContext(typeof(DbSql))]
-    [Migration("20240801051144_add_SubscriptionPlanData")]
-    partial class add_SubscriptionPlanData
+    [Migration("20240804143247_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -260,7 +260,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 101,
-                            CreatedAt = new DateTime(2024, 8, 1, 10, 41, 44, 519, DateTimeKind.Local).AddTicks(5676),
+                            CreatedAt = new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9028),
                             IsActive = true,
                             SubscriptionPlanDescription = "New User View Contact Subscription Plan",
                             SubscriptionPlanDuration = 3,
@@ -271,7 +271,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 102,
-                            CreatedAt = new DateTime(2024, 8, 1, 10, 41, 44, 519, DateTimeKind.Local).AddTicks(5689),
+                            CreatedAt = new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9044),
                             IsActive = true,
                             SubscriptionPlanDescription = "View Owner info",
                             SubscriptionPlanDuration = 2,
@@ -282,7 +282,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 103,
-                            CreatedAt = new DateTime(2024, 8, 1, 10, 41, 44, 519, DateTimeKind.Local).AddTicks(5692),
+                            CreatedAt = new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9047),
                             IsActive = true,
                             SubscriptionPlanDescription = "Share your contact info to the Owner",
                             SubscriptionPlanDuration = 30,
@@ -293,7 +293,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 104,
-                            CreatedAt = new DateTime(2024, 8, 1, 10, 41, 44, 519, DateTimeKind.Local).AddTicks(5738),
+                            CreatedAt = new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9048),
                             IsActive = true,
                             SubscriptionPlanDescription = "View Owner info for 10 Property",
                             SubscriptionPlanDuration = 10,
@@ -366,6 +366,35 @@ namespace api.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("UserAuths", (string)null);
+                });
+
+            modelBuilder.Entity("api.Models.UserPropertyInteraction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InteractionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPropertyInteractions", (string)null);
                 });
 
             modelBuilder.Entity("api.Models.UserSubscriptionPlan", b =>
@@ -505,6 +534,25 @@ namespace api.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("api.Models.UserPropertyInteraction", b =>
+                {
+                    b.HasOne("api.Models.Property", "Property")
+                        .WithMany("UserPropertyInteractions")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.User", "User")
+                        .WithMany("UserPropertyInteractions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("api.Models.UserSubscriptionPlan", b =>
                 {
                     b.HasOne("api.Models.SubscriptionPlan", "SubscriptionPlan")
@@ -544,6 +592,8 @@ namespace api.Migrations
                     b.Navigation("Land");
 
                     b.Navigation("MediaFiles");
+
+                    b.Navigation("UserPropertyInteractions");
                 });
 
             modelBuilder.Entity("api.Models.SubscriptionPlan", b =>
@@ -558,6 +608,8 @@ namespace api.Migrations
 
                     b.Navigation("UserAuth")
                         .IsRequired();
+
+                    b.Navigation("UserPropertyInteractions");
 
                     b.Navigation("UserSubscriptionPlan");
 

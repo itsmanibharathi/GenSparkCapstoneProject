@@ -1,5 +1,4 @@
 ﻿using api.Exceptions;
-using api.Migrations;
 using api.Models.Dtos.SubscriptionDto;
 using api.Repositories.Interfaces;
 using api.Services.Interfaces;
