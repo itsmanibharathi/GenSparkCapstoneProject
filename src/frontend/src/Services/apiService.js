@@ -1,7 +1,7 @@
 import log from '../utility/loglevel.js';
 class apiService {
     constructor(url, token) {
-        this.url = url || 'http://api.360area.tech';
+        this.url = url || 'https://api.360area.tech';
         this.token = token;
     }
 
