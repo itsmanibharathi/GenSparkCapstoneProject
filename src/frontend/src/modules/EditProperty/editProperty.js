@@ -179,16 +179,22 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
 
     // Delete amenity row
     $('#amenities').on('click', '.deleteBtn', function () {
-        api.delete(`property/amenity/${$(this).closest('tr').find('input[name="amenityId"]').val()}`)
-            .then((res) => {
-                log.info(res);
-                $(this).closest('tr').remove();
-                showAlert(res.message, 'success');
-            })
-            .catch((err) => {
-                log.error(err);
-                showAlert(err.message, 'error');
-            });
+        var amenityId = $(this).closest('tr').find('input[name="amenityId"]').val();
+        if (amenityId > 0) {
+            api.delete(`property/amenity/${amenityId}`)
+                .then((res) => {
+                    log.info(res);
+                    $(this).closest('tr').remove();
+                    showAlert(res.message, 'success');
+                })
+                .catch((err) => {
+                    log.error(err);
+                    showAlert(err.message, 'error');
+                });
+        }
+        else {
+            $(this).closest('tr').remove();
+        }
     });
 
     // Edit amenity row
@@ -275,7 +281,6 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
 
 
     $('#mediaFiles').on('click', '.saveBtn', async function () {
-        alert('save button clicked');
         var tr = $(this).closest('tr');
         var mediaId = $(this).closest('tr').find('input[name="mediaFileId"]').val();
         log.info('Media Id', mediaId);
