@@ -14,5 +14,6 @@ namespace api.Services.Interfaces
         /// <param name="item">The item for which the token is generated.</param>
         /// <returns>The generated token as a string.</returns>
         string GenerateToken(T item);
+        public int ValidateToken(string token);
     }
 }

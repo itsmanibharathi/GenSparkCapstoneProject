@@ -44,6 +44,8 @@ namespace api.Services
                     return new ReturnUserLoginDto
                     {
                         UserName = userAuth.User.UserName,
+                        IsOwner = userAuth.User.IsOwner ?? false,
+                        UserProfileImageUrl = userAuth.User.UserProfileImageUrl ?? "https://i.pravatar.cc/250?u=mail@ashallendesign.co.uk",
                         Token = token
                     };
                 }

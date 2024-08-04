@@ -15,13 +15,14 @@ namespace api.Controllers.PropertyControllers
     public class PropertyController : ControllerBase
     {
         private readonly IPropertyService _propertyService;
+        private readonly ITokenService<User> _tokenService;
         private readonly ILogger<PropertyController> _logger;
 
-        public PropertyController(IPropertyService propertyService,
+        public PropertyController(IPropertyService propertyService, ITokenService<User> tokenService,
             ILogger<PropertyController> logger )
         {
             _propertyService = propertyService;
-           
+            _tokenService = tokenService;
             _logger = logger;
         }
 
@@ -128,14 +129,22 @@ namespace api.Controllers.PropertyControllers
             }
         }
 
-        [Authorize(Policy = "UserPolicy")]
         [HttpGet]
         public async Task<IActionResult> GetProperties([FromQuery] PropertyQueryDto propertyQueryDto)
         {
             try
             {
-                
-                int userId = int.Parse(User.FindFirst("Id").Value);
+                _logger.LogInformation("quertssss" +propertyQueryDto.SearchQuery);
+                int userId = 0;
+
+                if (propertyQueryDto.GetMyProperty)
+                {
+                    userId = _tokenService.ValidateToken(Request.Headers["Authorization"].ToString().Split(" ")[1]);
+                    if (userId == 0)
+                    {
+                        return Unauthorized(new ResponseDto(StatusCodes.Status401Unauthorized, "Unauthorized"));
+                    }
+                }
                 var result = await _propertyService.SearchPropertyAsync(userId, propertyQueryDto);
                 var res = new ResponseDto<IEnumerable<ReturnViewPropertyDto>>(StatusCodes.Status200OK, "Properties found", result);
 

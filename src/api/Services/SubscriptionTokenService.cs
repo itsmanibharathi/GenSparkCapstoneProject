@@ -44,5 +44,10 @@ namespace api.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        public int ValidateToken(string token)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

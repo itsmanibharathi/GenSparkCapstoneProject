@@ -88,13 +88,10 @@ namespace api.Services
         {
             try
             {
-                var res= await _propertyRepository.SearchPropertyAsync(propertyQueryDto);
+                var res = await _propertyRepository.SearchPropertyAsync(propertyQueryDto);
 
-                if(propertyQueryDto.SearchQuery != null)
-                {
-                    res = res.Where(x => x.Title.Contains(propertyQueryDto.SearchQuery) || x.Description.Contains(propertyQueryDto.SearchQuery) || x.Landmark.Contains(propertyQueryDto.SearchQuery) || x.City.Contains(propertyQueryDto.SearchQuery) || x.State.Contains(propertyQueryDto.SearchQuery) || x.Country.Contains(propertyQueryDto.SearchQuery));
-                }
-                if(propertyQueryDto.Type != null)
+                // Perform server-side filtering
+                if (propertyQueryDto.Type != null)
                 {
                     res = res.Where(x => x.Type == propertyQueryDto.Type);
                 }
@@ -110,13 +107,32 @@ namespace api.Services
                 {
                     res = res.Where(x => x.Status == PropertyStatus.Active);
                 }
-                res.Include(p => p.Amenities)
+
+                // Retrieve data from the database first
+                var properties = await res
+                    .Include(p => p.Amenities)
                     .Include(p => p.MediaFiles)
                     .Include(p => p.Home)
-                    .Include(p => p.Land);
-                res.OrderBy(res => res.CreateAt);
-                var result = await res.ToListAsync();
-                return _mapper.Map<IEnumerable<ReturnViewPropertyDto>>(result);
+                    .Include(p => p.Land)
+                    .OrderBy(x => x.CreateAt)
+                    .ToListAsync();
+
+                // Perform client-side filtering
+                if (propertyQueryDto.SearchQuery != null)
+                {
+                    var fineQuery = propertyQueryDto.SearchQuery.ToLower().Split(" ");
+                    properties = properties
+                        .Where(x => fineQuery.Any(y =>
+                            x.Title.ToLower().Contains(y) ||
+                            x.Description.ToLower().Contains(y) ||
+                            x.State.ToLower().Contains(y) ||
+                            x.City.ToLower().Contains(y) ||
+                            x.Landmark.ToLower().Contains(y)))
+                        .ToList();
+                }
+
+                return _mapper.Map<IEnumerable<ReturnViewPropertyDto>>(properties);
+
             }
             catch (EntityNotFoundException<Property>)
             {
