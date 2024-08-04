@@ -31,7 +31,8 @@ namespace api.Services
             {
                 var user = await _userRepository.GetAsync(userId);
                 var property = await _propertyRepository.GetWithOwnerInfoAsync(propertyId);
-                if(property.User.UserId == userId)
+                property.ViewCount++;
+                if (property.User.UserId == userId)
                 {
                     throw new InvalidOperationException("You can't contact yourself");
                 }
@@ -39,7 +40,9 @@ namespace api.Services
                 {
                     UserId = userId,
                     PropertyId = propertyId,
-                    InteractionType = PropertyInteractionsType.Contact
+                    InteractionType = PropertyInteractionsType.Contact,
+                    Property = property,
+
                 };
                 await _userPropertyInteractionRepository.AddAsync(userPropertyInteraction);
                 var to = property.User.UserEmail;
@@ -88,10 +91,12 @@ namespace api.Services
                 {
                     throw new InvalidOperationException("You can't contact yourself");
                 }
+                property.ViewCount++;
                 var userPropertyInteraction =new UserPropertyInteraction
                 {
                     UserId = userId,
                     PropertyId = propertyId,
+                    Property = property,
                     InteractionType = PropertyInteractionsType.ViewOwnerInfo
                 };
                 try

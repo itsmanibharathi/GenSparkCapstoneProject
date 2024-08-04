@@ -7,5 +7,7 @@
         public string Description { get; set; }
         public bool IsPaid { get; set; }
         public int PropertyId { get; set; }
+        public DateTime? UpdateAt { get; set; } = DateTime.Now;
+
     }
 }

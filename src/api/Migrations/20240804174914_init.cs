@@ -72,6 +72,7 @@ namespace api.Migrations
                     Type = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true),
+                    ViewCount = table.Column<int>(type: "int", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -288,10 +289,10 @@ namespace api.Migrations
                 columns: new[] { "SubscriptionPlanId", "CreatedAt", "IsActive", "SubscriptionPlanDescription", "SubscriptionPlanDuration", "SubscriptionPlanDurationType", "SubscriptionPlanName", "SubscriptionPlanPrice", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 101, new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9028), true, "New User View Contact Subscription Plan", 3, 1, "Free Trial On Contact Me", 0m, null },
-                    { 102, new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9044), true, "View Owner info", 2, 0, "Free Trial On View Owner info", 0m, null },
-                    { 103, new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9047), true, "Share your contact info to the Owner", 30, 1, "Contact Me", 100m, null },
-                    { 104, new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9048), true, "View Owner info for 10 Property", 10, 0, "View Owner info", 100m, null }
+                    { 101, new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7508), true, "New User View Contact Subscription Plan", 3, 1, "Free Trial On Contact Me", 0m, null },
+                    { 102, new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7522), true, "View Owner info", 2, 0, "Free Trial On View Owner info", 0m, null },
+                    { 103, new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7525), true, "Share your contact info to the Owner", 30, 1, "Contact Me", 100m, null },
+                    { 104, new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7526), true, "View Owner info for 10 Property", 10, 0, "View Owner info", 100m, null }
                 });
 
             migrationBuilder.CreateIndex(

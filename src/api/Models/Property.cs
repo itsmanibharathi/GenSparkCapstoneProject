@@ -21,6 +21,7 @@ namespace api.Models
         public PropertyType Type { get; set; }
         public int UserId { get; set; }
         public PropertyStatus? Status { get; set; }
+        public int ViewCount { get; set; } = 0;
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
 

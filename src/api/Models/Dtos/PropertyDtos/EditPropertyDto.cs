@@ -22,8 +22,7 @@ namespace api.Models.Dtos.PropertyDtos
         public PropertyType Type { get; set; }
         public int UserId { get; set; }
         public PropertyStatus? Status { get; set; }
-        public DateTime CreateAt { get; set; } = DateTime.Now;
-        public DateTime? UpdateAt { get; set; }
+        public DateTime? UpdateAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         public IEnumerable<EditPropertyAmenityDto>? Amenities { get; set; }

@@ -7,6 +7,7 @@ using api.Models.Dtos.PropertyMediaFile;
 using api.Models.Dtos.SubscriptionDto;
 using api.Models.Dtos.UserDtos;
 using AutoMapper;
+using api.Models.Enums;
 
 namespace api.Utility
 {
@@ -45,6 +46,15 @@ namespace api.Utility
             CreateMap<EditPropertyDto, Property>()
                 .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
                 .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
+
+            CreateMap<Property, ReturnViewPropertyDto>()
+            .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
+            .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles))
+            .ForMember(dest => dest.Home, opt => opt.MapFrom(src => src.Home))
+            .ForMember(dest => dest.Land, opt => opt.MapFrom(src => src.Land));
+
+
+            CreateMap<UserPropertyInteraction, ReturnUserPropertyInteractionDto>();
 
             CreateMap<User, BuyerViewOwnerInfoDto>();
 

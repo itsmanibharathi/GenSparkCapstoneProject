@@ -130,7 +130,7 @@ namespace api.Controllers.PropertyControllers
                 
                 int userId = int.Parse(User.FindFirst("Id").Value);
                 var result = await _propertyService.SearchPropertyAsync(userId, propertyQueryDto);
-                var res = new ResponseDto<IEnumerable<ReturnPropertyDto>>(StatusCodes.Status200OK, "Properties found", result);
+                var res = new ResponseDto<IEnumerable<ReturnViewPropertyDto>>(StatusCodes.Status200OK, "Properties found", result);
 
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }

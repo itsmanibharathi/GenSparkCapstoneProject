@@ -12,7 +12,7 @@ using api.Contexts;
 namespace api.Migrations
 {
     [DbContext(typeof(DbSql))]
-    [Migration("20240804143247_init")]
+    [Migration("20240804174914_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,9 @@ namespace api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewCount")
                         .HasColumnType("int");
 
                     b.Property<string>("ZipCode")
@@ -260,7 +263,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 101,
-                            CreatedAt = new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9028),
+                            CreatedAt = new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7508),
                             IsActive = true,
                             SubscriptionPlanDescription = "New User View Contact Subscription Plan",
                             SubscriptionPlanDuration = 3,
@@ -271,7 +274,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 102,
-                            CreatedAt = new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9044),
+                            CreatedAt = new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7522),
                             IsActive = true,
                             SubscriptionPlanDescription = "View Owner info",
                             SubscriptionPlanDuration = 2,
@@ -282,7 +285,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 103,
-                            CreatedAt = new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9047),
+                            CreatedAt = new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7525),
                             IsActive = true,
                             SubscriptionPlanDescription = "Share your contact info to the Owner",
                             SubscriptionPlanDuration = 30,
@@ -293,7 +296,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 104,
-                            CreatedAt = new DateTime(2024, 8, 4, 20, 2, 47, 476, DateTimeKind.Local).AddTicks(9048),
+                            CreatedAt = new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7526),
                             IsActive = true,
                             SubscriptionPlanDescription = "View Owner info for 10 Property",
                             SubscriptionPlanDuration = 10,

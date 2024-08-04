@@ -76,20 +76,12 @@ namespace api.Services
             }
         }
 
-        public async Task<IEnumerable<ReturnPropertyDto>> SearchPropertyAsync(int userId, PropertyQueryDto propertyQueryDto)
+        public async Task<IEnumerable<ReturnViewPropertyDto>> SearchPropertyAsync(int userId, PropertyQueryDto propertyQueryDto)
         {
             try
             {
                 var res= await _propertyRepository.SearchPropertyAsync(propertyQueryDto);
 
-                if(propertyQueryDto.GetMyProperty)
-                {
-                    res = res.Where(x => x.UserId == userId);
-                }
-                else
-                {
-                    res = res.Where(x => x.Status == PropertyStatus.Active);
-                }
                 if(propertyQueryDto.SearchQuery != null)
                 {
                     res = res.Where(x => x.Title.Contains(propertyQueryDto.SearchQuery) || x.Description.Contains(propertyQueryDto.SearchQuery) || x.Landmark.Contains(propertyQueryDto.SearchQuery) || x.City.Contains(propertyQueryDto.SearchQuery) || x.State.Contains(propertyQueryDto.SearchQuery) || x.Country.Contains(propertyQueryDto.SearchQuery));
@@ -102,13 +94,21 @@ namespace api.Services
                 {
                     res = res.Where(x => x.Category == propertyQueryDto.Category);
                 }
-                res.OrderBy(res => res.CreateAt);
+                if (propertyQueryDto.GetMyProperty)
+                {
+                    res = res.Where(x => x.UserId == userId);
+                }
+                else
+                {
+                    res = res.Where(x => x.Status == PropertyStatus.Active);
+                }
                 res.Include(p => p.Amenities)
                     .Include(p => p.MediaFiles)
                     .Include(p => p.Home)
                     .Include(p => p.Land);
+                res.OrderBy(res => res.CreateAt);
                 var result = await res.ToListAsync();
-                return _mapper.Map<IEnumerable<ReturnPropertyDto>>(result);
+                return _mapper.Map<IEnumerable<ReturnViewPropertyDto>>(result);
             }
             catch (EntityNotFoundException<Property>)
             {

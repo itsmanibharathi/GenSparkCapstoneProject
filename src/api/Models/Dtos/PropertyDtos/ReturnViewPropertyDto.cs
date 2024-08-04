@@ -5,7 +5,7 @@ using api.Models.Enums;
 
 namespace api.Models.Dtos.PropertyDtos
 {
-    public class ReturnPropertyDto
+    public class ReturnViewPropertyDto
     {
         public int PropertyId { get; set; }
         public string Title { get; set; }
@@ -27,7 +27,7 @@ namespace api.Models.Dtos.PropertyDtos
         public DateTime? UpdateAt { get; set; }
         public IEnumerable<ReturnPropertyAmenityDto>? Amenities { get; set; }
         public IEnumerable<ReturnPropertyMediaFileDto>? MediaFiles { get; set; }
-        public IEnumerable<ReturnUserPropertyInteractionDto>? UserPropertyInteractions { get; set; }
+        public int ViewCount { get; set; } = 0; 
         public ReturnPropertyHomeDto? Home { get; set; }
         public ReturnPropertyLandDto? Land { get; set; }
     }

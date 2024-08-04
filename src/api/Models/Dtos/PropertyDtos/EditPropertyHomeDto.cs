@@ -11,5 +11,7 @@ namespace api.Models.Dtos.PropertyDtos
         public int YearBuilt { get; set; }
         public FurnishingStatus FurnishingStatus { get; set; }
         public int FloorNumber { get; set; }
+        public DateTime? UpdateAt { get; set; } = DateTime.Now;
+
     }
 }

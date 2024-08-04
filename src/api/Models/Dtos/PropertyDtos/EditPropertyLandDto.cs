@@ -8,5 +8,7 @@ namespace api.Models.Dtos.PropertyDtos
         public double LandArea { get; set; }
         public string? ZoningInformation { get; set; }
         public LandType LandType { get; set; }
+        public DateTime? UpdateAt { get; set; } = DateTime.Now;
+
     }
 }

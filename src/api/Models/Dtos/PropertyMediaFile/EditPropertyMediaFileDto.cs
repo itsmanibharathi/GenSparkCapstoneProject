@@ -9,5 +9,7 @@ namespace api.Models.Dtos.PropertyMediaFile
         public MediaType Type { get; set; }
         public string? Url { get; set; }
         public int PropertyId { get; set; }
+        public DateTime? UpdateAt { get; set; } = DateTime.Now;
+
     }
 }
