@@ -23,24 +23,24 @@ const loadHomeCallback = (query, api, token) => {
             "category": $('#Category').val() || '',
             "getMyProperty": false
         }
-        if (data.query == 'Mypost') {
-            data.query = '';
+        if (data.type == 'MyPost') {
+            data.type = '';
             data.getMyProperty = true;
         }
 
         function serializeQueryParams(obj) {
-            // add key only if value is not empty
             return Object.keys(obj)
                 .filter(key => obj[key] !== '')
                 .map(key => `${key}=${obj[key]}`)
                 .join('&');
         }
+
         log.info("data", data);
         var urlQuery = serializeQueryParams(data);
         log.info("url", `Property?${urlQuery}`);
         await api.get(`Property?${urlQuery} `)
             .then((res) => {
-                loadProperties(res.data);
+                loadProperties(res.data, data.getMyProperty);
             })
             .catch((err) => {
                 showAlert(err.message, 'error');
@@ -48,7 +48,7 @@ const loadHomeCallback = (query, api, token) => {
         // await api.get('/properties/search', data, token)
         // var res = properties.filter(property => property['type'] = data.type || property['category'] == data.Category || property['title'].includes(data.query) || property['description'].includes(data.query) || property['city'].includes(data.query) || property['state'].includes(data.query) || property['country'].includes(data.query));
     });
-    function loadProperties(properties) {
+    function loadProperties(properties, isOwner) {
         var propertycard = $('#property-card');
         propertycard.empty();
         if (properties == undefined || properties.length == 0) {
@@ -56,7 +56,7 @@ const loadHomeCallback = (query, api, token) => {
             return;
         }
         properties.forEach(property => {
-            propertycard.append(propertyCardTemplate(property));
+            propertycard.append(propertyCardTemplate(property, isOwner));
         });
 
     }
@@ -66,7 +66,7 @@ const loadHomeCallback = (query, api, token) => {
         if (token && token.select('isOwner') == 'True') {
             $('.typeCtrl.hidden').removeClass('hidden');
             $('.typeCtrl.type-select').removeClass('type-select');
-            $('.typeCtrl[value="Mypost"]').addClass('type-select');
+            $('.typeCtrl[value="MyPost"]').addClass('type-select');
         }
         $('#Search-Btn').trigger('click');
     }
@@ -88,7 +88,6 @@ const loadHomeCallback = (query, api, token) => {
         const $carouselInner = $carousel.find('.carousel-inner');
         const $items = $carouselInner.children();
         let currentIndex = $items.index($carouselInner.find('.carousel-active'));
-
         $items.eq(currentIndex).removeClass('carousel-active');
         currentIndex = (currentIndex - 1 + $items.length) % $items.length;
         $items.eq(currentIndex).addClass('carousel-active');
@@ -116,6 +115,10 @@ const loadHomeCallback = (query, api, token) => {
             .catch((err) => {
                 showAlert(err.message, 'error');
             });
+    });
+
+    $(document).on('click', '.editProperty', function () {
+        loadRoutes('/property/edit', { propertyId: $(this).attr('property-id') });
     });
 
 

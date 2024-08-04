@@ -343,7 +343,6 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
         tr.find('.mediaTable').toggleClass('hidden');
         tr.find('.mediaForm').toggleClass('hidden');
 
-        // Send save request to the server here
     });
 
     $('#mediaFiles').on('click', '.refreshBtn', function () {
@@ -355,19 +354,22 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     // create a on change event for file input
 
 
-    const getProperty = async (query) => {
+    const loadProperty = async (query) => {
         if (!query.propertyId) {
-            return null;
+            showAlert('Property Id is required', 'error');
+            window.location.href = '/';
         }
-        return await api.get(`property/${query.propertyId}`)
-            .then(res => {
-                localStorage.set('property', res.data);
-                return res.data;
-            }).catch(err => {
-                log.error(err);
-                showAlert(err.message, 'error');
-                return null;
-            });
+        else {
+            await api.get(`property/${query.propertyId}`)
+                .then(res => {
+                    localStorage.set('property', res.data);
+                    populateForm(res.data);
+                }).catch(err => {
+                    log.error(err);
+                    showAlert(err.message, 'error');
+                    window.location.href = '/';
+                });
+        }
     }
 
     const populateForm = (data) => {
@@ -489,8 +491,7 @@ const loadEditPropertyCallback = async (query, api, token, localStorage) => {
     }
     currentStep = pages.indexOf(page) + 1;
     showStep(page);
-    const propertyData = await getProperty(query);
-    populateForm(propertyData);
+    await loadProperty(query);
 
 };
 

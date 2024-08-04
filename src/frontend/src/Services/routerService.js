@@ -1,4 +1,4 @@
-import $, { queue } from 'jquery';
+import $ from 'jquery';
 import Page404 from '../components/404.html';
 import log from '../utility/loglevel.js';
 import Footer from '../components/footer.html';
@@ -33,13 +33,8 @@ const routes = [
     { path: '/subscription/plan', component: subscriptionPlanPage, callback: loadSubscriptionPlanCallback, title: 'Subscription Plan' }
 ];
 
-let isNavigating = false;
 
-const loadRoutes = (path, query) => {
-    if (isNavigating) return;
-    isNavigating = true;
-    setTimeout(() => { isNavigating = false; }, 100); 
-
+const loadRoutes = async (path, query) => {
     if (path) {
         log.info('Navigating to path:', path);
         const newUrl = new URL(window.location.href);
@@ -51,7 +46,7 @@ const loadRoutes = (path, query) => {
         path = window.location.pathname.toLowerCase();
         path = path === '/' ? '/' : path.replace(/\/$/, '');
 
-        query = window.location.search;
+        query = query || window.location.search;
         query = query === '' ? '' : query.replace(/^\?/, '');
         query = query === '' ? '' : query.split('&').reduce((acc, item) => {
             const [key, value] = item.split('=');

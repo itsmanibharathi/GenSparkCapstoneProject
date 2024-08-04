@@ -27,16 +27,23 @@ namespace api.Controllers.PropertyControllers
 
         
 
-        [HttpGet("{id}")]
+        [HttpGet("{propertyId}")]
         [Authorize(Policy = "UserPolicy")]
         [ProducesResponseType(typeof(Response<ReturnPropertyDto>) , StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseDto), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetProperty(int id)
+        public async Task<IActionResult> GetProperty(int propertyId)
         {
             try
             {
-                var result = await _propertyService.GetAsync(id);
+                int userId = int.Parse(User.FindFirst("Id").Value);
+                var result = await _propertyService.GetAsync(userId,propertyId);
                 var res = new ResponseDto<ReturnPropertyDto>(StatusCodes.Status200OK, "Property found", result);
+                return StatusCode(statusCode: res.StatusCode, value: res);
+            }
+            catch(UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access");
+                var res = new ResponseDto(StatusCodes.Status403Forbidden, "Unauthorized access");
                 return StatusCode(statusCode: res.StatusCode, value: res);
             }
             catch (EntityNotFoundException<Property> e)

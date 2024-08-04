@@ -55,12 +55,20 @@ namespace api.Services
             }
         }
 
-        public async Task<ReturnPropertyDto> GetAsync(int id)
+        public async Task<ReturnPropertyDto> GetAsync(int userId, int id)
         {
             try
             {
                 var res = await _propertyRepository.GetAsync(id);
+                if (res.UserId != userId)
+                {
+                    throw new UnauthorizedAccessException("You are not authorized to view this property");
+                }
                 return _mapper.Map<ReturnPropertyDto>(res);
+            }
+            catch(UnauthorizedAccessException)
+            {
+                throw;
             }
             catch (EntityNotFoundException<Property>)
             {

@@ -1,4 +1,4 @@
-const propertyCardTemplate = (property) => {
+const propertyCardTemplate = (property, isOwner) => {
     const imagesHtml = property['mediaFiles'].map((mediaFile, index) => `
         <div class="carousel-item ${index === 0 ? 'carousel-active' : ''}">
             <img src="${mediaFile.url}" alt="${mediaFile.title}" class="w-full h-full object-cover">
@@ -64,7 +64,14 @@ const propertyCardTemplate = (property) => {
                     <span class="text-sm font-semibold">Highlights:</span>
                     <span class="text-sm">${highlights}</span>
                 </div>
-                <div class="mt-4 flex justify-between items-center">
+                ${isOwner ?
+            `
+                    <div class="mt-4 flex justify-between items-center">
+                        <button property-id="${property.propertyId}" class="editProperty bg-blue-500 text-white px-4 py-2 rounded"><i class="fas fa-edit"></i> Edit</button>
+                        <button property-id="${property.propertyId}" class="deleteProperty bg-red-500 text-white px-4 py-2 rounded"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                    ` : `
+                    <div class="mt-4 flex justify-between items-center">
                     <button property-id="${property.propertyId}" class="viewOwnerInfo bg-blue-500 text-white px-4 py-2 rounded"><i class="fas fa-phone-alt"></i> View Number</button>
                     <button property-id="${property.propertyId}" class="ContactMe bg-green-500 text-white px-4 py-2 rounded"><i class="fas fa-envelope"></i> Contact Me</button>
                 </div>
@@ -75,8 +82,9 @@ const propertyCardTemplate = (property) => {
                     <span class="ownerPhoneNumber text-sm"></span>
                 </div>
                 ${property.viewCount > 0 ? `<div class="text-sm text-gray-500 mt-2"><i class="fas fa-users"></i> ${property.viewCount} people already contacted this week</div>` : ''}
-            </div>
-        </div>
+                `}
+                </div >
+        </div >
     `;
     return cardHtml;
 }
