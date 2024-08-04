@@ -68,7 +68,7 @@ const loadRoutes = async (path, query) => {
 
     if (route) {
         $('#404').html("");
-        $('#header-placeholder').html(headerTemplate(token));
+        $('#header-placeholder').html(headerTemplate(token, localStorage));
         loadComponent('#footer-placeholder', Footer);
         loadComponent('#body-placeholder', route.component, route.callback, query, api, token, localStorage);
         document.title = route.title + ' | 360area.tech';

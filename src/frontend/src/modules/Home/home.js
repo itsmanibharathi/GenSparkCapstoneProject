@@ -9,7 +9,7 @@ import DataNotFountImg from '../../../public/assets/Image/data-not-found.jpg';
 
 import propertyCardTemplate from '../../components/propertyCardTemplate.js';
 
-const loadHomeCallback = (query, api, token) => {
+const loadHomeCallback = (query, api, token, localStorage) => {
     log.info('Home page loaded');
     $('.typeCtrl').on('click', function () {
         $('.typeCtrl').removeClass('type-select');
@@ -18,7 +18,7 @@ const loadHomeCallback = (query, api, token) => {
 
     $('#Search-Btn').on('click', async function () {
         var data = {
-            "query": $('#query').val() || '',
+            "searchQuery": $('#query').val().toLowerCase().replace(/\s/g, '+') || '',
             "type": $('.typeCtrl.type-select').attr('value') || '',
             "category": $('#Category').val() || '',
             "getMyProperty": false
@@ -60,10 +60,10 @@ const loadHomeCallback = (query, api, token) => {
         });
 
     }
-    log.info("token", token);
-    log.info("isowner", token.select('isOwner'));
+    // log.info("token", token);
+    // log.info("isowner", token.select('isOwner'));
     function onLoadHome() {
-        if (token && token.select('isOwner') == 'True') {
+        if (token && localStorage.get('user') && localStorage.get('user').isOwner) {
             $('.typeCtrl.hidden').removeClass('hidden');
             $('.typeCtrl.type-select').removeClass('type-select');
             $('.typeCtrl[value="MyPost"]').addClass('type-select');

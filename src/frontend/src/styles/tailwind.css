@@ -44,7 +44,7 @@
 }
 
 .nav:hover{
-    @apply text-button;
+    @apply text-primary;    
 }
 
 .Home{

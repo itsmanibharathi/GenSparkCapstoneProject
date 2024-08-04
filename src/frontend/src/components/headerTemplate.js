@@ -1,6 +1,6 @@
 import logo from '../../public/assets/Image/logo.svg';
 
-const headerTemplate = (token) => {
+const headerTemplate = (token, localStorage) => {
     return (
         `<header id="navbar" class="w-full bg-tertiary">
             <nav class="flex justify-between items-center w-[92%] h-[8%] mx-auto">
@@ -17,15 +17,24 @@ const headerTemplate = (token) => {
                 </div>
                 <div class="flex items-center gap-6 my-2">
                     ${token.exists() ? `
-                        <div class="relative z-40">
-                        
-                            <img src="https://i.pravatar.cc/250?u=mail@ashallendesign.co.uk" class="w-10 h-10 rounded-full cursor-pointer" onclick="toggleProfileMenu(event)" alt="Profile">
-                            <span class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">1</span>
-                            
-                            <div id="profile-menu" class=" absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 hidden">
-                                <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                                <a href="/orders" class="relative block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Notification <span class="Notification hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">2</span> </a>
-                                <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                        <div class="flex fex-row gap-3">
+                            <div class="relative z-40 m-auto  text-2xl ">
+                                <i class="fa-solid fa-bell cursor-pointer" onclick="toggleNotificationMenu(event)"></i>
+                                <span class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">1</span>
+                                <div id="notification-menu" class=" absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 hidden">
+                                    <span class="block px-4 py-2 text-sm text-gray-700">Notification 1</span>
+                                    <span class="block px-4 py-2 text-sm text-gray-700">Notification 2</span>
+                                </div>
+                            </div>
+                            <div class="relative z-40">
+                                <img src=${localStorage.get('user').userProfileImageUrl} class="w-10 h-10 rounded-full cursor-pointer" onclick="toggleProfileMenu(event)" alt="Profile">
+                                <span class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">1</span>
+                                
+                                <div id="profile-menu" class=" absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 hidden">
+                                    <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                    <a href="/orders" class="relative block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Notification <span class="Notification hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">2</span> </a>
+                                    <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                                </div>
                             </div>
                         </div>
                     ` : `
@@ -58,15 +67,26 @@ const headerTemplate = (token) => {
         document.addEventListener('click', function(event) {
             const profileMenu = document.getElementById('profile-menu');
             const profileIcon = document.querySelector('img');
+            const notificationMenu = document.getElementById('notification-menu');
+            const notificationIcon = document.querySelector('i.fa-bell');
             try{
                 if (!profileMenu.contains(event.target) && event.target !== profileIcon) {
                     profileMenu.classList.add('hidden');
+                }
+                if (!notificationMenu.contains(event.target) && event.target !== notificationIcon) {
+                    notificationMenu.classList.add('hidden');
                 }
             }
             catch(err){
             }
 
         });
+
+        function toggleNotificationMenu(event) {
+            const notificationMenu = document.getElementById('notification-menu');
+            notificationMenu.classList.toggle('hidden');
+            event.stopPropagation(); // Prevents the click event from bubbling up to the document
+        }
         </script>`
     );
 }

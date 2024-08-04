@@ -99,7 +99,7 @@ const loadProfileCallback = async (query, api, token, localStorage) => {
             .then((response) => {
                 log.debug('User data updated:', response.data);
                 showAlert(response.message, 'success');
-                localStorage.set('user', JSON.stringify(response.data));
+                localStorage.set('user', response.data);
                 profileDataIsDirty = false;
             })
             .catch((error) => {
