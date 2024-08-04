@@ -74,7 +74,7 @@ const propertyCardTemplate = (property) => {
                     <span class="ownerEmail text-sm"></span>
                     <span class="ownerPhoneNumber text-sm"></span>
                 </div>
-                <div class="text-sm text-gray-500 mt-2"><i class="fas fa-users"></i> 2 people already contacted this week</div>
+                ${property.viewCount > 0 ? `<div class="text-sm text-gray-500 mt-2"><i class="fas fa-users"></i> ${property.viewCount} people already contacted this week</div>` : ''}
             </div>
         </div>
     `;
