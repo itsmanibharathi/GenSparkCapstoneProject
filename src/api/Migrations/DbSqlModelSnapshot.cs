@@ -261,7 +261,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 101,
-                            CreatedAt = new DateTime(2024, 8, 5, 5, 13, 18, 875, DateTimeKind.Local).AddTicks(2912),
+                            CreatedAt = new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9875),
                             IsActive = true,
                             SubscriptionPlanDescription = "New User View Contact Subscription Plan",
                             SubscriptionPlanDuration = 3,
@@ -272,7 +272,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 102,
-                            CreatedAt = new DateTime(2024, 8, 5, 5, 13, 18, 875, DateTimeKind.Local).AddTicks(2924),
+                            CreatedAt = new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9889),
                             IsActive = true,
                             SubscriptionPlanDescription = "View Owner info",
                             SubscriptionPlanDuration = 2,
@@ -283,7 +283,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 103,
-                            CreatedAt = new DateTime(2024, 8, 5, 5, 13, 18, 875, DateTimeKind.Local).AddTicks(2926),
+                            CreatedAt = new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9892),
                             IsActive = true,
                             SubscriptionPlanDescription = "Share your contact info to the Owner",
                             SubscriptionPlanDuration = 30,
@@ -294,7 +294,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 104,
-                            CreatedAt = new DateTime(2024, 8, 5, 5, 13, 18, 875, DateTimeKind.Local).AddTicks(2927),
+                            CreatedAt = new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9893),
                             IsActive = true,
                             SubscriptionPlanDescription = "View Owner info for 10 Property",
                             SubscriptionPlanDuration = 10,
@@ -435,8 +435,7 @@ namespace api.Migrations
 
                     b.HasKey("UserSubscriptionPlanId");
 
-                    b.HasIndex("SubscriptionPlanId")
-                        .IsUnique();
+                    b.HasIndex("SubscriptionPlanId");
 
                     b.HasIndex("UserId");
 

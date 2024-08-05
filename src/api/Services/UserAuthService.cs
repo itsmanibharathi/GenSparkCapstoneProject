@@ -83,7 +83,8 @@ namespace api.Services
                     Token = Guid.NewGuid().ToString()
                 };
                 var res = await _userAuthRepository.AddAsync(userAuth);
-                await _mailService.Send(userAuth.User.UserEmail, "Activate your account", $"Click <a href='http://localhost:3000/user/Verify?id={userAuth.User.UserVerify.Id}&token={userAuth.User.UserVerify.Token}'>here</a> to activate your account");
+                var FRONTEND_URL = Environment.GetEnvironmentVariable("FRONTEND_URL");
+                await _mailService.Send(userAuth.User.UserEmail, "Activate your account", $"Click <a href='{FRONTEND_URL}/user/Verify?id={userAuth.User.UserVerify.Id}&token={userAuth.User.UserVerify.Token}'>here</a> to activate your account");
                 return _mapper.Map<ReturnUserRegisterDto>(res.User);
             }
             catch (EntityAlreadyExistsException<UserAuth> )

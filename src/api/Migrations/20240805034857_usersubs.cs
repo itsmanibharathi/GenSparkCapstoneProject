@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace api.Migrations
 {
-    public partial class init : Migration
+    public partial class usersubs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -117,6 +117,8 @@ namespace api.Migrations
                     SubscriptionPlanId = table.Column<int>(type: "int", nullable: false),
                     SubscriptionStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SubscriptionEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AvailableSellerViewCount = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionPlanDurationType = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -289,10 +291,10 @@ namespace api.Migrations
                 columns: new[] { "SubscriptionPlanId", "CreatedAt", "IsActive", "SubscriptionPlanDescription", "SubscriptionPlanDuration", "SubscriptionPlanDurationType", "SubscriptionPlanName", "SubscriptionPlanPrice", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 101, new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7508), true, "New User View Contact Subscription Plan", 3, 1, "Free Trial On Contact Me", 0m, null },
-                    { 102, new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7522), true, "View Owner info", 2, 0, "Free Trial On View Owner info", 0m, null },
-                    { 103, new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7525), true, "Share your contact info to the Owner", 30, 1, "Contact Me", 100m, null },
-                    { 104, new DateTime(2024, 8, 4, 23, 19, 14, 462, DateTimeKind.Local).AddTicks(7526), true, "View Owner info for 10 Property", 10, 0, "View Owner info", 100m, null }
+                    { 101, new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9875), true, "New User View Contact Subscription Plan", 3, 1, "Free Trial On Contact Me", 0m, null },
+                    { 102, new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9889), true, "View Owner info", 2, 0, "Free Trial On View Owner info", 0m, null },
+                    { 103, new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9892), true, "Share your contact info to the Owner", 30, 1, "Contact Me", 100m, null },
+                    { 104, new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9893), true, "View Owner info for 10 Property", 10, 0, "View Owner info", 100m, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -323,8 +325,7 @@ namespace api.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_UserSubscriptionPlans_SubscriptionPlanId",
                 table: "UserSubscriptionPlans",
-                column: "SubscriptionPlanId",
-                unique: true);
+                column: "SubscriptionPlanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSubscriptionPlans_UserId",

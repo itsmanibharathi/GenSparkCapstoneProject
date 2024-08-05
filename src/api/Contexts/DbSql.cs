@@ -75,16 +75,22 @@ namespace api.Contexts
             modelBuilder.Entity<UserSubscriptionPlan>().ToTable("UserSubscriptionPlans");
             modelBuilder.Entity<UserSubscriptionPlan>()
                 .HasKey(x => x.UserSubscriptionPlanId);
+
+            //modelBuilder.Entity<UserSubscriptionPlan>()
+            //    .Property(x => x.SubscriptionPlanId)
+            //    .
+            //    .Property(x => x.SubscriptionPlanId)
+            //set UserSubscriptionPlan SubscriptionPlanId as not unique
+            modelBuilder.Entity<UserSubscriptionPlan>()
+                .HasIndex(x => x.SubscriptionPlanId)
+                .IsUnique(false);
+
             #endregion
 
             #region SubscriptionPlan
             modelBuilder.Entity<SubscriptionPlan>().ToTable("SubscriptionPlans");
             modelBuilder.Entity<SubscriptionPlan>()
                 .HasKey(x => x.SubscriptionPlanId);
-            modelBuilder.Entity<SubscriptionPlan>()
-                .HasOne(x => x.UserSubscriptionPlan)
-                .WithOne(x => x.SubscriptionPlan)
-                .HasForeignKey<UserSubscriptionPlan>(x => x.SubscriptionPlanId);
 
             modelBuilder.Entity<SubscriptionPlan>()
                 .Property(x => x.SubscriptionPlanPrice)
