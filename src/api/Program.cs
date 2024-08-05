@@ -153,6 +153,7 @@ namespace api
             builder.Services.AddScoped<IPropertyAmenityService, PropertyAmenityService>();
             builder.Services.AddScoped<IUserSubscriptionPlanService, UserSubscriptionPlanService>();
             builder.Services.AddScoped<ISubscriptionPlanService, SubscriptionPlanService>();
+            builder.Services.AddScoped<ITokenService<UserSubscriptionPlan>, UserSubscriptionPlanTokenService>();
             builder.Services.AddScoped<IUserPropertyInteractionService, UserPropertyInteractionService>();
             #endregion
 

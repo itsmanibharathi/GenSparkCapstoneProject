@@ -14,11 +14,13 @@ namespace api.Services
         private readonly IMapper _mapper;
         private readonly ISubscriptionPlanRepository _subscriptionPlanRepository;
         private readonly IUserSubscriptionPlanRepository _userSubscriptionPlanRepository;
+        private readonly ITokenService<UserSubscriptionPlan> _userSubscriptionPlanTokenService;
 
-        public UserSubscriptionPlanService(ISubscriptionPlanRepository subscriptionPlanRepository, IUserSubscriptionPlanRepository userSubscriptionPlanRepository,IMapper mapper)
+        public UserSubscriptionPlanService(ISubscriptionPlanRepository subscriptionPlanRepository, IUserSubscriptionPlanRepository userSubscriptionPlanRepository, ITokenService<UserSubscriptionPlan> tokenService,IMapper mapper)
         {
             _subscriptionPlanRepository = subscriptionPlanRepository;
             _userSubscriptionPlanRepository = userSubscriptionPlanRepository;
+            _userSubscriptionPlanTokenService = tokenService;
             _mapper = mapper;
         }
         public async Task<ReturnUserSubscriptionPlanDto> SubscribeAsync(int userId, int subscriptionPlanId)
@@ -40,12 +42,22 @@ namespace api.Services
                     IsActive = true,
                     CreatedAt = DateTime.Now,
                 };
-                if(subcriptionPlan.SubscriptionPlanDurationType != SubscriptionPlanDurationType.Count)
+                if(subcriptionPlan.SubscriptionPlanDurationType == SubscriptionPlanDurationType.Days)
                 {
                     userSubscriptionPlan.SubscriptionEndDate = DateTime.Now.AddMonths(subcriptionPlan.SubscriptionPlanDuration);
                 }
+                if (subcriptionPlan.SubscriptionPlanDurationType == SubscriptionPlanDurationType.Count)
+                {
+                    userSubscriptionPlan.AvailableSellerViewCount = subcriptionPlan.SubscriptionPlanDuration;
+                }
                 var res =await _userSubscriptionPlanRepository.AddAsync(userSubscriptionPlan);
-                return _mapper.Map<ReturnUserSubscriptionPlanDto>(res);
+                var result = _mapper.Map<ReturnUserSubscriptionPlanDto>(res);
+                result.SubscriptionPlanName = subcriptionPlan.SubscriptionPlanName;
+                result.SubscriptionPlanDescription = subcriptionPlan.SubscriptionPlanDescription;
+                result.SubscriptionPlanPrice = subcriptionPlan.SubscriptionPlanPrice;
+                result.SubscriptionPlanDuration = subcriptionPlan.SubscriptionPlanDuration;
+                result.SubscriptionPlanDurationType = subcriptionPlan.SubscriptionPlanDurationType;
+                return result;
             }
             catch (InvalidOperationException)
             {

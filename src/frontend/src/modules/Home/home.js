@@ -108,13 +108,19 @@ const loadHomeCallback = (query, api, token, localStorage) => {
     });
 
     $(document).on('click', '.ContactMe', async function () {
-        await api.put(`property/Interaction/contact/${$(this).attr('property-id')} `)
-            .then((res) => {
-                showAlert(res.message, 'success');
-            })
-            .catch((err) => {
-                showAlert(err.message, 'error');
-            });
+        if (!token) {
+            showAlert('Please login to contact owner', 'error');
+            return;
+        }
+        else {
+            await api.put(`property/Interaction/contact/${$(this).attr('property-id')} `)
+                .then((res) => {
+                    showAlert(res.message, 'success');
+                })
+                .catch((err) => {
+                    showAlert(err.message, 'error');
+                });
+        }
     });
 
     $(document).on('click', '.editProperty', function () {

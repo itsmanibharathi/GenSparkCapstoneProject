@@ -3,6 +3,7 @@ import subscriptionPlanPage from './subscriptionPlan.html';
 import loadRoutes from '../../Services/routerService.js';
 import log from '../../utility/loglevel.js';
 import subscriptionPlanTemplate from '../../components/subscriptionPlanCardTemplate.js';
+import showAlert from '../../Services/alertService.js';
 
 const loadSubscriptionPlanCallback = (query, api, token, localStorage) => {
     // loadRoutes('/subscription-plan');
@@ -13,14 +14,15 @@ const loadSubscriptionPlanCallback = (query, api, token, localStorage) => {
             return;
         }
         const planId = $(this).val();
-        api.post('subscription/subscribe', { subscriptionPlanId: planId })
+        api.post('subscription/subscribe/' + planId)
             .then(response => {
                 log.info(response);
-                alert('Subscribed Successfully');
+                showAlert('Subscribed successfully', 'success');
+                loadRoutes('/');
             })
             .catch(error => {
                 log.error(error);
-                alert('Subscription Failed');
+                showAlert(error.message, 'error');
             });
     });
 

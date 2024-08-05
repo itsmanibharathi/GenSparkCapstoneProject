@@ -21,7 +21,7 @@ import { subscriptionPlanPage, loadSubscriptionPlanCallback } from '../modules/S
 
 const token = new jwtService('User');
 const localStorage = new localStorageService('User');
-const api = new apiService(process.env.API_URL, token.get());
+const api = new apiService(process.env.API_URL, token);
 
 const routes = [
     { path: '/', component: homePage, callback: loadHomeCallback, title: 'Home' },

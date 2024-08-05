@@ -23,7 +23,7 @@ namespace api.Controllers.SubscriptionControllers
             _logger = logger;
         }
 
-        [HttpPost]
+        [HttpPost("{subscriptionPlanId}") ]
         public async Task<IActionResult> PostAsync(int subscriptionPlanId)
         {
             try

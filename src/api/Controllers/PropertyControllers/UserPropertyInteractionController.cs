@@ -43,6 +43,12 @@ namespace api.Controllers.PropertyControllers
                     return StatusCode(res.StatusCode, res);
                 }
             }
+            catch(EntityNotFoundException<UserSubscriptionPlan> ex)
+            {
+                _logger.LogError(ex, "UserSubscriptionPlan Not found");
+                var res = new ResponseDto(StatusCodes.Status404NotFound, "UserSubscriptionPlan Not Found");
+                return StatusCode(res.StatusCode, res);
+            }
             catch (EntityAlreadyExistsException<UserPropertyInteraction> ex)
             {
                 _logger.LogError(ex, "UserPropertyInteraction Already Exists");
@@ -84,6 +90,12 @@ namespace api.Controllers.PropertyControllers
                 var userId = int.Parse(User.FindFirst("Id").Value);
                 var result = await _userPropertyInteractionService.ViewOwnerInfo(userId, propertyId);
                 var res = new ResponseDto<BuyerViewOwnerInfoDto>(StatusCodes.Status200OK, "Owner info found", result);
+                return StatusCode(res.StatusCode, res);
+            }
+            catch (EntityNotFoundException<UserSubscriptionPlan> ex)
+            {
+                _logger.LogError(ex, "UserSubscriptionPlan Not found");
+                var res = new ResponseDto(StatusCodes.Status404NotFound, "UserSubscriptionPlan Not Found");
                 return StatusCode(res.StatusCode, res);
             }
             catch (EntityAlreadyExistsException<UserPropertyInteraction> ex)

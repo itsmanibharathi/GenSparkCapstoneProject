@@ -59,6 +59,13 @@ namespace api.Utility
             CreateMap<User, BuyerViewOwnerInfoDto>();
 
             CreateMap<SubscriptionPlan, ReturnSubscriptionPlanDto>();
+
+            CreateMap<UserSubscriptionPlan, ReturnUserSubscriptionPlanDto>()
+                .ForMember(dest => dest.SubscriptionPlanName, opt => opt.MapFrom(src => src.SubscriptionPlan.SubscriptionPlanName))
+                .ForMember(dest => dest.SubscriptionPlanDescription, opt => opt.MapFrom(src => src.SubscriptionPlan.SubscriptionPlanDescription))
+                .ForMember(dest => dest.SubscriptionPlanPrice, opt => opt.MapFrom(src => src.SubscriptionPlan.SubscriptionPlanPrice))
+                .ForMember(dest => dest.SubscriptionPlanDuration, opt => opt.MapFrom(src => src.SubscriptionPlan.SubscriptionPlanDuration))
+                .ForMember(dest => dest.SubscriptionPlanDurationType, opt => opt.MapFrom(src => src.SubscriptionPlan.SubscriptionPlanDurationType));
         }
     }
 }
