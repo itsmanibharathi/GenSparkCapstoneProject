@@ -76,6 +76,9 @@ const loadPostPropertyCallback = (query, api, token, localStorage) => {
                     $('#refreshForm').trigger('click');
                     showAlert(response.message, 'success');
                     log.info(response);
+                    var user = localStorage.get('user');
+                    user.isOwner = true;
+                    localStorage.set('user', user);
                     loadRoutes('/property/edit', { propertyId: response.data.propertyId });
                 })
                 .catch(error => {

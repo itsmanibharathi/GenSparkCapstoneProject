@@ -47,7 +47,8 @@ const propertyCardTemplate = (property, isOwner) => {
                 <button class="carousel-button prev absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded-full"><i class="fas fa-chevron-left"></i></button>
                 <button class="carousel-button next absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded-full"><i class="fas fa-chevron-right"></i></button>
             </div>
-            <div class="p-4 sm:w-1/2">
+            <div class="p-4 sm:w-1/2 relative">
+                <span class=" absolute top-0 right-1 text-sm text-gray-500 ">${isOwner ? property.status : ''}</span>
                 <h2 class="text-xl font-semibold">${property.title} ${property.category}</h2>
                 <p class="text-gray-600">${property.description}</p>
 

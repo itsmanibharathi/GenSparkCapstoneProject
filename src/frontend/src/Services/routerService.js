@@ -59,7 +59,7 @@ const loadRoutes = async (path, query) => {
 
     if (path === '/logout') {
         token.remove();
-        localStorage.remove();
+        localStorage.clear();
         showAlert('Logged out successfully', 'success');
         history.replaceState(null, '', '/');
         path = '/';

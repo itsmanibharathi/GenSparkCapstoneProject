@@ -54,10 +54,25 @@ namespace api.Services
 
                 };
                 await _userPropertyInteractionRepository.AddAsync(userPropertyInteraction);
-                var to = property.User.UserEmail;
-                var subject = "New Contact";
-                var body = $"You have been contacted by {user.UserEmail}";
-                return await _azureMailService.Send(to, subject, body);
+                //var to = property.User.UserEmail;
+                //var subject = "New Contact";
+                //var body = $"You have been contacted by {user.UserEmail}";
+                //return await _azureMailService.Send(to, subject, body);
+
+                // Sending email to the property owner
+                var ownerEmail = property.User.UserEmail;
+                var ownerSubject = $"New Contact on Your Property |  {property.Title}";
+                var ownerBody = $"<div> Hello {property.User.UserName},\n\nYou have been contacted by {user.UserName}, Email {user.UserEmail}, Phone {user.UserPhoneNumber} regarding your property {property.Title}.\n\nBest regards,\n360area.tech<div> ";
+
+                await _azureMailService.Send(ownerEmail, ownerSubject, ownerBody);
+
+                // Sending email to the buyer
+                var buyerEmail = user.UserEmail;
+                var buyerSubject = $"Contact Confirmation | {property.Title}";
+                var buyerBody = $"Hello {user.UserName},\n\nYou have successfully contacted the owner of the property {property.Title}. The Property Owner Contact \n\nBest regards,\n 360area.tech ";
+
+                await _azureMailService.Send(buyerEmail, buyerSubject, buyerBody);
+                return true;
             }
             catch (EntityNotFoundException<UserSubscriptionPlan>)
             {
@@ -118,8 +133,9 @@ namespace api.Services
                 {
                     userSubscriptionPlan.IsActive = false;
                 }
-                property.User.UserSubscriptionPlan.Append(userSubscriptionPlan);
+                //property.User.UserSubscriptionPlan.Append(userSubscriptionPlan);
                 property.ViewCount++;
+                await _userSubscriptionPlanRepository.UpdateAsync(userSubscriptionPlan);
                 var userPropertyInteraction =new UserPropertyInteraction
                 {
                     UserId = userId,
@@ -135,10 +151,21 @@ namespace api.Services
                 {
                     return _mapper.Map<BuyerViewOwnerInfoDto>(property.User);
                 }
-                var to = property.User.UserEmail;
-                var subject = "Some One View your Post";
-                var body = $"You have been contacted by {user.UserEmail}";
-                await _azureMailService.Send(to, subject, body);
+
+                // Sending email to the property owner
+                var ownerEmail = property.User.UserEmail;
+                var ownerSubject = $"Your Property Info Viewed | {property.Title}";
+                var ownerBody = $"Hello {property.User.UserName},\n\nYour property {property.Title} information has been viewed by {user.UserEmail}.\n\nBest regards,\n360area.tech";
+
+                await _azureMailService.Send(ownerEmail, ownerSubject, ownerBody);
+
+                // Sending email to the user
+                var userEmail = user.UserEmail;
+                var userSubject = $"Owner Info Viewed | {property.Title}";
+                var userBody = $"Hello {user.UserName},\n\nYou have viewed the owner's information for the property {property.Title}. The owner's Name is {property.User.UserName}, Email {property.User.UserEmail}, Phone {property.User.UserEmail}.\n\nBest regards,\n360area.tech";
+
+                await _azureMailService.Send(userEmail, userSubject, userBody);
+
                 return _mapper.Map<BuyerViewOwnerInfoDto>(property.User);
             }
             catch (EntityNotFoundException<UserSubscriptionPlan>)

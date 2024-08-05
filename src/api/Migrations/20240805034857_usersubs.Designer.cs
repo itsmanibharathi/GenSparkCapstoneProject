@@ -12,8 +12,8 @@ using api.Contexts;
 namespace api.Migrations
 {
     [DbContext(typeof(DbSql))]
-    [Migration("20240804232849_update-sub")]
-    partial class updatesub
+    [Migration("20240805034857_usersubs")]
+    partial class usersubs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -263,7 +263,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 101,
-                            CreatedAt = new DateTime(2024, 8, 5, 4, 58, 48, 662, DateTimeKind.Local).AddTicks(3496),
+                            CreatedAt = new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9875),
                             IsActive = true,
                             SubscriptionPlanDescription = "New User View Contact Subscription Plan",
                             SubscriptionPlanDuration = 3,
@@ -274,7 +274,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 102,
-                            CreatedAt = new DateTime(2024, 8, 5, 4, 58, 48, 662, DateTimeKind.Local).AddTicks(3511),
+                            CreatedAt = new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9889),
                             IsActive = true,
                             SubscriptionPlanDescription = "View Owner info",
                             SubscriptionPlanDuration = 2,
@@ -285,7 +285,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 103,
-                            CreatedAt = new DateTime(2024, 8, 5, 4, 58, 48, 662, DateTimeKind.Local).AddTicks(3515),
+                            CreatedAt = new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9892),
                             IsActive = true,
                             SubscriptionPlanDescription = "Share your contact info to the Owner",
                             SubscriptionPlanDuration = 30,
@@ -296,7 +296,7 @@ namespace api.Migrations
                         new
                         {
                             SubscriptionPlanId = 104,
-                            CreatedAt = new DateTime(2024, 8, 5, 4, 58, 48, 662, DateTimeKind.Local).AddTicks(3516),
+                            CreatedAt = new DateTime(2024, 8, 5, 9, 18, 56, 977, DateTimeKind.Local).AddTicks(9893),
                             IsActive = true,
                             SubscriptionPlanDescription = "View Owner info for 10 Property",
                             SubscriptionPlanDuration = 10,
@@ -420,6 +420,9 @@ namespace api.Migrations
                     b.Property<DateTime>("SubscriptionEndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("SubscriptionPlanDurationType")
+                        .HasColumnType("int");
+
                     b.Property<int>("SubscriptionPlanId")
                         .HasColumnType("int");
 
@@ -434,8 +437,7 @@ namespace api.Migrations
 
                     b.HasKey("UserSubscriptionPlanId");
 
-                    b.HasIndex("SubscriptionPlanId")
-                        .IsUnique();
+                    b.HasIndex("SubscriptionPlanId");
 
                     b.HasIndex("UserId");
 
