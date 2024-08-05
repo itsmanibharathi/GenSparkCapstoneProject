@@ -66,6 +66,15 @@ namespace api.Utility
                 .ForMember(dest => dest.SubscriptionPlanPrice, opt => opt.MapFrom(src => src.SubscriptionPlan.SubscriptionPlanPrice))
                 .ForMember(dest => dest.SubscriptionPlanDuration, opt => opt.MapFrom(src => src.SubscriptionPlan.SubscriptionPlanDuration))
                 .ForMember(dest => dest.SubscriptionPlanDurationType, opt => opt.MapFrom(src => src.SubscriptionPlan.SubscriptionPlanDurationType));
+
+            CreateMap<SeedPropertyDto, Property>()
+                .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
+                .ForMember(dest => dest.MediaFiles, opt => opt.MapFrom(src => src.MediaFiles));
+
+            CreateMap<SeedPropertyHomeDto, PropertyHome>();
+            CreateMap<SeedPropertyAmenityDto, PropertyAmenity>();
+            CreateMap<SeedPropertyMediaFileDto, PropertyMediaFile>();
+            CreateMap<SeedPropertyLandDto, PropertyLand>();
         }
     }
 }
