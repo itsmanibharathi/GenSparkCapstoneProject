@@ -34,7 +34,7 @@ export const properties = [
                 "mediaFileId": 1,
                 "title": "Front View",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/abby-rurenko-uOYak90r4L0-unsplash.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/abby-rurenko-uOYak90r4L0-unsplash.jpg",
                 "propertyId": 1,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -43,7 +43,7 @@ export const properties = [
                 "mediaFileId": 2,
                 "title": "Kitchen",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/naomi-hebert-MP0bgaS_d1c-unsplash.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/naomi-hebert-MP0bgaS_d1c-unsplash.jpg",
                 "propertyId": 1,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -96,7 +96,7 @@ export const properties = [
                 "mediaFileId": 3,
                 "title": "Garden View",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/phil-hearing-IYfp2Ixe9nM-unsplash.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/phil-hearing-IYfp2Ixe9nM-unsplash.jpg",
                 "propertyId": 2,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -105,7 +105,7 @@ export const properties = [
                 "mediaFileId": 4,
                 "title": "Bedroom View",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/bedroom-1872196_1280.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/bedroom-1872196_1280.jpg",
                 "propertyId": 2,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -158,7 +158,7 @@ export const properties = [
                 "mediaFileId": 5,
                 "title": "Bungalow View",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/phil-hearing-IYfp2Ixe9nM-unsplash.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/phil-hearing-IYfp2Ixe9nM-unsplash.jpg",
                 "propertyId": 3,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -167,7 +167,7 @@ export const properties = [
                 "mediaFileId": 6,
                 "title": "Bungalow View",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/interior-1961070_1280",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/interior-1961070_1280.jpg",
                 "propertyId": 3,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -220,7 +220,7 @@ export const properties = [
                 "mediaFileId": 7,
                 "title": "Front View",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/phil-hearing-IYfp2Ixe9nM-unsplash.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/phil-hearing-IYfp2Ixe9nM-unsplash.jpg",
                 "propertyId": 4,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -273,7 +273,7 @@ export const properties = [
                 "mediaFileId": 8,
                 "title": "Front View",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/ritchie-valens-6fxiPO6bPpM-unsplash.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/ritchie-valens-6fxiPO6bPpM-unsplash.jpg",
                 "propertyId": 5,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -282,7 +282,7 @@ export const properties = [
                 "mediaFileId": 9,
                 "title": "kitchen",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/mahrous-houses-aNxVZkqr8kw-unsplash.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/mahrous-houses-aNxVZkqr8kw-unsplash.jpg",
                 "propertyId": 5,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -344,7 +344,7 @@ export const properties = [
                 "mediaFileId": 10,
                 "title": "Plot View",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/istockphoto-490919480-1024x1024.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/istockphoto-490919480-1024x1024.jpg",
                 "propertyId": 6,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -384,7 +384,7 @@ export const properties = [
                 "mediaFileId": 11,
                 "title": "Commercial Plot",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/pexels-pok-rie-33563-1905018.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/pexels-pok-rie-33563-1905018.jpg",
                 "propertyId": 7,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -424,7 +424,7 @@ export const properties = [
                 "mediaFileId": 12,
                 "title": "Agricultural Land",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/pexels-magda-ehlers-pexels-636342.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/pexels-magda-ehlers-pexels-636342.jpg",
                 "propertyId": 8,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -464,7 +464,7 @@ export const properties = [
                 "mediaFileId": 13,
                 "title": "Residential Plot",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/residential-plots-1000x1000.webp",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/residential-plots-1000x1000.webp",
                 "propertyId": 9,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -523,7 +523,7 @@ export const properties = [
                 "mediaFileId": 14,
                 "title": "Living Room",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/interior-1961070_1280.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/interior-1961070_1280.jpg",
                 "propertyId": 10,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
@@ -532,7 +532,7 @@ export const properties = [
                 "mediaFileId": 14,
                 "title": "Swimming Pool",
                 "type": "Image",
-                "url": "https://manisblob.blob.core.windows.net/mediafile/240_F_280112608_32mLVErazmuz6OLyrz2dK4MgBULBUCSO.jpg",
+                "url": "https://storagemani.blob.core.windows.net/mediafile/240_F_280112608_32mLVErazmuz6OLyrz2dK4MgBULBUCSO.jpg",
                 "propertyId": 10,
                 "createAt": "2024-08-01T10:11:09.376Z",
                 "updateAt": "2024-08-01T10:11:09.376Z"
